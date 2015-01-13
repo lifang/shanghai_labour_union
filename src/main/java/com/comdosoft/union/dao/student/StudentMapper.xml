@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.student.StudentMapper">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+	<![CDATA[
+		INSERT INTO t_app_student (studentEmail, studentPassword, studentMobilePhone,chineseName,
+		activationCode,createTime, updateTime, version,
+		nationality,passportNumber,sexuality,englishName,maritalStatus,birthDate,birthCity,emergencyContactorAddress,
+		emergencyContactorPhone,highestDegree,religion,languageChineseAbility,languageEnglishAbility,applyTime,
+		economyGuarantor,economyGuarantorPhone,homeAddress,homePhone,applyNumber)
+		VALUES 
+		(#{studentEmail}, #{studentPassword}, #{studentMobilePhone},#{chineseName},
+		#{activationCode},now(), now(), #{version},
+		#{nationality},#{passportNumber},#{sexuality},#{englishName},#{maritalStatus},#{birthDate},#{birthCity},#{emergencyContactorAddress},
+		#{emergencyContactorPhone},#{highestDegree},#{religion},#{languageChineseAbility},#{languageEnglishAbility},#{applyTime},
+		#{economyGuarantor},#{economyGuarantorPhone},#{homeAddress},#{homePhone},#{applyNumber})
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.comdosoft.union.bean.app.AppStudent">
+	<![CDATA[
+		UPDATE t_app_student SET updateTime = #{updateTime}, version = #{version}
+	]]>
+		<if test="studentEmail != '' and studentEmail != null">, studentEmail = #{studentEmail}</if>
+		<if test="studentPassword != '' and studentPassword != null">, studentPassword = #{studentPassword}</if>
+		<if test="studentStatus != 0 and studentStatus != null">, studentStatus = #{studentStatus}</if>
+		<if test="studentMobilePhone != '' and studentMobilePhone != null">, studentMobilePhone = #{studentMobilePhone}</if>
+		<if test="pushDeviceType != 0 and pushDeviceType != null">, pushDeviceType = #{pushDeviceType}</if>
+	<![CDATA[
+		 WHERE id = #{id}
+	]]>
+	</update>
+
+	<select id="getStudentById" resultType="com.comdosoft.union.bean.app.AppStudent">
+	<![CDATA[
+		SELECT *
+		  FROM t_app_student
+		 WHERE id = #{id}
+	]]>
+	</select>
+
+	<select id="getStudentByStudentEmail" resultType="com.comdosoft.union.bean.app.AppStudent">
+	<![CDATA[
+		SELECT *
+		  FROM t_app_student
+		 WHERE studentEmail = #{studentEmail}
+	]]>
+	</select>
+
+</mapper>

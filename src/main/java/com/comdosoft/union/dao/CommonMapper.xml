@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.CommonMapper">
+
+	<select id="getPictures" resultType="com.comdosoft.union.bean.app.AppPicture">
+	<![CDATA[
+		SELECT *
+		  FROM t_app_picture
+		 WHERE foreignId = #{foreignId} AND foreignType = #{foreignType}
+	  ORDER BY createTime ASC
+	]]>
+	</select>
+
+	<insert id="insertPicture" useGeneratedKeys="true" keyProperty="id" parameterType="com.comdosoft.union.bean.app.AppPicture">
+	<![CDATA[
+		INSERT INTO t_app_picture (foreignId, foreignType, pictureLargeFilePath, pictureSmallFilePath,
+				createTime, updateTime)
+		VALUES (#{foreignId}, #{foreignType}, #{pictureLargeFilePath}, #{pictureSmallFilePath},
+				#{createTime}, #{updateTime})
+	]]>
+	</insert>
+
+	<!-- 新增（批量） -->
+	<insert id="insertPictureBatch">
+	<![CDATA[
+		INSERT INTO t_app_picture (foreignId, foreignType, pictureSmallFilePath, pictureLargeFilePath, createTime, updateTime)
+		VALUES
+	]]>
+		<foreach collection="list" item="e" separator=",">
+			(#{e.foreignId}, #{e.foreignType}, #{e.pictureSmallFilePath}, #{e.pictureLargeFilePath}, #{e.createTime}, #{e.updateTime})
+		</foreach>
+	</insert>
+
+	<delete id="removePicture" parameterType="int">
+	<![CDATA[
+		DELETE FROM t_app_picture WHERE foreignId = #{foreignId} and foreignType = #{foreignType}
+	]]>
+	</delete>
+	
+	<select id="getEnumId" resultType="int">
+	<![CDATA[
+		select IFNULL((SELECT id from t_sys_enum where enumCodeType=#{enumCodeType} and enumTextName=#{enumTextName}),
+        (SELECT id from t_sys_enum where enumCodeType=#{enumCodeType} and enumTextName=#{enumTextDefaultName})) as id
+	]]>
+	</select>
+
+</mapper>

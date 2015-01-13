@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.notification.NotificationMapper">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+	<![CDATA[
+		INSERT INTO t_app_notification (notificationTitle, notificationContent, notificationShortContent, notificationType, eventsId,
+										createTime, createUser, updateTime)
+		VALUES (#{notificationTitle}, #{notificationContent}, #{notificationShortContent}, #{notificationType}, #{eventsId},
+				#{createTime}, #{createUser}, #{updateTime})
+	]]>
+	</insert>
+
+	<!-- 新增（批量） -->
+	<insert id="insertBatch">
+	<![CDATA[
+		INSERT INTO t_app_notification_receiver (notificationId, studentId, createTime, updateTime)
+		VALUES
+	]]>
+		<foreach collection="list" item="e" separator=",">
+			(#{e.notificationId}, #{e.studentId}, #{e.createTime}, #{e.updateTime})
+		</foreach>
+	</insert>
+
+	<update id="readNotification">
+	<![CDATA[
+		UPDATE t_app_notification_receiver SET updateTime = #{updateTime}, notificationIsRead = #{notificationIsRead}
+		 WHERE notificationId = #{id}
+	]]>
+	</update>
+
+	<update id="readAllNotification">
+	<![CDATA[
+		UPDATE t_app_notification_receiver SET updateTime = #{updateTime}, notificationIsRead = #{notificationIsRead}
+		 WHERE studentId = #{studentId}
+	]]>
+	</update>
+
+	<select id="getNotificationUnReadCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+		  FROM t_app_notification_receiver
+		 WHERE studentId = #{studentId}
+		   AND notificationIsRead = #{status}
+	]]>
+	</select>
+
+	<select id="getList" resultType="map">
+	<![CDATA[
+		SELECT r.id, r.notificationId, r.notificationIsRead,
+			   n.notificationTitle, n.notificationShortContent, n.notificationType, n.eventsId
+		  FROM t_app_notification_receiver r JOIN t_app_notification n ON r.notificationId = n.id
+		 WHERE r.studentId = #{studentId}
+	]]>
+		<if test="type == 1 or type == 2">AND r.notificationIsRead = #{type}</if>
+	<![CDATA[
+	  ORDER BY n.updateTime DESC
+		 LIMIT #{offset}, #{rows}
+	]]>
+	</select>
+
+	<select id="getOneById" resultType="com.comdosoft.union.bean.app.AppNotification">
+	<![CDATA[
+		SELECT *
+		  FROM t_app_notification
+		 WHERE id = #{id}
+	]]>
+	</select>
+
+	<select id="getOneByConditions" resultType="map">
+	<![CDATA[
+		SELECT n.id, r.notificationIsRead,
+			   DATE_FORMAT(n.createTime, '%Y-%m-%d %T') createTime, n.createUser,
+			   n.notificationTitle, n.notificationContent, n.notificationShortContent, n.notificationType, n.eventsId
+		  FROM t_app_notification_receiver r JOIN t_app_notification n ON r.notificationId = n.id AND r.studentId = #{studentId}
+		 WHERE n.id = #{id}
+	]]>
+	</select>
+
+</mapper>
