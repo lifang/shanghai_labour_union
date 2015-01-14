@@ -29,7 +29,7 @@ public class RegulationsController {
     }
     
     @RequestMapping(value = "info", method = RequestMethod.POST)
-    public SysResponse info(Long id) {
+    public SysResponse info(Integer id) {
     	logger.info("法规详情,id:{}",id);
     	Regulations regulations = regulationsService.getInfo(id);
         return SysResponse.buildSuccessResponse(regulations);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.ServiceCenterMapper">
+	
+	<select id="countByBs" resultType="long">
+		SELECT COUNT(*) FROM map WHERE bs=#{bs}
+	</select>
+
+	<select id="pageByBs" resultType="com.comdosoft.union.bean.app.ServiceCenter">
+		SELECT
+		  id,name,addr,tel
+		FROM
+		  map
+		WHERE bs=#{param1}
+		ORDER BY name
+		LIMIT #{param2.offset},#{param2.pageSize}
+	</select>
+	
+	<select id="find" resultType="com.comdosoft.union.bean.app.ServiceCenter">
+		SELECT
+		  id,name,addr,tel
+		FROM
+		  map
+		WHERE id=#{id}
+	</select>
+</mapper>

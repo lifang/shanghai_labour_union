@@ -7,6 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import com.comdosoft.union.bean.PageRequest;
 import com.comdosoft.union.bean.app.Regulations;
 
+/**
+ * 法规接口
+ * @author wu
+ *
+ */
 public interface RegulationsMapper {
 	
 	/**
@@ -23,5 +28,5 @@ public interface RegulationsMapper {
 	 */
 	List<Regulations> pageByTitle(String title,PageRequest pageRequest);
 	
-	Regulations find(Long id);
+	Regulations find(Integer id);
 }

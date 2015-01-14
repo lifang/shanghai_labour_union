@@ -35,7 +35,7 @@ public class RegulationsService {
 		return new Page<Regulations>(request, result, count);
 	}
 	
-	public Regulations getInfo(Long id) {
+	public Regulations getInfo(Integer id) {
 		return regulationsMapper.find(id);
 	}
 }
