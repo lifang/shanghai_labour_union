@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.comdosoft.union.bean.APIRequestParameter;
 import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.AppStudent;
@@ -53,15 +52,14 @@ public class APPServiceInterface {
     @Resource
     private NotificationService notificationService;
 
-    @RequestMapping(value = "test", method = RequestMethod.POST)
+    @RequestMapping(value = "test", method = RequestMethod.GET)
     @ResponseBody
     public SysResponse test() {
         SysResponse sysResponse = new SysResponse();
         List<Merchant> merchants = merchantService.findAllMerchants();
         sysResponse.setCode(SysResponse.SUCCESS);
         sysResponse.setMessage("test");
-        String alibabaJson = JSON.toJSONString(merchants);
-        sysResponse.setResult(alibabaJson);
+        sysResponse.setResult(merchants);
         return sysResponse;
     }
     

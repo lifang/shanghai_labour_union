@@ -1,7 +1,6 @@
 package com.comdosoft.union.service.merchant;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
