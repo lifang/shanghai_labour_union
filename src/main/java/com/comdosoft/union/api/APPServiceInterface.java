@@ -2,6 +2,7 @@ package com.comdosoft.union.api;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.comdosoft.union.bean.APIRequestParameter;
+import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.AppStudent;
 import com.comdosoft.union.common.SysConstant;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.common.SysToken;
+import com.comdosoft.union.service.merchant.MerchantService;
 import com.comdosoft.union.service.notification.NotificationService;
 import com.comdosoft.union.service.student.StudentService;
 
@@ -42,10 +46,25 @@ public class APPServiceInterface {
 
     @Resource
     private StudentService studentService;
+    
+    @Resource
+    private MerchantService merchantService;
 
     @Resource
     private NotificationService notificationService;
 
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    @ResponseBody
+    public SysResponse test() {
+        SysResponse sysResponse = new SysResponse();
+        List<Merchant> merchants = merchantService.findAllMerchants();
+        sysResponse.setCode(SysResponse.SUCCESS);
+        sysResponse.setMessage("test");
+        String alibabaJson = JSON.toJSONString(merchants);
+        sysResponse.setResult(alibabaJson);
+        return sysResponse;
+    }
+    
     /**
      * [01]用户注册
      * 
