@@ -3,6 +3,7 @@ package com.comdosoft.union.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.ProtectRight;
@@ -20,6 +21,7 @@ public class ProtectRightController {
 	 * 登记维权
 	 * @return
 	 */
+	@RequestMapping(value="regist",method=RequestMethod.POST)
 	public SysResponse registProtectRight(ProtectRight protectRight){
 		if(!StringUtils.hasLength(protectRight.getUsername())) {
 			return SysResponse.buildExceptionResponse("姓名不能为空");
