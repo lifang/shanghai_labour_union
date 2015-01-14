@@ -22,4 +22,6 @@ public interface RegulationsMapper {
 	 * @return
 	 */
 	List<Regulations> pageByTitle(String title,PageRequest pageRequest);
+	
+	Regulations find(Long id);
 }

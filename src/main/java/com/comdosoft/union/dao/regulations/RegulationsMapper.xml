@@ -25,4 +25,10 @@
 		LIMIT #{param2.offset},#{param2.pageSize}
 	</select>
 
+	<select id="find" resultType="com.comdosoft.union.bean.app.Regulations">
+		SELECT
+		  id,title,content,addtime
+		FROM gh_qna
+		  WHERE id = #{id}
+	</select>
 </mapper>

@@ -34,4 +34,8 @@ public class RegulationsService {
 		List<Regulations> result = regulationsMapper.pageByTitle(title, request);
 		return new Page<Regulations>(request, result, count);
 	}
+	
+	public Regulations getInfo(Long id) {
+		return regulationsMapper.find(id);
+	}
 }

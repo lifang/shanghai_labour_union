@@ -132,11 +132,10 @@ public class SysResponse {
         return EXCEPTION;
     }
     
-    public static SysResponse buildSuccessResponse(Object result,String message){
+    public static SysResponse buildSuccessResponse(Object result){
     	SysResponse response = new SysResponse();
     	response.code = SUCCESS;
     	response.result = result;
-    	response.message = message;
     	return response;
     }
 

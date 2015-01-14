@@ -25,7 +25,14 @@ public class RegulationsController {
     public SysResponse page(String title,Integer page) {
     	logger.info("法规分页查询,title:{},page:{}",title,page);
     	Page<Regulations> regulations = regulationsService.getPage(page, title);
-        return SysResponse.buildSuccessResponse(regulations, "");
+        return SysResponse.buildSuccessResponse(regulations);
+    }
+    
+    @RequestMapping(value = "info", method = RequestMethod.POST)
+    public SysResponse info(Long id) {
+    	logger.info("法规详情,id:{}",id);
+    	Regulations regulations = regulationsService.getInfo(id);
+        return SysResponse.buildSuccessResponse(regulations);
     }
 
 }
