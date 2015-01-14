@@ -1,6 +1,7 @@
 package com.comdosoft.union.bean.app;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 法规
@@ -20,6 +21,7 @@ public class Regulations implements Serializable {
 	 * 内容
 	 */
 	private String content;
+	private Date addtime;
 	
 	public Integer getId() {
 		return id;
@@ -30,6 +32,20 @@ public class Regulations implements Serializable {
 	public String getContent() {
 		return content;
 	}
-	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Date getAddtime() {
+		return addtime;
+	}
+	public void setAddtime(Date addtime) {
+		this.addtime = addtime;
+	}
 	
 }

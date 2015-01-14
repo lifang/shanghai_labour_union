@@ -131,5 +131,26 @@ public class SysResponse {
     public static Integer getException() {
         return EXCEPTION;
     }
+    
+    public static SysResponse buildSuccessResponse(Object result,String message){
+    	SysResponse response = new SysResponse();
+    	response.code = SUCCESS;
+    	response.result = result;
+    	response.message = message;
+    	return response;
+    }
 
+    public static SysResponse buildFailResponse(String message){
+    	SysResponse response = new SysResponse();
+    	response.code = FAILURE;
+    	response.message = message;
+    	return response;
+    }
+    
+    public static SysResponse buildExceptionResponse(String message){
+    	SysResponse response = new SysResponse();
+    	response.code = EXCEPTION;
+    	response.message = message;
+    	return response;
+    }
 }
