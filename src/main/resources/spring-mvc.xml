@@ -29,8 +29,6 @@
 		<property name="initialSize" value="5"></property>
 		<!-- 最大连接数 -->
 		<property name="maxActive" value="30"></property>
-		<!-- 最大空闲连数 -->
-		<property name="maxIdle" value="2"></property>
 		<!-- 最小空闲连数 -->
 		<property name="minIdle" value="2"></property>
 		<!-- 获取连接等待的超时时间，单位是毫秒 -->
@@ -75,68 +73,8 @@
 	    </mvc:message-converters>
 	</mvc:annotation-driven>
 
-	<!-- 系统拦截器 -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/web/**" />
-			<!-- 排除的请求 -->
-			<mvc:exclude-mapping path="/web/adminLogin"></mvc:exclude-mapping>
-			<mvc:exclude-mapping path="/web/adminLoginOut"></mvc:exclude-mapping>
-			<bean class="com.comdosoft.union.interceptor.SystemInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
-
-	<mvc:view-controller path="/" view-name="login" />
-
-	<!-- json视图解析器(可以转换任何形式的java对象) -->
-	<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-
-	<!-- FreeMarker视图解析器 -->
-	<bean id="freemarkerResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="order" value="0"></property>
-		<property name="prefix" value=""></property>
-		<property name="suffix" value=".ftl"></property>
-		<property name="contentType" value="text/html;charset=utf-8"></property>
-		<property name="requestContextAttribute" value="request"></property>
-		<property name="exposeSpringMacroHelpers" value="true"></property>
-		<property name="exposeRequestAttributes" value="true"></property>
-		<property name="exposeSessionAttributes" value="true"></property>
-		<property name="viewClass">
-			<value>com.comdosoft.union.controller.MyFreeMarkerView</value><!-- 自定义MyFreeMarkerView用来定义项目全局路径 -->
-		</property>
-	</bean>
-	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/WEB-INF/view/" />
-		<property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
-			<props>
-				<prop key="template_update_delay">2</prop><!--刷新模板的周期，单位为秒 -->
-				<prop key="default_encoding">UTF-8</prop><!--模板的编码格式 -->
-				<prop key="locale">UTF-8</prop><!-- 本地化设置 -->
-				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
-				<prop key="time_format">HH:mm:ss</prop>
-				<prop key="number_format">###.#</prop>
-				<prop key="whitespace_stripping">true</prop>
-				<prop key="tag_syntax">auto_detect</prop>
-				<prop key="url_escaping_charset">UTF-8</prop>
-				<prop key="auto_import">spring.ftl as spring</prop>
-			</props>
-		</property>
-	</bean>
-
-	<!-- JSP视图解析器 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/view/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>
-
 	<!-- 容器默认的DefaultServletHandler,处理所有静态内容或无RequestMapping的URL -->
 	<mvc:default-servlet-handler />
-
-	<!-- 静态文件 -->
-	<!-- <mvc:resources location="WEB-INF/images/" mapping="images/**" /> -->
-	<!-- <mvc:resources location="WEB-INF/js/" mapping="js/**" /> -->
-	<!-- <mvc:resources location="WEB-INF/style/" mapping="style/**" /> -->
-	<!-- <mvc:resources location="upload/" mapping="upload/**" /> -->
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8"></property>
@@ -153,18 +91,8 @@
 		<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
 		<property name="exceptionAttribute" value="exception"></property>
 
-		<!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常页面名作为值 -->
-		<!-- <property name="exceptionMappings"> -->
-		<!-- <props> -->
-		<!-- <prop key="IllegalStateException">login</prop> -->
-		<!-- 这里还可以继续扩展对其它不同异常类型的处理 -->
-		<!-- </props> -->
-		<!-- </property> -->
-
 		<!-- 记录异常信息到日志(WARN级别) -->
-		<property name="warnLogCategory">
-			<value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver</value>
-		</property>
+		<property name="warnLogCategory" value="ExceptionResolver"></property>
 
 	</bean>
 </beans>
