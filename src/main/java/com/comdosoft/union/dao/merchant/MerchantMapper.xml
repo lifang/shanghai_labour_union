@@ -2,11 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comdosoft.union.dao.merchant.MerchantMapper">
 
+ 	<!-- 查询条件 -->
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="sshy != null"> AND sshy =#{sshy} </if>
+		</where>
+	</sql>
+	
+	<select id="countByVo" resultType="int">
+		SELECT count(*) as count
+		  FROM merchants  
+	</select>
+	
 	<select id="findAllMerchants" resultType="com.comdosoft.union.bean.app.Merchant">
-	<![CDATA[
 		SELECT *
-		  FROM merchants
-	]]>
+		  FROM merchants  
+		<include refid="dynamicWhere" />
 	</select>
 
 </mapper>

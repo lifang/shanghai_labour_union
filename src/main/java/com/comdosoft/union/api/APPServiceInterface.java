@@ -52,13 +52,20 @@ public class APPServiceInterface {
     @Resource
     private NotificationService notificationService;
 
-    @RequestMapping(value = "test", method = RequestMethod.GET)
+    /**
+     * 获取商户信息列表 每页10条
+     * @param merchant
+     * @param offset 页数
+     * @return
+     */
+    @RequestMapping(value = "findAllMerchants", method = RequestMethod.POST)
     @ResponseBody
-    public SysResponse test() {
+    public SysResponse findAllMerchants(Merchant merchant,String offset) {
+        if(null == offset)offset = "0";
         SysResponse sysResponse = new SysResponse();
-        List<Merchant> merchants = merchantService.findAllMerchants();
+        List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
         sysResponse.setCode(SysResponse.SUCCESS);
-        sysResponse.setMessage("test");
+        sysResponse.setMessage("请求成功");
         sysResponse.setResult(merchants);
         return sysResponse;
     }
