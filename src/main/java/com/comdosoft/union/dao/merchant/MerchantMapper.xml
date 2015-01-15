@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comdosoft.union.dao.merchant.MerchantMapper">
-
+	
  	<!-- 查询条件 -->
 	<sql id="dynamicWhere">
 		<where>
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="sshy != null"> AND sshy =#{sshy} </if>
+			<if test="id != null"> AND m.ID =#{id} </if>
+			<if test="sshy != null"> AND m.sshy =#{sshy} </if>
 		</where>
 	</sql>
 	
@@ -16,9 +16,15 @@
 	</select>
 	
 	<select id="findAllMerchants" resultType="com.comdosoft.union.bean.app.Merchant">
-		SELECT *
-		  FROM merchants  
+		SELECT m.*,f.*
+		   FROM merchants m ,mer_fl f where f.id=m.sshy 
 		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="findById" resultType="com.comdosoft.union.bean.app.Merchant" parameterType="java.lang.Integer">
+		SELECT m.*,f.*
+		  FROM merchants m ,mer_fl f where f.id=m.sshy 
+		and m.id=#{id}
 	</select>
 
 </mapper>

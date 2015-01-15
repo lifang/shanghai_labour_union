@@ -10,4 +10,5 @@ public interface MerchantMapper {
 
     int countByVo(Merchant merchant);
     List<Merchant> findAllMerchants(RowBounds rowBounds ,Merchant merchant);
+    Merchant findById(Integer id);
 }
