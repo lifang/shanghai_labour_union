@@ -11,4 +11,5 @@ public interface NewsMapper {
     int countByVo(News news);
     List<News> findAll(RowBounds rowBounds ,News news);
     News findById(Integer id);
+    List<News> search(RowBounds rowBounds, String title);
 }

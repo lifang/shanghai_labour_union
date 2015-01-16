@@ -30,4 +30,11 @@ public class NewsService {
     public News findById(Integer id){
         return newsMapper.findById(id);
     }
+
+    public List<News> search(int offset, Integer limit, String title) {
+        if(offset<=0)  
+            offset = 1;  
+        offset = (offset-1)*limit;
+        return newsMapper.search(new RowBounds(offset, limit),title);
+    }
 }
