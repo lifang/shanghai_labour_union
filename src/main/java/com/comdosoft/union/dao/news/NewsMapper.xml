@@ -42,7 +42,7 @@
 	<select id="findById" resultMap="news" parameterType="java.lang.Integer">
 		SELECT m.*,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
-		where  m.sh3=1 and id=#{id}
+		where  m.sh3=1 and m.id=#{id}
 		order by m.time desc
 	</select>
 	

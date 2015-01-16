@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.tcardcx.TcardcxMapper">
+
+	<resultMap id="tcardcx" type="com.comdosoft.union.bean.app.Tcardcx">
+		<result property="cxm" column="cxm" />
+		<result property="csfzh" column="csfzh" />
+		<result property="dqbrq" column="dqbrq" />
+		<result property="xz" column="xz" />
+		<collection property="xzId" column="id" javaType="com.comdosoft.union.bean.app.XzType">
+			<result property="id" column="id"/>
+			<result property="name" column="name"/>
+			<result property="img" column="img"/>
+		</collection>
+	</resultMap>
+
+	<select id="countByVo" resultType="int">
+		SELECT count(*) as count
+		  FROM tcardcx  
+	</select>
+	
+	<select id="findAll" resultMap="tcardcx" >
+		SELECT *
+		   FROM tcardcx m left join xz_type t on m.xzId=t.id
+	</select>
+	
+	<select id="findById" resultMap="tcardcx" parameterType="java.lang.Integer">
+		SELECT *
+		  FROM tcardcx m left join xz_type t on m.xzId=t.id
+		where  m.xzId=#{xzId}
+	</select>
+	
+	<select id="search" resultMap="tcardcx" parameterType="map">
+		SELECT *
+		   FROM tcardcx m left join xz_type t on m.xzId=t.id
+		where  t.name like "%"#{name}"%" 
+		   
+	</select>
+
+</mapper>
