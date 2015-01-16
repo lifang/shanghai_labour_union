@@ -23,13 +23,17 @@ public class NewsController {
     private NewsService newsService;
     
     /**
-     * 获取商户信息列表 每页14条
+     * 获取新闻信息列表
      * @param news
      * @param offset 页数
      * @return
      */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public SysResponse findAll(News news,String offset) {
+        Integer limit = 14;
+        if(null != news.getLm3() && news.getLm3().equals("57")){
+            limit = 10;//法规查询 每页10条  
+        }
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
             offset = "0";
@@ -43,13 +47,24 @@ public class NewsController {
                 return sysResponse;
             }
         }
-        List<News> merchants = newsService.findAll(Integer.parseInt(offset),14,news);
-        sysResponse.setCode(SysResponse.SUCCESS);
-        sysResponse.setMessage("请求成功");
-        sysResponse.setResult(merchants);
+        List<News> newsList = newsService.findAll(Integer.parseInt(offset),limit,news);
+        if(newsList.size()>0){
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            sysResponse.setResult(newsList);
+        }else{
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("数据不存在,列表为空");
+        }
+        
         return sysResponse;
     }
     
+    /**
+     * 获取单条新闻信息
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "findById", method = RequestMethod.POST)
     public SysResponse findById(String id){
         SysResponse sysResponse = new SysResponse();

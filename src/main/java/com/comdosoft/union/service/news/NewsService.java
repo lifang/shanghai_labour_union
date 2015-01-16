@@ -7,9 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
-import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.News;
-import com.comdosoft.union.dao.merchant.MerchantMapper;
 import com.comdosoft.union.dao.news.NewsMapper;
 
 @Service
@@ -21,7 +19,7 @@ public class NewsService {
     public List<News> findAll(int offset,int limit,News news) {
         if(offset<=0)  
             offset = 1;  
-        offset = (offset-1)*14;
+        offset = (offset-1)*limit;
         return newsMapper.findAll(new RowBounds(offset, limit),news);
     }
     

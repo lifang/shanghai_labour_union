@@ -50,6 +50,11 @@ public class MerchantController {
         return sysResponse;
     }
     
+    /**
+     * 获取某个商户的信息
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "findById", method = RequestMethod.POST)
     public SysResponse findById(String id){
         SysResponse sysResponse = new SysResponse();
