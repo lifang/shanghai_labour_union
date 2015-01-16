@@ -25,7 +25,7 @@ public class Merchant implements Serializable {
     /**
      * 商户分类
      */
-    private String sshy; 
+    private MerchantType sshy; 
     /**
      * logo 暂时未用
      */
@@ -112,14 +112,14 @@ public class Merchant implements Serializable {
      * 获取 商户分类  
      * @return sshy 商户分类  
      */
-    public String getSshy() {
+    public MerchantType getSshy() {
         return sshy;
     }
     /**  
      * 设置 商户分类  
      * @param sshy 商户分类  
      */
-    public void setSshy(String sshy) {
+    public void setSshy(MerchantType sshy) {
         this.sshy = sshy;
     }
     /**  

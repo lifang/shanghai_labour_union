@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comdosoft.union.bean.app.Merchant;
+import com.comdosoft.union.bean.app.News;
 import com.comdosoft.union.common.SysResponse;
-import com.comdosoft.union.service.merchant.MerchantService;
+import com.comdosoft.union.service.news.NewsService;
 
 @RestController
-@RequestMapping("api/merchant")
-public class MerchantController {
-    private static final Logger logger = LoggerFactory.getLogger(MerchantController.class);
+@RequestMapping("api/news")
+public class NewsController {
+    private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
     @Resource
-    private MerchantService merchantService;
+    private NewsService newsService;
     
     /**
-     * 获取商户信息列表 每页10条
-     * @param merchant
+     * 获取商户信息列表 每页14条
+     * @param news
      * @param offset 页数
      * @return
      */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
-    public SysResponse findAllMerchants(Merchant merchant,String offset) {
+    public SysResponse findAll(News news,String offset) {
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
             offset = "0";
@@ -43,7 +43,7 @@ public class MerchantController {
                 return sysResponse;
             }
         }
-        List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
+        List<News> merchants = newsService.findAll(Integer.parseInt(offset),14,news);
         sysResponse.setCode(SysResponse.SUCCESS);
         sysResponse.setMessage("请求成功");
         sysResponse.setResult(merchants);
@@ -54,10 +54,10 @@ public class MerchantController {
     public SysResponse findById(String id){
         SysResponse sysResponse = new SysResponse();
         try {
-            Merchant merchant = merchantService.findById(Integer.parseInt(id));
+            News news = newsService.findById(Integer.parseInt(id));
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(merchant);
+            sysResponse.setResult(news);
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");

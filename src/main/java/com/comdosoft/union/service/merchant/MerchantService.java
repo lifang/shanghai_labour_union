@@ -27,7 +27,7 @@ public class MerchantService {
         return merchantMapper.countByVo(merchant);
     }
     
-    public Object findById(Integer id){
+    public Merchant findById(Integer id){
         return merchantMapper.findById(id);
     }
 }

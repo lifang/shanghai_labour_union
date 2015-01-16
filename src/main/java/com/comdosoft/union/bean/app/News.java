@@ -1,7 +1,9 @@
 package com.comdosoft.union.bean.app;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 /**
  * 
  * <br>
@@ -77,6 +79,7 @@ public class News implements Serializable{
      */
     private Date sh3time;
     private Integer img;//暂时未使用
+    private List<NewsPics> newPicsList=new ArrayList<NewsPics>(0);//关联图片
     /**  
      * 获取 id  
      * @return id 
@@ -345,6 +348,20 @@ public class News implements Serializable{
     }
     public News() {
         super();
+    }
+    /**  
+     * 获取 newPicsList  
+     * @return newPicsList 
+     */
+    public List<NewsPics> getNewPicsList() {
+        return newPicsList;
+    }
+    /**  
+     * 设置 newPicsList  
+     * @param newPicsList 
+     */
+    public void setNewPicsList(List<NewsPics> newPicsList) {
+        this.newPicsList = newPicsList;
     }
 
 }
