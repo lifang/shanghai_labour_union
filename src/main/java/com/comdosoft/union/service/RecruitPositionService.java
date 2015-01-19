@@ -21,4 +21,9 @@ public class RecruitPositionService {
         offset = (offset-1)*limit;
         return recruitPositionMapper.findNewJob(new RowBounds(offset, limit),recruitPosition);
     }
+
+
+    public RecruitPosition findById(Integer id) {
+        return recruitPositionMapper.findById(id);
+    }
 }

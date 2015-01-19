@@ -124,4 +124,25 @@ public class PositionCodeController {
         return getJobs(offset,"10",recruitPosition);
     }
 
+    /**
+     * 根据id查询实体
+     * @param offset
+     * @param recruitPosition
+     * @return
+     */
+    @RequestMapping(value = "findById", method = RequestMethod.POST)
+    public SysResponse findById(String id){
+        SysResponse sysResponse = new SysResponse();
+        try {
+            RecruitPosition recruitPosition = recruitPositionService.findById(Integer.parseInt(id));
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            sysResponse.setResult(recruitPosition);
+        } catch (Exception e) {
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("请求失败");
+            logger.debug("获取职位出错:"+e);
+        }
+        return sysResponse;
+    }
 }

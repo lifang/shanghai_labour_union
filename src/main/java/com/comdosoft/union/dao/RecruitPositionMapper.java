@@ -8,4 +8,6 @@ import com.comdosoft.union.bean.app.RecruitPosition;
 
 public interface RecruitPositionMapper {
     List<RecruitPosition> findNewJob(RowBounds rowBounds,RecruitPosition recruitPosition);
+
+    RecruitPosition findById(Integer id);
 }

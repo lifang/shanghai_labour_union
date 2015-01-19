@@ -33,4 +33,13 @@
 		   order by id desc
 	</select>
 	
+	<select id="findById" resultMap="recruitPosition" >
+		SELECT z.*,p.id as pid,p.dwmc,p.dwjs,p.lxfs,p.sshy,r.id as rid,r.hymc
+		   FROM zpzw z left join zpdw p on z.dwid=p.id 
+		   left join zphy r on r.id = p.sshy
+		   <where>
+		   		z.id = #{id}
+		   </where>
+	</select>
+	
 </mapper>
