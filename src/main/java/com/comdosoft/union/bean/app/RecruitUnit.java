@@ -30,7 +30,7 @@ public class RecruitUnit implements Serializable {
     /**
      * 所属行业
      */
-    private Integer sshy;
+    private RecruitIndustry sshy;
     private byte[] logo;//暂时未使用
     /**
      * 区域
@@ -124,14 +124,14 @@ public class RecruitUnit implements Serializable {
      * 获取 所属行业  
      * @return sshy 
      */
-    public Integer getSshy() {
+    public RecruitIndustry getSshy() {
         return sshy;
     }
     /**  
      * 设置 所属行业  
      * @param sshy 
      */
-    public void setSshy(Integer sshy) {
+    public void setSshy(RecruitIndustry sshy) {
         this.sshy = sshy;
     }
     /**  

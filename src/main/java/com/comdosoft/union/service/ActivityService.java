@@ -9,7 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.ActivityPics;
 import com.comdosoft.union.dao.ActivityPicsMapper;
-
+/**
+ * 活动图片
+ * <br>
+ * <功能描述>
+ *
+ * @author gch 2015年1月19日
+ *
+ */
 @Service
 public class ActivityService {
     @Resource

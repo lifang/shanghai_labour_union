@@ -15,7 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comdosoft.union.bean.app.News;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.news.NewsService;
-
+/**
+ * 
+ * 新闻公告<br>
+ * <功能描述>
+ *
+ * @author gch 2015年1月19日
+ *
+ */
 @RestController
 @RequestMapping("api/news")
 public class NewsController {

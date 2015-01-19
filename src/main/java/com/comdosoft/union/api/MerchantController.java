@@ -14,7 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.merchant.MerchantService;
-
+/**
+ * 
+ * 商户<br>
+ * <功能描述>
+ *
+ * @author gch 2015年1月19日
+ *
+ */
 @RestController
 @RequestMapping("api/merchant")
 public class MerchantController {

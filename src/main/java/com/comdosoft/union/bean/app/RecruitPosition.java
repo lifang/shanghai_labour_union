@@ -16,7 +16,7 @@ public class RecruitPosition implements Serializable {
     /**
      * 单位id
      */
-    private Integer dwid;
+    private RecruitUnit dwid;
     /**
      * 职位名称
      */
@@ -33,6 +33,22 @@ public class RecruitPosition implements Serializable {
      * 审核
      */
     private Integer sh;
+    private String q;//搜索条件 :职位 或者 公司 或者 地点
+    
+    /**  
+     * 获取 q  
+     * @return q 
+     */
+    public String getQ() {
+        return q;
+    }
+    /**  
+     * 设置 q  
+     * @param q 
+     */
+    public void setQ(String q) {
+        this.q = q;
+    }
     /**  
      * 获取 id  
      * @return id 
@@ -51,14 +67,14 @@ public class RecruitPosition implements Serializable {
      * 获取 单位id  
      * @return dwid 
      */
-    public Integer getDwid() {
+    public RecruitUnit getDwid() {
         return dwid;
     }
     /**  
      * 设置 单位id  
      * @param dwid 
      */
-    public void setDwid(Integer dwid) {
+    public void setDwid(RecruitUnit dwid) {
         this.dwid = dwid;
     }
     /**  

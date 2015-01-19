@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.RecruitPositionMapper">
+	<resultMap type="com.comdosoft.union.bean.app.RecruitIndustry" id="recruitIndustry">
+		<id property="id" column="rid"/>
+		<result property="hymc" column="hymc" />
+	</resultMap>
+	<resultMap type="com.comdosoft.union.bean.app.RecruitUnit" id="recruitUnit">
+		<id property="id" column="pid" />
+		<result property="dwmc" column="dwmc"/>
+		<result property="dwjs" column="dwjs"/>
+		<result property="lxfs" column="lxfs"/>
+		<association property="sshy" javaType="com.comdosoft.union.bean.app.RecruitIndustry" resultMap="recruitIndustry" />
+	</resultMap>
+	<resultMap id="recruitPosition" type="com.comdosoft.union.bean.app.RecruitPosition">
+		<id property="id" column="id"/>
+		<result property="zwmc" column="zwmc" />
+		<result property="zwms" column="zwms" />
+		<result property="sh" column="sh" />
+		<result property="rs" column="rs" />
+		<association property="dwid" javaType="com.comdosoft.union.bean.app.RecruitUnit" resultMap="recruitUnit" />
+	</resultMap>
+
+	<select id="findNewJob" resultMap="recruitPosition" >
+		SELECT z.*,p.id as pid,p.dwmc,p.dwjs,p.lxfs,p.sshy,r.id as rid,r.hymc
+		   FROM zpzw z left join zpdw p on z.dwid=p.id 
+		   left join zphy r on r.id = p.sshy
+		   <where>
+		   	<if test="q !=null">
+		   		z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%"
+		   	</if>
+		   </where>
+		   order by id desc
+	</select>
+	
+</mapper>
