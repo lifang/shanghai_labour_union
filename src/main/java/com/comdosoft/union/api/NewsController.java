@@ -3,9 +3,7 @@ package com.comdosoft.union.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -71,12 +69,11 @@ public class NewsController {
                 map = new LinkedHashMap<String,String>();
                 map.put("id", news2.getId().toString());
                 map.put("title", news2.getTitle());
-                map.put("time", news2.getTime().toString());
+                map.put("time", news2.getTime() == null ? "": news2.getTime().toString());
                 if(news2.getNewPicsList().size()>0){
                     //获取图片,待定
                     map.put("img", news2.getNewPicsList().get(0).getPic());
                 }
-                logger.debug(news2.getId()+":"+news2.getTitle());
                 alList.add(map);
             }
             sysResponse.setResult(alList);

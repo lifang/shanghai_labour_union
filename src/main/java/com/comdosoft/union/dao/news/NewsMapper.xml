@@ -31,7 +31,7 @@
 	</select>
 	
 	<select id="findAll" resultMap="news" >
-		SELECT m.*,p.id as pid,p.pic as pic,p.newsid  
+		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
 		    where  m.sh3=1 
 			<if test="lm3 != null"> AND m.lm3 =#{lm3} </if>
@@ -40,7 +40,7 @@
 	</select>
 	
 	<select id="findTopNews" resultMap="news" >
-		SELECT m.id as id,p.id as pid,p.pic as pic,p.newsid  
+		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
 		    where  m.sh3=1 
 			order by m.time desc
@@ -48,14 +48,14 @@
 	</select>
 	
 	<select id="findById" resultMap="news" parameterType="java.lang.Integer">
-		SELECT m.*,p.id as pid,p.pic as pic,p.newsid  
+		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
 		where  m.sh3=1 and m.id=#{id}
 		order by m.time desc
 	</select>
 	
 	<select id="search" resultMap="news" parameterType="map">
-		SELECT m.*,p.id as pid,p.pic as pic,p.newsid  
+		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
 		    where  m.sh3=1 
 		    AND m.lm3 =57 

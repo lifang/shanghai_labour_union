@@ -42,6 +42,7 @@ public class Merchant implements Serializable {
      * 优惠活动
      */
     private String yhhd;
+    private String yhhd1;
     /**
      * 联系方式
      */
@@ -163,6 +164,20 @@ public class Merchant implements Serializable {
      */
     public void setJlfile(String jlfile) {
         this.jlfile = jlfile;
+    }
+    /**  
+     * 获取 yhhd1  
+     * @return yhhd1 
+     */
+    public String getYhhd1() {
+        return yhhd1;
+    }
+    /**  
+     * 设置 yhhd1  
+     * @param yhhd1 
+     */
+    public void setYhhd1(String yhhd1) {
+        this.yhhd1 = yhhd1;
     }
     /**  
      * 获取 优惠活动  

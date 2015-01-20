@@ -13,6 +13,7 @@
 		<result property="jlfilename" column="jlfilename" />
 		<result property="jlfile" column="jlfile" />
 		<result property="yhhd" column="yhhd" />
+		<result property="yhhd1" column="yhhd1" />
 		<result property="lxfs" column="lxfs" />
 		<result property="syfs" column="syfs" />
 		<result property="symd" column="symd" />
@@ -37,6 +38,7 @@
 		SELECT m.*,f.id as tid,f.hymc 
 		   FROM merchants m left join mer_fl f on f.id=m.sshy 
 		  <include refid="dynamicWhere" />  
+		  order by m.id desc
 	</select>
 	
 	<select id="findById" resultMap="getMerchant" parameterType="java.lang.Integer">

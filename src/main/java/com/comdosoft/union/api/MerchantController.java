@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -30,7 +32,7 @@ public class MerchantController {
     private MerchantService merchantService;
     
     /**
-     * 获取商户信息列表 每页10条
+     * 获取商户列表信息 每页10条
      * @param merchant
      * @param offset 页数
      * @return
@@ -51,9 +53,7 @@ public class MerchantController {
             }
         }
         List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
-        sysResponse.setCode(SysResponse.SUCCESS);
-        sysResponse.setMessage("请求成功");
-        sysResponse.setResult(merchants);
+        sysResponse = putData(sysResponse, merchants);
         return sysResponse;
     }
     
@@ -76,6 +76,31 @@ public class MerchantController {
             logger.debug("根据id查商户,请求失败,id="+id+" "+e);
         }
         
+        return sysResponse;
+    }
+    
+    private SysResponse putData(SysResponse sysResponse, List<Merchant> merchantList) {
+        ArrayList<Object> alList = new ArrayList<Object>();
+        LinkedHashMap<String, String> map = null;
+        if(merchantList.size()>0){
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            for (Merchant mer : merchantList) {
+                map = new LinkedHashMap<String,String>();
+                map.put("id", mer.getId().toString());
+                map.put("name", mer.getDwmc());
+                map.put("addr", mer.getSymd());
+                map.put("tel", mer.getLxfs());
+                map.put("about", mer.getYhhd1());//简介
+                map.put("about_detail", mer.getYhhd());//简介详情
+              //  map.put("logo", mer.getLogo().toString());//logo
+                alList.add(map);
+            }
+            sysResponse.setResult(alList);
+        }else{
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("数据不存在,列表为空");
+        }
         return sysResponse;
     }
 }
