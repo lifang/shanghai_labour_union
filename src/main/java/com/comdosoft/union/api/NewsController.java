@@ -1,6 +1,11 @@
 package com.comdosoft.union.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -36,12 +41,8 @@ public class NewsController {
      * @param offset 页数
      * @return
      */
-    @RequestMapping(value = "findAll", method = RequestMethod.POST)
-    public SysResponse findAll(News news,String offset) {
-        Integer limit = 14;
-        if(null != news.getLm3() && news.getLm3().equals("57")){
-            limit = 10;//法规查询 每页10条  
-        }
+    @RequestMapping(value = "findTopNews", method = RequestMethod.POST)
+    public SysResponse findTopNews(News news,String offset) {
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
             offset = "0";
@@ -55,19 +56,64 @@ public class NewsController {
                 return sysResponse;
             }
         }
-        List<News> newsList = newsService.findAll(Integer.parseInt(offset),limit,news);
+        List<News> newsList = newsService.findTopNews(Integer.parseInt(offset),4);
+        sysResponse = putData(sysResponse, newsList);
+        return sysResponse;
+    }
+
+    private SysResponse putData(SysResponse sysResponse, List<News> newsList) {
+        ArrayList<Object> alList = new ArrayList<Object>();
+        LinkedHashMap<String, String> map = null;
         if(newsList.size()>0){
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(newsList);
+            for (News news2 : newsList) {
+                map = new LinkedHashMap<String,String>();
+                map.put("id", news2.getId().toString());
+                map.put("title", news2.getTitle());
+                map.put("time", news2.getTime().toString());
+                if(news2.getNewPicsList().size()>0){
+                    //获取图片,待定
+                    map.put("img", news2.getNewPicsList().get(0).getPic());
+                }
+                logger.debug(news2.getId()+":"+news2.getTitle());
+                alList.add(map);
+            }
+            sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("数据不存在,列表为空");
         }
-        
         return sysResponse;
     }
     
+    /**
+     * 获取新闻信息列表
+     * @param news
+     * @param offset 页数
+     * @return
+     */
+    @RequestMapping(value = "findNews", method = RequestMethod.POST)
+    public SysResponse findNews(News news,String offset) {
+        SysResponse sysResponse = new SysResponse();
+        if(null == offset){
+            offset = "0";
+        }else{
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Boolean isNum = pattern.matcher(offset).matches();
+            if(!isNum){
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("请求失败");
+                logger.debug("请求页数错误,页数为："+offset);
+                return sysResponse;
+            }
+        }
+        List<News> newsList = newsService.findAll(Integer.parseInt(offset),10,news);
+        sysResponse = putData(sysResponse, newsList);
+        return sysResponse;
+    }
+    
+
     /**
      * 获取单条新闻信息
      * @param id
@@ -78,9 +124,17 @@ public class NewsController {
         SysResponse sysResponse = new SysResponse();
         try {
             News news = newsService.findById(Integer.parseInt(id));
+            HashMap<String,String> hashMap = null;
+            if(null !=news){
+                hashMap = new HashMap<String,String>();
+                hashMap.put("id", news.getId().toString());
+                hashMap.put("title", news.getTitle());
+                hashMap.put("content", news.getContent());
+                hashMap.put("time", news.getTime().toString());
+            }
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(news);
+            sysResponse.setResult(hashMap);
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");
@@ -123,4 +177,5 @@ public class NewsController {
         
         return sysResponse;
     }
+    
 }

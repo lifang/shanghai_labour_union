@@ -27,7 +27,10 @@ public class ActivityPicsController {
     private static final Logger logger = LoggerFactory.getLogger(ActivityPicsController.class);
     @Resource
     private ActivityService activityService;
-    
+    /**
+     * 查询首页图片4张活动图
+     * @return
+     */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public SysResponse findAll() {
         SysResponse sysResponse = new SysResponse();

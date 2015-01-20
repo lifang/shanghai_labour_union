@@ -24,9 +24,9 @@ public class NewsService {
     private NewsMapper newsMapper;
     
     public List<News> findAll(int offset,int limit,News news) {
-        if(offset<=0)  
-            offset = 1;  
-        offset = (offset-1)*limit;
+        if(offset<=0)
+            offset = 1;
+        offset = (offset-1)*(limit+4)+4; 
         return newsMapper.findAll(new RowBounds(offset, limit),news);
     }
     
@@ -43,5 +43,18 @@ public class NewsService {
             offset = 1;  
         offset = (offset-1)*limit;
         return newsMapper.search(new RowBounds(offset, limit),title);
+    }
+    
+    /**
+     * 查找前面4条新闻信息
+     * @param offset 页数
+     * @param limit 
+     * @return
+     */
+    public List<News> findTopNews(int offset, Integer limit) {
+        if(offset<=0)  
+            offset = 1;  
+        offset = (offset-1)*(limit+10); 
+        return newsMapper.findTopNews(new RowBounds(offset, limit));
     }
 }
