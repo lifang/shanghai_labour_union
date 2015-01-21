@@ -146,8 +146,8 @@ public class NewsController {
      * @param offset
      * @return
      */
-    @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(@RequestParam(value="title", required=true) String title,String offset) {
+    @RequestMapping(value = "findLaws", method = RequestMethod.POST)
+    public SysResponse findLaws(@RequestParam(value="title", required=false) String title,String offset) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
@@ -164,12 +164,44 @@ public class NewsController {
         }
         List<News> newsList = newsService.search(Integer.parseInt(offset),limit,title);
         if(newsList.size()>0){
+        	HashMap<String,String> map = null;
+        	ArrayList<Object> list = new ArrayList<Object>();
+        	for(News news: newsList){
+        		map = new HashMap<String,String>();
+        		map.put("id", news.getId().toString());
+        		map.put("title", news.getTitle());
+        		list.add(map);
+        	}
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(newsList);
+            sysResponse.setResult(list);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("数据不存在,列表为空");
+        }
+        return sysResponse;
+    }
+    
+    @RequestMapping(value = "findLawsById", method = RequestMethod.POST)
+    public SysResponse findLawsById(String id){
+        SysResponse sysResponse = new SysResponse();
+        try {
+            News news = newsService.findLawsById(Integer.parseInt(id));
+            HashMap<String,String> hashMap = null;
+            if(null !=news){
+                hashMap = new HashMap<String,String>();
+                hashMap.put("id", news.getId().toString());
+                hashMap.put("title", news.getTitle());
+                hashMap.put("content", news.getContent());
+                hashMap.put("time", news.getTime().toString());
+            }
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            sysResponse.setResult(hashMap);
+        } catch (Exception e) {
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("请求失败");
+            logger.debug("根据id查商户,请求失败,id="+id+" "+e);
         }
         
         return sysResponse;

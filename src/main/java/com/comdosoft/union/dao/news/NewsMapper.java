@@ -13,4 +13,5 @@ public interface NewsMapper {
     News findById(Integer id);
     List<News> search(RowBounds rowBounds, String title);
     List<News> findTopNews(RowBounds rowBounds);
+	News findLawsById(int id);
 }

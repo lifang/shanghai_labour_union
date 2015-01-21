@@ -54,12 +54,21 @@
 		order by m.time desc
 	</select>
 	
+	<!-- 根据id查询法规详情    -->
+	<select id="findLawsById" resultMap="news" parameterType="java.lang.Integer">
+		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
+		   FROM news2 m left join news_pics p on m.id = p.newsid
+		where  m.sh3=1 AND m.lm3 =57  and m.id=#{id}
+	</select>
+	
 	<select id="search" resultMap="news" parameterType="map">
 		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
 		   FROM news2 m left join news_pics p on m.id = p.newsid
 		    where  m.sh3=1 
 		    AND m.lm3 =57 
-		     AND m.title like "%"#{title}"%" 
+		    <if test="title !=null">
+		    AND m.title like "%"#{title}"%" 
+		    </if>
 		order by m.time desc
 		   
 	</select>

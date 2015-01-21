@@ -57,4 +57,12 @@ public class NewsService {
         offset = (offset-1)*(limit+10); 
         return newsMapper.findTopNews(new RowBounds(offset, limit));
     }
+
+	/**根据id查询法规详情
+	 * @param parseInt
+	 * @return
+	 */
+	public News findLawsById(int parseInt) {
+		 return newsMapper.findLawsById(parseInt);
+	}
 }

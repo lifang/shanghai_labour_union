@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.Tcardcx;
+import com.comdosoft.union.bean.app.XzType;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.TcardcxService;
 /**
@@ -24,7 +27,7 @@ import com.comdosoft.union.service.TcardcxService;
  *
  */
 @RestController
-@RequestMapping("api/xz")
+@RequestMapping("api/mutualAid")
 public class XzController {
     private static final Logger logger = LoggerFactory.getLogger(XzController.class);
     @Resource
@@ -33,11 +36,12 @@ public class XzController {
     /**
      * 获取互助保障信息列表 
      * @param tcardcx
-     * @param offset 页数
+     * @param offset 页数 
+     * @param type 1在职 0 退休   默认在职查询
      * @return
      */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
-    public SysResponse findAll(Tcardcx tcardcx,String offset) {
+    public SysResponse findAll(Tcardcx tcardcx,String offset,String type) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
@@ -52,21 +56,31 @@ public class XzController {
                 return sysResponse;
             }
         }
-        List<Tcardcx> tcardcxList = tcardcxService.findAll(Integer.parseInt(offset),limit,tcardcx);
-        if(tcardcxList.size()>0){
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setResult(tcardcxList);
-        }else{
-            sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
-        }
-        
+        	List<Tcardcx> tcardcxList = tcardcxService.findAll(Integer.parseInt(offset),limit,tcardcx,type);
+        	if(tcardcxList.size()>0){
+        		HashMap<String,String> map =null;
+        		ArrayList<Object> list = new ArrayList<Object>();
+        		for(Tcardcx t:tcardcxList){
+        			map = new HashMap<String,String>();
+        			if(null != t.getXzId()){
+        				map.put("id", t.getXzId() == null ? "":t.getXzId().getId().toString());
+        				map.put("name", t.getXzId() == null ? "":t.getXzId().getName());
+        				map.put("content", t.getXzId() == null ? "":t.getXzId().getImg());
+        				list.add(map);
+        			}
+        		}
+                sysResponse.setCode(SysResponse.SUCCESS);
+                sysResponse.setMessage("请求成功");
+                sysResponse.setResult(list);
+            }else{
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("数据不存在,列表为空");
+            }
         return sysResponse;
     }
     
     /**
-     * 获取单条新闻信息
+     * 获取单条信息
      * @param id
      * @return
      */
@@ -74,10 +88,15 @@ public class XzController {
     public SysResponse findById(String id){
         SysResponse sysResponse = new SysResponse();
         try {
-            Tcardcx tcardcx = tcardcxService.findById(Integer.parseInt(id));
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setResult(tcardcx);
+            XzType xzType = tcardcxService.findById(Integer.parseInt(id));
+            if(null !=xzType){
+            	sysResponse.setCode(SysResponse.SUCCESS);
+            	sysResponse.setMessage("请求成功");
+            	sysResponse.setResult(xzType);
+            }else{
+            	  sysResponse.setCode(SysResponse.FAILURE);
+                  sysResponse.setMessage("数据不存在");
+            }
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");
@@ -90,10 +109,11 @@ public class XzController {
      * 互助保障
      * @param title 搜索条件
      * @param offset
+     * @param type  0退休 1 在职
      * @return
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(@RequestParam(value="name", required=true) String name,String offset) {
+    public SysResponse search(@RequestParam(value="name", required=true) String name,String type,String offset) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
@@ -108,11 +128,11 @@ public class XzController {
                 return sysResponse;
             }
         }
-        List<Tcardcx> tcardcxList = tcardcxService.search(Integer.parseInt(offset),limit,name);
-        if(tcardcxList.size()>0){
+        List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset),limit,name);
+        if(xzTypeList.size()>0){
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(tcardcxList);
+            sysResponse.setResult(xzTypeList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("数据不存在,列表为空");

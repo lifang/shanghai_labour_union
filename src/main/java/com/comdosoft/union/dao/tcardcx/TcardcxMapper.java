@@ -5,11 +5,16 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 import com.comdosoft.union.bean.app.Tcardcx;
+import com.comdosoft.union.bean.app.XzType;
 
 public interface TcardcxMapper {
 
     int countByVo(Tcardcx tcardcx);
+    //在职
     List<Tcardcx> findAll(RowBounds rowBounds ,Tcardcx tcardcx);
-    Tcardcx findById(Integer id);
-    List<Tcardcx> search(RowBounds rowBounds, String name);
+    XzType findById(Integer id);
+    List<XzType> search(RowBounds rowBounds, String csfzh);
+	//退休
+	List<Tcardcx> findRetireAll(RowBounds rowBounds, Tcardcx tcardcx);
+	List<Tcardcx> searchRetire(RowBounds rowBounds, String name);
 }
