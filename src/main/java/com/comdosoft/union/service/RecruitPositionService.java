@@ -15,15 +15,28 @@ public class RecruitPositionService {
     private RecruitPositionMapper recruitPositionMapper;
     
     
-    public List<RecruitPosition> findNewJob(int offset,int limit,RecruitPosition recruitPosition) {
+    public List<RecruitPosition> findNewJob(int offset,int limit,RecruitPosition recruitPosition, int type) {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
-        return recruitPositionMapper.findNewJob(new RowBounds(offset, limit),recruitPosition);
+        if(type==1){//搜索
+        	return recruitPositionMapper.searchJob(new RowBounds(offset, limit),recruitPosition);
+        }
+        	return recruitPositionMapper.findNewJob(new RowBounds(offset, limit),recruitPosition);
     }
 
 
     public RecruitPosition findById(Integer id) {
         return recruitPositionMapper.findById(id);
     }
+
+
+	/**
+	 * 根据职位Id，查询该职位所在单位的其他职位
+	 * @param id 
+	 * @return
+	 */
+	public List<RecruitPosition> findOtherJobById(int id) {
+		return recruitPositionMapper.findOtherJobById(id);
+	}
 }

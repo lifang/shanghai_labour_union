@@ -14,7 +14,7 @@ public class RecruitPosition implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     /**
-     * 单位id
+     * 单位
      */
     private RecruitUnit dwid;
     /**
@@ -34,8 +34,29 @@ public class RecruitPosition implements Serializable {
      */
     private Integer sh;
     private String q;//搜索条件 :职位 或者 公司 或者 地点
-    
-    /**  
+    private String job_type;//行业类型
+    private String job_locate1;//主区域
+    private String job_locate2;//次选区域
+  
+	public String getJob_locate1() {
+		return job_locate1;
+	}
+	public void setJob_locate1(String job_locate1) {
+		this.job_locate1 = job_locate1;
+	}
+	public String getJob_locate2() {
+		return job_locate2;
+	}
+	public void setJob_locate2(String job_locate2) {
+		this.job_locate2 = job_locate2;
+	}
+	public String getJob_type() {
+		return job_type;
+	}
+	public void setJob_type(String job_type) {
+		this.job_type = job_type;
+	}
+	/**  
      * 获取 q  
      * @return q 
      */
@@ -64,14 +85,14 @@ public class RecruitPosition implements Serializable {
         this.id = id;
     }
     /**  
-     * 获取 单位id  
+     * 获取 单位  
      * @return dwid 
      */
     public RecruitUnit getDwid() {
         return dwid;
     }
     /**  
-     * 设置 单位id  
+     * 设置 单位  
      * @param dwid 
      */
     public void setDwid(RecruitUnit dwid) {

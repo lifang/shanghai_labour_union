@@ -10,4 +10,8 @@ public interface RecruitPositionMapper {
     List<RecruitPosition> findNewJob(RowBounds rowBounds,RecruitPosition recruitPosition);
 
     RecruitPosition findById(Integer id);
+
+	List<RecruitPosition> searchJob(RowBounds rowBounds,	RecruitPosition recruitPosition);
+
+	List<RecruitPosition> findOtherJobById(int id);
 }

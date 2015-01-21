@@ -67,9 +67,19 @@ public class MerchantController {
         SysResponse sysResponse = new SysResponse();
         try {
             Merchant merchant = merchantService.findById(Integer.parseInt(id));
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setResult(merchant);
+            LinkedHashMap<String, String> map = null;
+            if(null != merchant){
+                    map = new LinkedHashMap<String,String>();
+                    map.put("id", merchant.getId().toString());
+                    map.put("name", merchant.getDwmc());
+                    map.put("addr", merchant.getSymd());
+                    map.put("tel", merchant.getLxfs());
+                    map.put("about", merchant.getDwjs());//单位介绍
+                sysResponse.setResult(map);
+            }else{
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("数据不存在,列表为空");
+            }
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");

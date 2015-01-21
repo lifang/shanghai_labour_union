@@ -1,5 +1,8 @@
 package com.comdosoft.union.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -61,9 +64,23 @@ public class PositionCodeController {
     public SysResponse findAllAddr(@RequestParam(value="code", required=false) String code){
         SysResponse sysResponse = new SysResponse();
         List<SysCode> sysCodeList = sysCodeService.findAll("10001",code);//类型10001为区域
-        sysResponse.setCode(SysResponse.SUCCESS);
-        sysResponse.setMessage("请求成功");
-        sysResponse.setResult(sysCodeList);
+        ArrayList<Object> alList = new ArrayList<Object>();
+        LinkedHashMap<String, String> map = null;
+        if(sysCodeList.size()>0){
+            for (SysCode sysCode : sysCodeList) {
+                map = new LinkedHashMap<String,String>();
+                map.put("name", sysCode.getName());
+                map.put("code", sysCode.getCode());
+                alList.add(map);
+            }
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            sysResponse.setResult(alList);
+        }else{
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("数据不存在,列表为空");
+        }
+        
         return sysResponse;
     }
     
@@ -73,7 +90,7 @@ public class PositionCodeController {
      */
     @RequestMapping(value = "findNewJob", method = RequestMethod.POST)
     public SysResponse findNewJob(RecruitPosition recruitPosition){
-        return getJobs("0","5",recruitPosition);
+        return getJobs("0","5",recruitPosition,0);
     }
     
    /**
@@ -81,9 +98,10 @@ public class PositionCodeController {
     * @param offset
     * @param limit
     * @param recruitPosition
+    * @int type 类型  0 全部  1搜索
     * @return
     */
-    public SysResponse getJobs(String offset,String limit,RecruitPosition recruitPosition) {
+    public SysResponse getJobs(String offset,String limit,RecruitPosition recruitPosition,int type) {
         SysResponse sysResponse = new SysResponse();
         if(null == offset || null == limit){
             offset = "0";
@@ -99,10 +117,20 @@ public class PositionCodeController {
             }
         }
         try {
-            List<RecruitPosition> recruitPositionList = recruitPositionService.findNewJob(Integer.parseInt(offset),Integer.parseInt(limit),recruitPosition);
+            List<RecruitPosition> recruitPositionList = recruitPositionService.findNewJob(Integer.parseInt(offset),Integer.parseInt(limit),recruitPosition,type);
+            ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+            HashMap<String,String>  map = null;
+            for(RecruitPosition rp :recruitPositionList){
+            	map = new HashMap<String,String>();
+            	map.put("id", rp.getId().toString());
+            	map.put("job_name", rp.getZwmc());
+            	map.put("unit_name", rp.getDwid()==null ? "":rp.getDwid().getDwmc());
+            	//还少一时间
+            	list.add(map);
+            }
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
-            sysResponse.setResult(recruitPositionList);
+            sysResponse.setResult(list);
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");
@@ -120,8 +148,11 @@ public class PositionCodeController {
      * @return
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(String offset,RecruitPosition recruitPosition) {
-        return getJobs(offset,"10",recruitPosition);
+    public SysResponse search(String offset,RecruitPosition recruitPosition,String q) {
+//    	if(!StringUtils.isEmpty(q)){
+//    		recruitPosition.setQ(q);
+//    	}
+        return getJobs(offset,"10",recruitPosition,1);
     }
 
     /**
@@ -135,14 +166,61 @@ public class PositionCodeController {
         SysResponse sysResponse = new SysResponse();
         try {
             RecruitPosition recruitPosition = recruitPositionService.findById(Integer.parseInt(id));
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setResult(recruitPosition);
+            HashMap<String,String>  map = null;
+            if(null != recruitPosition){
+            	map = new HashMap<String,String>();
+            	map.put("id", recruitPosition.getId().toString());
+            	map.put("job_name", recruitPosition.getZwmc());
+            	map.put("rs", recruitPosition.getRs()==null ? "":recruitPosition.getRs().toString());
+            	map.put("job_about", recruitPosition.getZwms());//职位描述
+            	map.put("unit_name", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());
+            	map.put("locate", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getLocate());
+            	map.put("lxfs", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());
+            	map.put("unit_about", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwjs());
+            	//还少一时间
+            	sysResponse.setCode(SysResponse.SUCCESS);
+            	sysResponse.setMessage("请求成功");
+            	sysResponse.setResult(map);
+            }
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");
             logger.debug("获取职位出错:"+e);
         }
         return sysResponse;
+    }
+    
+    /**
+     * 查询该公司其他职位
+     * @param id 当前职位id
+     * @return
+     */
+    @RequestMapping(value = "findOtherJobById", method = RequestMethod.POST)
+    public SysResponse findOtherJobById(String id){
+    	SysResponse sysResponse = new SysResponse();
+    	try {
+    		List<RecruitPosition> recruitPosition = recruitPositionService.findOtherJobById(Integer.parseInt(id));
+    		if(recruitPosition.size()>0){
+    			HashMap<String,String>  map = null;
+    			ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+    			for(RecruitPosition rp :recruitPosition){
+    				map = new HashMap<String,String>();
+    				map.put("id", rp.getId().toString());
+    				map.put("job_name", rp.getZwmc());
+    				list.add(map);
+    			} 
+    			sysResponse.setCode(SysResponse.SUCCESS);
+            	sysResponse.setMessage("请求成功");
+            	sysResponse.setResult(list);
+    		}else{
+    			sysResponse.setCode(SysResponse.FAILURE);
+        		sysResponse.setMessage("列表为空");
+    		}
+    	} catch (Exception e) {
+    		sysResponse.setCode(SysResponse.FAILURE);
+    		sysResponse.setMessage("请求失败");
+    		logger.debug("查询该公司其他职位出错:"+e);
+    	}
+    	return sysResponse;
     }
 }
