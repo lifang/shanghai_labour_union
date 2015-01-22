@@ -5,7 +5,9 @@ import com.comdosoft.union.bean.app.User;
 public interface UserMapper {
     public int insert(User user);
 
-    User selectUserByPhone(User user);
-
-    User selectUserByName(User user);
+    public int update(User user);
+    
+    User findByName(String username);
+    User findByPhone(String phone);
+    User findById(int id);
 }

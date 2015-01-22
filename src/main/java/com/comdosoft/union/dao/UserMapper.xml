@@ -14,20 +14,34 @@
         insert into users(username,password,phone) values(#{username},#{password},#{phone})
     </insert>
     
-	<select id="selectUserByName" resultMap="user" >
+	<select id="findByName" resultMap="user" >
 		SELECT *
 		   FROM users
-		   <where>
-		   <if test="username != null"> username =#{username} </if>
-		   </where>
+		   where username =#{username}
 	</select>
 	
-	<select id="selectUserByPhone" resultMap="user" >
+	<select id="findByPhone" resultMap="user" >
 		SELECT *
 		   FROM users
-		   <where>
-		   	<if test="phone != null">and phone !=#{phone}</if>
-		   </where>
+		   where phone =#{phone}
 	</select>
 	
+	<select id="findById" resultMap="user" >
+		SELECT *
+		   FROM users
+		   where id =#{id}
+	</select>
+	
+	<update id="update" parameterType="com.comdosoft.union.bean.app.User">
+	
+        update users 
+		 <trim prefix="SET" suffixOverrides=",">   
+			<if test="username !=null"> username=#{username},</if>
+	        <if test="password !=null"> password=#{password},</if>
+	        <if test="phone !=null"> phone=#{phone},</if>
+	        <if test="email !=null"> email=#{email},</if>
+	        <if test="labourUnionCode !=null"> labourUnionCode=#{labourUnionCode}</if>
+		</trim>
+         where id=#{id}
+    </update>
 </mapper>

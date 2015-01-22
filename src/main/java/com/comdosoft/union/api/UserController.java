@@ -42,13 +42,26 @@ public class UserController {
         }
         return sysResponse;
     }
+    
     @RequestMapping(value = "regist" , method = RequestMethod.POST)
     public SysResponse regist(User user){
-        user = new User();
-        user.setUsername("天天");
-        user.setPassword("lovetolove");
-        user.setPhone("13399999999");
         SysResponse sysResponse = userService.regist(user);
+        return sysResponse;
+    }
+    /**
+     * 根据传入id 及其要更新的参数   更新注册用户
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "updateUser" , method = RequestMethod.POST)
+    public SysResponse updateUser(User user){
+        SysResponse sysResponse = userService.update(user);
+        return sysResponse;
+    }
+    
+    @RequestMapping(value = "findById" , method = RequestMethod.POST)
+    public SysResponse findById(User user){
+        SysResponse sysResponse = userService.findById(user.getId());
         return sysResponse;
     }
 }
