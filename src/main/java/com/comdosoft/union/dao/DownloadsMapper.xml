@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.DownloadsMapper">
+
+	<resultMap id="downloads" type="com.comdosoft.union.bean.app.Downloads">
+		<id property="id" column="id"/>
+		<result property="logoFilePath" column="logo_file_path" />
+		<result property="name" column="name" />
+		<result property="appSize" column="app_size" />
+		<result property="score" column="score" />
+		<result property="description" column="description" />
+		<result property="androidDownloadPath" column="android_download_path" />
+		<result property="iosAppId" column="ios_app_id" />
+	</resultMap>
+
+	<select id="findAll" resultMap="downloads" >
+		SELECT *
+		   FROM downloads
+		order by id desc
+		   
+	</select>
+	
+</mapper>
