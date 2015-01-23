@@ -11,7 +11,7 @@ import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.ProtectRightService;
 
 @RestController
-@RequestMapping("api/protect/right")
+@RequestMapping("api/protect")
 public class ProtectRightController {
 	
 	@Autowired
@@ -28,6 +28,12 @@ public class ProtectRightController {
 		}
 		if(!StringUtils.hasLength(protectRight.getMobile())) {
 			return SysResponse.buildExceptionResponse("联系电话不能为空");
+		}
+		if(!StringUtils.hasLength(protectRight.getTitle())) {
+		    return SysResponse.buildExceptionResponse("标题不能为空");
+		}
+		if(!StringUtils.hasLength(protectRight.getContent())) {
+		    return SysResponse.buildExceptionResponse("内容不能为空");
 		}
 		protectRightService.registProtectRight(protectRight);
 		return SysResponse.buildSuccessResponse(null);

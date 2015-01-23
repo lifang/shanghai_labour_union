@@ -122,10 +122,13 @@ public class UserService {
     }
 
     public SysResponse login(User user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        User u = userMapper.login(username,password);
-        SysResponse sysResponse = SysResponse.buildSuccessResponse(u);
+        User u = userMapper.login(user);
+        SysResponse sysResponse =null;
+        if(null !=u){
+            sysResponse = SysResponse.buildSuccessResponse(u);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("用户名或密码错误");
+        }
         return sysResponse;
     }
     /**

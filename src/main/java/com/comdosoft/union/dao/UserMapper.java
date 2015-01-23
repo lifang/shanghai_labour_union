@@ -11,7 +11,7 @@ public interface UserMapper {
     
     public User findById(int id);
 
-    public User login(String username, String password);
+    public User login(User user);
 
     public int insertCode(User user);
 
