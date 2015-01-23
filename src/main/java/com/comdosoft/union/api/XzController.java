@@ -65,7 +65,7 @@ public class XzController {
         			if(null != t.getXzId()){
         				map.put("id", t.getXzId() == null ? "":t.getXzId().getId().toString());
         				map.put("name", t.getXzId() == null ? "":t.getXzId().getName());
-        				map.put("content", t.getXzId() == null ? "":t.getXzId().getImg());
+        				map.put("img", t.getXzId() == null ? "":t.getXzId().getImg());
         				list.add(map);
         			}
         		}

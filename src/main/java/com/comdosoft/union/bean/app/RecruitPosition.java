@@ -34,7 +34,7 @@ public class RecruitPosition implements Serializable {
      */
     private Integer sh;
     private String q;//搜索条件 :职位 或者 公司 或者 地点
-    private String job_type;//行业类型
+    private Integer job_type;//行业类型id
     private String job_locate1;//主区域
     private String job_locate2;//次选区域
   
@@ -50,10 +50,10 @@ public class RecruitPosition implements Serializable {
 	public void setJob_locate2(String job_locate2) {
 		this.job_locate2 = job_locate2;
 	}
-	public String getJob_type() {
+	public Integer getJob_type() {
 		return job_type;
 	}
-	public void setJob_type(String job_type) {
+	public void setJob_type(Integer job_type) {
 		this.job_type = job_type;
 	}
 	/**  

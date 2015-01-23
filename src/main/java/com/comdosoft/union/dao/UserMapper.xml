@@ -8,12 +8,9 @@
 		<result property="phone" column="phone" />
 		<result property="email" column="email" />
 		<result property="labourUnionCode" column="labourUnionCode" />
+		<result property="phoneCode" column="phone_code" />
 	</resultMap>
 	
-	<insert id="insert" parameterType="com.comdosoft.union.bean.app.User">
-        insert into users(username,password,phone) values(#{username},#{password},#{phone})
-    </insert>
-    
 	<select id="findByName" resultMap="user" >
 		SELECT *
 		   FROM users
@@ -39,15 +36,25 @@
 	</select>
 	
 	<update id="update" parameterType="com.comdosoft.union.bean.app.User">
-	
         update users 
 		 <trim prefix="SET" suffixOverrides=",">   
 			<if test="username !=null"> username=#{username},</if>
 	        <if test="password !=null"> password=#{password},</if>
 	        <if test="phone !=null"> phone=#{phone},</if>
 	        <if test="email !=null"> email=#{email},</if>
-	        <if test="labourUnionCode !=null"> labourUnionCode=#{labourUnionCode}</if>
+	        <if test="labourUnionCode !=null"> labourUnionCode=#{labourUnionCode},</if>
+	        <if test="phoneCode !=null"> phone_code=#{phoneCode}</if>
 		</trim>
          where id=#{id}
     </update>
+    
+	<update id="updateCode" parameterType="com.comdosoft.union.bean.app.User">
+        update users 
+		set phone_code=#{phoneCode}
+         where id=#{id}
+    </update>
+    
+    <insert id="insertCode" parameterType="com.comdosoft.union.bean.app.User">
+        insert into users(phone,phone_code) values(#{phone},#{phoneCode})
+    </insert>
 </mapper>

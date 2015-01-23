@@ -42,7 +42,10 @@ public class NewsService {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
-        return newsMapper.search(new RowBounds(offset, limit),title);
+        News news = new News();
+        news.setTitle(title);
+        news.setLm3("57");
+        return newsMapper.findAll(new RowBounds(offset, limit),news);
     }
     
     /**

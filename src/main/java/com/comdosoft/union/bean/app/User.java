@@ -33,6 +33,10 @@ public class User implements Serializable {
      * 工会会员号
      */
     private String labourUnionCode;
+    /**
+     * 手机发送的验证码
+     */
+    private String phoneCode;
     /**  
      * 获取 id  
      * @return id
@@ -120,12 +124,28 @@ public class User implements Serializable {
     public User() {
         super();
     }
+    
+    /**  
+     * 获取 手机发送的验证码  
+     * @return phoneCode
+     */
+    public String getPhoneCode() {
+        return phoneCode;
+    }
+    /**  
+     * 设置 手机发送的验证码  
+     * @param phoneCode
+     */
+    public void setPhoneCode(String phoneCode) {
+        this.phoneCode = phoneCode;
+    }
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + ", phone=" + phone + ", email=" + email + ", labourUnionCode=" + labourUnionCode + "]";
+        return "User [id=" + id + ", username=" + username + ", password=" + password + ", phone=" + phone + ", email=" + email + ", labourUnionCode=" + labourUnionCode + ", phoneCode=" + phoneCode + "]";
     }
+    
     
 }
