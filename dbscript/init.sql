@@ -19,6 +19,9 @@ CREATE TABLE `xz_type` (
   `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Table structure for sys_code 区域类型
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_code`;
 CREATE TABLE `sys_code` (
   `VALUE` varchar(128) NOT NULL,
@@ -52,3 +55,9 @@ INSERT INTO `sys_code` VALUES ('10001-60', '60', '0', '闸北区', '10001', '100
 INSERT INTO `sys_code` VALUES ('10001-70', '70', '0', '虹口区', '10001', '10001', '7');
 INSERT INTO `sys_code` VALUES ('10001-80', '80', '0', '杨浦区', '10001', '10001', '8');
 INSERT INTO `sys_code` VALUES ('10001-90', '90', '0', '宝山区', '10001', '10001', '9');
+
+alter table news2 add imgPath varchar(255);
+alter table tcardcx add xzId int(11);
+alter table tcardcxtx add xzId int(11);
+alter table users add phone_code varchar(10);
+alter table zpdw add locate varchar(20);
