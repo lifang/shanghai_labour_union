@@ -79,6 +79,22 @@ public class News implements Serializable{
      */
     private Date sh3time;
     private Integer img;//暂时未使用
+    private String imgPath;//图片路径
+    
+    /**  
+     * 获取 imgPath  
+     * @return imgPath
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+    /**  
+     * 设置 imgPath  
+     * @param imgPath
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
     private List<NewsPics> newPicsList=new ArrayList<NewsPics>(0);//关联图片
     /**  
      * 获取 id  

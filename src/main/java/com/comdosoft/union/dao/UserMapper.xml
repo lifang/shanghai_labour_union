@@ -32,6 +32,12 @@
 		   where id =#{id}
 	</select>
 	
+	<select id="login" resultMap="user" >
+		SELECT *
+		   FROM users
+		   where username =#{username} and password= #{password}
+	</select>
+	
 	<update id="update" parameterType="com.comdosoft.union.bean.app.User">
 	
         update users 

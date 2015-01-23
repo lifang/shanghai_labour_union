@@ -7,7 +7,11 @@ public interface UserMapper {
 
     public int update(User user);
     
-    User findByName(String username);
-    User findByPhone(String phone);
-    User findById(int id);
+    public User findByName(String username);
+    
+    public User findByPhone(String phone);
+    
+    public User findById(int id);
+
+    public User login(String username, String password);
 }

@@ -70,10 +70,7 @@ public class NewsController {
                 map.put("id", news2.getId().toString());
                 map.put("title", news2.getTitle());
                 map.put("time", news2.getTime() == null ? "": news2.getTime().toString());
-                if(news2.getNewPicsList().size()>0){
-                    //获取图片,待定
-                    map.put("img", news2.getNewPicsList().get(0).getPic());
-                }
+                map.put("imgPath", news2.getImgPath());
                 alList.add(map);
             }
             sysResponse.setResult(alList);

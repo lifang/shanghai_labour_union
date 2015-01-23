@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -31,15 +33,17 @@ public class UserController {
      * 获取验证码
      * @return
      */
+    @RequestMapping(value = "getCode" , method = RequestMethod.POST)
     public SysResponse getCode(String phone){
         logger.debug(phone+ " 注册获取验证码");
-        Boolean isSuccess = userService.getCode(phone);
         SysResponse sysResponse = null;
-        if(isSuccess){
-            sysResponse = SysResponse.buildSuccessResponse("发送成功");
-        }else{
-            sysResponse = SysResponse.buildExceptionResponse("系统忙");
+        try {
+            sysResponse = userService.getCode(phone);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            sysResponse= SysResponse.buildExceptionResponse("发送失败,请重新发送");
         }
+        
         return sysResponse;
     }
     
@@ -49,19 +53,57 @@ public class UserController {
         return sysResponse;
     }
     /**
+     * 找回密码（更新密码）
+     * @param user
+     * @param newpwd    新的密码
+     * @param phoneCode  手机接收到的验证码
+     * @param inputCode  输入的验证码
+     * @return
+     */
+    @RequestMapping(value = "changePwd" , method = RequestMethod.POST)
+    public SysResponse changePwd(User user,String newpwd,String phoneCode,String inputCode){
+        SysResponse sysResponse = null;
+        if(null != inputCode && ! phoneCode.equals(inputCode)){
+            sysResponse = SysResponse.buildFailResponse("验证码不正确");
+        }
+        String oldpwd = user.getPassword();
+        user = userService.findEntityById(user.getId());
+        if(null !=newpwd && user.getPassword().equals(oldpwd)){
+            user.setPassword(newpwd);
+            userService.update(user);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("密码不正确");
+        }
+        return sysResponse;
+    }
+    /**
      * 根据传入id 及其要更新的参数   更新注册用户
      * @param user
      * @return
      */
-    @RequestMapping(value = "updateUser" , method = RequestMethod.POST)
+    @RequestMapping(value = "update" , method = RequestMethod.POST)
     public SysResponse updateUser(User user){
         SysResponse sysResponse = userService.update(user);
         return sysResponse;
     }
-    
+    /**
+     * 根据id查询用户信息
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "findById" , method = RequestMethod.POST)
     public SysResponse findById(User user){
         SysResponse sysResponse = userService.findById(user.getId());
+        return sysResponse;
+    }
+    /**
+     * 根据用户帐号密码登录 成功返回用户信息
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "login" , method = RequestMethod.POST)
+    public SysResponse login(User user){
+        SysResponse sysResponse = userService.login(user);
         return sysResponse;
     }
 }

@@ -17,6 +17,7 @@
 		<result property="sh2time" column="sh2time" javaType="java.sql.Date" jdbcType="DATE"/>
 		<result property="sh3" column="sh3" />
 		<result property="sh3user" column="sh3user" />
+		<result property="imgPath" column="imgPath" />
 		<result property="sh3time" column="sh3time" javaType="java.sql.Date" jdbcType="DATE"/>
 		<collection property="newPicsList" column="newsid" javaType="com.comdosoft.union.bean.app.NewsPics">
 			<result property="id" column="pid"/>

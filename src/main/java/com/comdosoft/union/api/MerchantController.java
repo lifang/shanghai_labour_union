@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.Merchant;
+import com.comdosoft.union.bean.app.MerchantType;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.merchant.MerchantService;
 /**
@@ -38,7 +39,7 @@ public class MerchantController {
      * @return
      */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
-    public SysResponse findAllMerchants(Merchant merchant,String offset) {
+    public SysResponse findAllMerchants(Merchant merchant,String offset,String typeId) {
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
             offset = "0";
@@ -51,6 +52,11 @@ public class MerchantController {
                 logger.debug("请求页数错误,页数为："+offset);
                 return sysResponse;
             }
+        }
+        if(null !=typeId){
+            MerchantType mt = new MerchantType();
+            mt.setId(Integer.parseInt(typeId));
+            merchant.setSshy(mt);
         }
         List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
         sysResponse = putData(sysResponse, merchants);
