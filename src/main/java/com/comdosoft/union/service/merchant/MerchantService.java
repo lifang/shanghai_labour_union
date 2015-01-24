@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
+import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
+import com.comdosoft.union.dao.merchant.BranchMapper;
 import com.comdosoft.union.dao.merchant.MerchantMapper;
 /**
  * 商户
@@ -22,6 +24,8 @@ public class MerchantService {
 
     @Resource
     private MerchantMapper merchantMapper;
+    @Resource
+    private BranchMapper BranchMapper;
     
     public List<Merchant> findAllMerchants(int offset,int limit,Merchant merchant) {
         if(offset<=0)  
@@ -36,5 +40,8 @@ public class MerchantService {
     
     public Merchant findById(Integer id){
         return merchantMapper.findById(id);
+    }
+    public List<Branch> findByMerId(Integer mid,String locate){
+        return BranchMapper.findByMerId(mid,locate);
     }
 }

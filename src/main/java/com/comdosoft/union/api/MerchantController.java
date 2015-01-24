@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comdosoft.union.bean.app.Area;
+import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.MerchantType;
+import com.comdosoft.union.common.BaiduMapUtil;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.service.AreaService;
 import com.comdosoft.union.service.merchant.MerchantService;
 /**
  * 
@@ -31,6 +35,8 @@ public class MerchantController {
     private static final Logger logger = LoggerFactory.getLogger(MerchantController.class);
     @Resource
     private MerchantService merchantService;
+    @Resource
+    private AreaService areaService;
     
     /**
      * 获取商户列表信息 每页10条
@@ -59,10 +65,79 @@ public class MerchantController {
             merchant.setSshy(mt);
         }
         List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
-        sysResponse = putData(sysResponse, merchants);
+        sysResponse = putData(sysResponse, merchants,typeId);
         return sysResponse;
     }
     
+   /**
+    * 根据用户经纬度查询用户所在区域的商家
+    * @param merchant  传入当前商户id
+    * @param offset  
+    * @param per_lon 经度  
+    * @param per_lat 纬度
+    * @return
+    */
+    @RequestMapping(value = "findOtherMerchants", method = RequestMethod.POST)
+    public SysResponse findOtherMerchants(Merchant merchant,String offset,
+                                          String per_lon,String per_lat) {
+        SysResponse sysResponse = new SysResponse();
+        if(null == offset){
+            offset = "0";
+        }else{
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Boolean isNum = pattern.matcher(offset).matches();
+            if(!isNum){
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("请求失败");
+                logger.debug("请求页数错误,页数为："+offset);
+                return sysResponse;
+            }
+        }
+        List<Area> areaList = areaService.findAll(null);
+        if(null == per_lon || null == per_lat){
+            sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
+        }
+        Double pn = Double.valueOf(per_lon);
+        Double pt = Double.valueOf(per_lat);
+        Double temp = 0.0;
+        Double small= 200000.0;
+        String locate = "";
+        for(Area area:areaList){
+            Double lat = area.getLatitude();
+            Double lon = area.getLongitude();
+            temp = BaiduMapUtil.GetShortDistance(pn, pt, lon, lat);
+            if(temp < small){
+                small = temp;
+                locate = area.getName();
+            }
+        }
+        logger.debug("small==>>"+small+" 地区是:"+locate);
+        List<Branch> branchList = merchantService.findByMerId(merchant.getId(),locate);
+        sysResponse = putBranchData(sysResponse, branchList);
+        return sysResponse;
+    }
+    
+    private SysResponse putBranchData(SysResponse sysResponse, List<Branch> branchList) {
+        ArrayList<Object> alList = new ArrayList<Object>();
+        LinkedHashMap<String, String> map = null;
+        if(branchList.size()>0){
+            sysResponse.setCode(SysResponse.SUCCESS);
+            sysResponse.setMessage("请求成功");
+            for (Branch mer : branchList) {
+                map = new LinkedHashMap<String,String>();
+                map.put("id", mer.getId().toString());
+                map.put("name", mer.getName());
+                map.put("addr", mer.getAddr());
+                alList.add(map);
+            }
+            sysResponse.setResult(alList);
+        }else{
+            sysResponse.setCode(SysResponse.FAILURE);
+            sysResponse.setMessage("数据不存在,列表为空");
+        }
+        return sysResponse;
+}
+
     /**
      * 获取某个商户的信息
      * @param id
@@ -95,7 +170,7 @@ public class MerchantController {
         return sysResponse;
     }
     
-    private SysResponse putData(SysResponse sysResponse, List<Merchant> merchantList) {
+    private SysResponse putData(SysResponse sysResponse, List<Merchant> merchantList, String typeId) {
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(merchantList.size()>0){
@@ -106,9 +181,11 @@ public class MerchantController {
                 map.put("id", mer.getId().toString());
                 map.put("name", mer.getDwmc());
                 map.put("addr", mer.getSymd());
-                map.put("tel", mer.getLxfs());
-                map.put("about", mer.getYhhd1());//简介
-                map.put("about_detail", mer.getYhhd());//简介详情
+                if(null !=typeId){
+                    map.put("tel", mer.getLxfs());
+                    map.put("about", mer.getYhhd1());//简介
+                    map.put("about_detail", mer.getYhhd());//简介详情
+                }
               //  map.put("logo", mer.getLogo().toString());//logo
                 alList.add(map);
             }

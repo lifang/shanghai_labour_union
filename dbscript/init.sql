@@ -19,45 +19,59 @@ CREATE TABLE `xz_type` (
   `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Table structure for sys_code 区域类型
--- ----------------------------
-DROP TABLE IF EXISTS `sys_code`;
-CREATE TABLE `sys_code` (
-  `VALUE` varchar(128) NOT NULL,
-  `CODE` varchar(64) DEFAULT NULL,
-  `IS_DELETED` int(11) DEFAULT NULL,
-  `NAME` varchar(64) DEFAULT NULL,
-  `PARENT` varchar(128) DEFAULT NULL,
-  `TYPE` varchar(128) DEFAULT NULL,
-  `ORDER_NO` int(11) DEFAULT NULL,
-  PRIMARY KEY (`VALUE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of sys_code 数据字典
+-- Table structure for area  区域
 -- ----------------------------
-INSERT INTO `sys_code` VALUES ('10001', '10', '0', '工作区域', '', '', '1');
-INSERT INTO `sys_code` VALUES ('10001-10', '10', '0', '黄浦区', '10001', '10001', '1');
-INSERT INTO `sys_code` VALUES ('10001-100', '100', '0', '闵行区', '10001', '10001', '10');
-INSERT INTO `sys_code` VALUES ('10001-110', '110', '0', '嘉定区', '10001', '10001', '11');
-INSERT INTO `sys_code` VALUES ('10001-120', '120', '0', '浦东新区', '10001', '10001', '12');
-INSERT INTO `sys_code` VALUES ('10001-130', '130', '0', '松江区', '10001', '10001', '13');
-INSERT INTO `sys_code` VALUES ('10001-140', '140', '0', '金山区', '10001', '10001', '14');
-INSERT INTO `sys_code` VALUES ('10001-150', '150', '0', '青浦区', '10001', '10001', '15');
-INSERT INTO `sys_code` VALUES ('10001-160', '160', '0', '奉贤区', '10001', '10001', '16');
-INSERT INTO `sys_code` VALUES ('10001-170', '170', '0', '崇明县', '10001', '10001', '17');
-INSERT INTO `sys_code` VALUES ('10001-20', '20', '0', '徐汇区', '10001', '10001', '2');
-INSERT INTO `sys_code` VALUES ('10001-30', '30', '0', '长宁区', '10001', '10001', '3');
-INSERT INTO `sys_code` VALUES ('10001-40', '40', '0', '静安区', '10001', '10001', '4');
-INSERT INTO `sys_code` VALUES ('10001-50', '50', '0', '普陀区', '10001', '10001', '5');
-INSERT INTO `sys_code` VALUES ('10001-60', '60', '0', '闸北区', '10001', '10001', '6');
-INSERT INTO `sys_code` VALUES ('10001-70', '70', '0', '虹口区', '10001', '10001', '7');
-INSERT INTO `sys_code` VALUES ('10001-80', '80', '0', '杨浦区', '10001', '10001', '8');
-INSERT INTO `sys_code` VALUES ('10001-90', '90', '0', '宝山区', '10001', '10001', '9');
+DROP TABLE IF EXISTS `area`;
+CREATE TABLE `area` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `order_no` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL COMMENT '纬度',
+  `longitude` varchar(255) DEFAULT NULL COMMENT '经度',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of area
+-- ----------------------------
+INSERT INTO `area` VALUES ('1', '上海', '1', null, null, null);
+INSERT INTO `area` VALUES ('2', '黄浦区', '1', '1', '31.237373', '121.491194');
+INSERT INTO `area` VALUES ('3', '徐汇区', '2', '1', '31.194908', '121.442885');
+INSERT INTO `area` VALUES ('4', '长宁区', '3', '1', '31.226535', '121.430868');
+INSERT INTO `area` VALUES ('5', '静安区', '4', '1', '31.229769', '121.462366');
+INSERT INTO `area` VALUES ('6', '普陀区', '5', '1', '31.255102', '121.403529');
+INSERT INTO `area` VALUES ('7', '闸北区', '6', '1', '31.253373', '121.465963');
+INSERT INTO `area` VALUES ('8', '虹口区', '7', '1', '31.270142', '121.511735');
+INSERT INTO `area` VALUES ('9', '杨浦区', '8', '1', '31.265774', '121.532291');
+INSERT INTO `area` VALUES ('10', '宝山区', '9', '1', '31.410951', '121.495971');
+INSERT INTO `area` VALUES ('11', '闵行区', '10', '1', '31.118509', '121.388372');
+INSERT INTO `area` VALUES ('12', '嘉定区', '11', '1', '31.380474', '121.272804');
+INSERT INTO `area` VALUES ('13', '浦东新区', '12', '1', '31.227384', '121.550544');
+INSERT INTO `area` VALUES ('14', '松江区', '13', '1', '31.038173', '121.235413');
+INSERT INTO `area` VALUES ('15', '金山区', '14', '1', '30.747991', '121.348902');
+INSERT INTO `area` VALUES ('16', '青浦区', '15', '1', '31.155515', '121.130784');
+INSERT INTO `area` VALUES ('17', '奉贤区', '16', '1', '30.923797', '121.480574');
+INSERT INTO `area` VALUES ('18', '崇明县', '17', '1', '31.628659', '121.403855');
 
 alter table news2 add imgPath varchar(255);
 alter table tcardcx add xzId int(11);
 alter table tcardcxtx add xzId int(11);
 alter table users add phone_code varchar(10);
 alter table zpdw add locate varchar(20);
+
+
+-- ----------------------------
+-- Table structure for branch 商户分店
+-- ----------------------------
+DROP TABLE IF EXISTS `branch`;
+CREATE TABLE `branch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `locate` varchar(255) DEFAULT NULL,
+  `addr` varchar(255) DEFAULT NULL,
+  `mer_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

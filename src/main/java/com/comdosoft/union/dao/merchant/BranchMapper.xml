@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.merchant.BranchMapper">
+
+	<resultMap id="merchant" type="com.comdosoft.union.bean.app.Merchant">
+		<id property="id" column="id"/>
+	</resultMap>
+	
+	<resultMap type="com.comdosoft.union.bean.app.Branch" id="branch">
+		<id property="id" column="id"/>
+		<result property="name" column="name" />
+		<result property="addr" column="addr" />
+		<result property="locate" column="locate" />
+		<association property="merId" javaType="com.comdosoft.union.bean.app.Merchant" resultMap="merchant" />
+	</resultMap>
+
+	<select id="countByVo" resultType="int">
+		SELECT count(*) as count
+		  FROM branch  
+	</select>
+	
+	<select id="findByMerId" resultMap="branch" >
+		select b.*,m.id as mid 
+		from branch b left join merchants m on  m.id=b.mer_id
+		where m.id=#{param1} and b.locate=#{param2}
+		  order by b.id desc
+	</select>
+	
+</mapper>

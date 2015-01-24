@@ -12,16 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.RecruitIndustry;
 import com.comdosoft.union.bean.app.RecruitPosition;
-import com.comdosoft.union.bean.app.SysCode;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.service.AreaService;
 import com.comdosoft.union.service.RecruitIndustryService;
 import com.comdosoft.union.service.RecruitPositionService;
-import com.comdosoft.union.service.SysCodeService;
 /**
  * 
  * 岗位查询<br>
@@ -37,7 +36,7 @@ public class PositionCodeController {
     @Resource
     private RecruitIndustryService recruitIndustryService;
     @Resource
-    private SysCodeService sysCodeService;
+    private AreaService areaService;
     @Resource
     private RecruitPositionService recruitPositionService;
     
@@ -56,21 +55,21 @@ public class PositionCodeController {
     }
     
    /**
-    * 查询所有工作区域,如果存在code,则排除此code
-    * @param code
+    * 查询所有工作区域,如果存在id,则排除此id
+    * @param id
     * @return
     */
     @RequestMapping(value = "findAllAddr", method = RequestMethod.POST)
-    public SysResponse findAllAddr(@RequestParam(value="code", required=false) String code){
+    public SysResponse findAllAddr(String id){
         SysResponse sysResponse = new SysResponse();
-        List<SysCode> sysCodeList = sysCodeService.findAll("10001",code);//类型10001为区域
+        List<Area> areaList = areaService.findAll(Integer.parseInt(id));
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
-        if(sysCodeList.size()>0){
-            for (SysCode sysCode : sysCodeList) {
+        if(areaList.size()>0){
+            for (Area area : areaList) {
                 map = new LinkedHashMap<String,String>();
-                map.put("name", sysCode.getName());
-                map.put("code", sysCode.getCode());
+                map.put("name", area.getName());
+                map.put("id", area.getId().toString());
                 alList.add(map);
             }
             sysResponse.setCode(SysResponse.SUCCESS);
