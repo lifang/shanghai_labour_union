@@ -62,7 +62,14 @@ public class PositionCodeController {
     @RequestMapping(value = "findAllAddr", method = RequestMethod.POST)
     public SysResponse findAllAddr(String id){
         SysResponse sysResponse = new SysResponse();
-        List<Area> areaList = areaService.findAll(Integer.parseInt(id));
+        List<Area> areaList = null;
+        if(null ==id){
+            areaList = areaService.findAll(null);
+        }else{
+            Area area = new Area();
+            area.setId(Integer.parseInt(id));
+            areaList = areaService.findAll(area);
+        }
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(areaList.size()>0){

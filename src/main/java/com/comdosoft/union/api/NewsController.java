@@ -55,11 +55,11 @@ public class NewsController {
             }
         }
         List<News> newsList = newsService.findTopNews(Integer.parseInt(offset),4);
-        sysResponse = putData(sysResponse, newsList);
+        sysResponse = putData(sysResponse, newsList,1);
         return sysResponse;
     }
 
-    private SysResponse putData(SysResponse sysResponse, List<News> newsList) {
+    private SysResponse putData(SysResponse sysResponse, List<News> newsList, int i) {
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(newsList.size()>0){
@@ -70,7 +70,8 @@ public class NewsController {
                 map.put("id", news2.getId().toString());
                 map.put("title", news2.getTitle());
                 map.put("time", news2.getTime() == null ? "": news2.getTime().toString());
-                map.put("imgPath", news2.getImgPath());
+                if(i==1)
+                    map.put("imgPath", news2.getImgPath());
                 alList.add(map);
             }
             sysResponse.setResult(alList);
@@ -103,7 +104,7 @@ public class NewsController {
             }
         }
         List<News> newsList = newsService.findAll(Integer.parseInt(offset),10,news);
-        sysResponse = putData(sysResponse, newsList);
+        sysResponse = putData(sysResponse, newsList,0);
         return sysResponse;
     }
     

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
-import com.comdosoft.union.bean.app.MerchantType;
 import com.comdosoft.union.common.BaiduMapUtil;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.AreaService;
@@ -59,12 +58,11 @@ public class MerchantController {
                 return sysResponse;
             }
         }
+        Integer merType_id = null;
         if(null !=typeId){
-            MerchantType mt = new MerchantType();
-            mt.setId(Integer.parseInt(typeId));
-            merchant.setSshy(mt);
+            merType_id = Integer.parseInt(typeId);
         }
-        List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merchant);
+        List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merType_id);
         sysResponse = putData(sysResponse, merchants,typeId);
         return sysResponse;
     }

@@ -24,7 +24,7 @@ public class TcardcxService {
         if(null != type && type.equals("0")){ //退休
         	return tcardcxMapper.findRetireAll(new RowBounds(offset, limit),tcardcx);
         }//在职
-        return tcardcxMapper.findAll(new RowBounds(offset, limit),tcardcx);
+        return tcardcxMapper.findStaffAll(new RowBounds(offset, limit));
     }
     
     public int countByVo(Tcardcx tcardcx){
@@ -39,6 +39,9 @@ public class TcardcxService {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
-        return tcardcxMapper.search(new RowBounds(offset, limit),name);
+        if(null != name){
+            return tcardcxMapper.search(new RowBounds(offset, limit),name);
+        }
+        return tcardcxMapper.searchAll(new RowBounds(offset, limit));
     }
 }

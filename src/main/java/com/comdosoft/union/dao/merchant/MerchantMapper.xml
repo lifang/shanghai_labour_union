@@ -21,14 +21,6 @@
 		<association property="sshy" javaType="com.comdosoft.union.bean.app.MerchantType" resultMap="merTypeResult" />
 	</resultMap>
 
- 	<!-- 查询条件 -->
-	<sql id="dynamicWhere">
-		<where>
-			<if test="id != null"> AND m.ID =#{id} </if>
-			<if test="sshy != null"> AND m.sshy =#{sshy} </if>
-		</where>
-	</sql>
-	
 	<select id="countByVo" resultType="int">
 		SELECT count(*) as count
 		  FROM merchants  
@@ -37,7 +29,13 @@
 	<select id="findAllMerchants" resultMap="getMerchant" >
 		SELECT m.*,f.id as tid,f.hymc 
 		   FROM merchants m left join mer_fl f on f.id=m.sshy 
-		  <include refid="dynamicWhere" />  
+		  order by m.id desc
+	</select>
+	
+	<select id="findMerchantsByType" resultMap="getMerchant" >
+		SELECT m.*,f.id as tid,f.hymc 
+		   FROM merchants m left join mer_fl f on f.id=m.sshy 
+		   where f.id = #{param2}
 		  order by m.id desc
 	</select>
 	

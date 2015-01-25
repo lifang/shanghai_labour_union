@@ -20,8 +20,8 @@ import com.comdosoft.union.dao.AreaMapper;
 public class AreaService {
     @Resource
     private AreaMapper areaMapper;
-    public List<Area> findAll(Integer id){
-        return areaMapper.findAll(id);
+    public List<Area> findAll(Area area){
+        return areaMapper.findAll(area);
     }
 
 }

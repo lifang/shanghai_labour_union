@@ -17,5 +17,5 @@ public interface AreaMapper {
      * @param id 排除这个id
      * @return
      */
-    List<Area> findAll(Integer id);
+    List<Area> findAll(Area area);
 }

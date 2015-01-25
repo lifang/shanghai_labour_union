@@ -24,6 +24,7 @@ public class ServiceCenterController {
 	@RequestMapping(value="worker/page",method=RequestMethod.POST)
 	public SysResponse workPage(Integer page){
 		logger.info("分页查找职工援助服务中心,page:{}",page);
+		if(null == page) page=1;
 		Page<ServiceCenter> centers = serviceCenterService.findWorkerPage(page);
 		return SysResponse.buildSuccessResponse(centers);
 	}

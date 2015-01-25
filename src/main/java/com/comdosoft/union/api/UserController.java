@@ -115,13 +115,25 @@ public class UserController {
     public SysResponse regist(User user,String verify_code){
         SysResponse sysResponse = null;
         if(null != verify_code){
-            if(null != user.getPhoneCode() && user.getPhoneCode().equals(verify_code)){
-                sysResponse = userService.regist(user);
+            
+            if(null != user.getPhone()){
+                User u = userService.findByPhone(user.getPhone());
+                if(null != u.getUsername()){
+                    sysResponse = SysResponse.buildFailResponse("该手机已注册");
+                    return sysResponse;
+                }else{
+                    String c = u.getPhoneCode();
+                    if(c.equals(verify_code)){
+                        sysResponse = userService.regist(user);
+                    }else{
+                        sysResponse = SysResponse.buildFailResponse("验证码错误");
+                    }
+                }
             }else{
-                sysResponse = SysResponse.buildFailResponse("验证码错误");
+                sysResponse = SysResponse.buildFailResponse("手机号不能为空");
             }
         }else{
-            sysResponse = SysResponse.buildFailResponse("验证码错误");
+            sysResponse = SysResponse.buildFailResponse("验证码不能为空");
         }
         return sysResponse;
     }

@@ -9,6 +9,7 @@ import com.comdosoft.union.bean.app.Merchant;
 public interface MerchantMapper {
 
     int countByVo(Merchant merchant);
-    List<Merchant> findAllMerchants(RowBounds rowBounds ,Merchant merchant);
+    List<Merchant> findAllMerchants(RowBounds rowBounds);
+    List<Merchant> findMerchantsByType(RowBounds rowBounds ,Integer id);
     Merchant findById(Integer id);
 }

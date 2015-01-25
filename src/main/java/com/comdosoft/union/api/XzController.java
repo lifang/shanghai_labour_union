@@ -109,11 +109,10 @@ public class XzController {
      * 互助保障
      * @param title 搜索条件
      * @param offset
-     * @param type  0退休 1 在职
      * @return
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(@RequestParam(value="name", required=true) String name,String type,String offset) {
+    public SysResponse search(@RequestParam(value="name", required=false) String name,String offset) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if(null == offset){

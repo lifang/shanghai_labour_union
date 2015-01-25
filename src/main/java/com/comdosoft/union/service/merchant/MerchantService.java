@@ -27,11 +27,14 @@ public class MerchantService {
     @Resource
     private BranchMapper BranchMapper;
     
-    public List<Merchant> findAllMerchants(int offset,int limit,Merchant merchant) {
+    public List<Merchant> findAllMerchants(int offset,int limit,Integer merType_id) {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*10;
-        return merchantMapper.findAllMerchants(new RowBounds(offset, limit),merchant);
+        if(null == merType_id){
+            return merchantMapper.findAllMerchants(new RowBounds(offset, limit)); 
+        }
+        return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),merType_id);
     }
     
     public int countByVo(Merchant merchant){

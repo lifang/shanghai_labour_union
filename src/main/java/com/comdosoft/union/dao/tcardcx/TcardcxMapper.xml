@@ -22,7 +22,7 @@
 		  FROM tcardcx  
 	</select>
 	
-	<select id="findAll" resultMap="tcardcx" >
+	<select id="findStaffAll" resultMap="tcardcx" >
 		SELECT *
 		   FROM tcardcx m left join xz_type t on m.xzId=t.id
 	</select>
@@ -42,5 +42,10 @@
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
 			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
 		where  t.csfzh=#{csfzh} or tx.csfzh=#{csfzh}
+	</select>
+	<select id="searchAll" resultMap="xzType" parameterType="java.lang.String">
+		SELECT * 		FROM 		xz_type m
+		   LEFT JOIN tcardcx t ON t.xzId = m.id
+			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
 	</select>
 </mapper>
