@@ -32,6 +32,7 @@ public class ServiceCenterController {
 	@RequestMapping(value="law/page",method=RequestMethod.POST)
 	public SysResponse lawPage(Integer page){
 		logger.info("分页查找法律援助服务中心,page:{}",page);
+		if(null == page) page=1;
 		Page<ServiceCenter> centers = serviceCenterService.findLawPage(page);
 		return SysResponse.buildSuccessResponse(centers);
 	}
