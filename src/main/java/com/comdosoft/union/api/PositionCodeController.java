@@ -131,7 +131,6 @@ public class PositionCodeController {
             	map.put("id", rp.getId().toString());
             	map.put("job_name", rp.getZwmc());
             	map.put("unit_name", rp.getDwid()==null ? "":rp.getDwid().getDwmc());
-            	//还少一时间
             	list.add(map);
             }
             sysResponse.setCode(SysResponse.SUCCESS);
@@ -155,9 +154,6 @@ public class PositionCodeController {
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public SysResponse search(String offset,RecruitPosition recruitPosition,String q) {
-//    	if(!StringUtils.isEmpty(q)){
-//    		recruitPosition.setQ(q);
-//    	}
         return getJobs(offset,"10",recruitPosition,1);
     }
 

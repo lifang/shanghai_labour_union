@@ -2,11 +2,12 @@ package com.comdosoft.union.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.RecruitIndustry;
-import com.comdosoft.union.dao.RecruitIndustryMapper;
+import com.comdosoft.union.dao.zpdw.RecruitIndustryMapper;
 /**
  * 
  * 招聘行业<br>
@@ -17,15 +18,11 @@ import com.comdosoft.union.dao.RecruitIndustryMapper;
  */
 @Service
 public class RecruitIndustryService {
-    @Autowired
+    @Resource
     private RecruitIndustryMapper recruitIndustryMapper;
 
     public List<RecruitIndustry> findAll() {
         return  recruitIndustryMapper.findAll();
     }
 
-    public List<RecruitIndustry> search(int parseInt, Integer limit, String title) {
-        // TODO Auto-generated method stub
-        return recruitIndustryMapper.search();
-    }
 }

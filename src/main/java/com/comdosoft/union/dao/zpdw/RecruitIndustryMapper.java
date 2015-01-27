@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao;
+package com.comdosoft.union.dao.zpdw;
 
 import java.util.List;
 
@@ -14,5 +14,4 @@ import com.comdosoft.union.bean.app.RecruitIndustry;
 public interface RecruitIndustryMapper {
     List<RecruitIndustry> findAll();
 
-    List<RecruitIndustry> search();
 }

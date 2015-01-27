@@ -8,7 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.ActivityPics;
-import com.comdosoft.union.dao.ActivityPicsMapper;
+import com.comdosoft.union.dao.news.ActivityPicsMapper;
 /**
  * 活动图片
  * <br>

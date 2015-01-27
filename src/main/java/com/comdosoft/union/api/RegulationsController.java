@@ -24,6 +24,7 @@ public class RegulationsController {
     @RequestMapping(value = "page", method = RequestMethod.POST)
     public SysResponse page(String title,Integer page) {
     	logger.info("法规分页查询,title:{},page:{}",title,page);
+    	if(null ==page) page=1;
     	Page<Regulations> regulations = regulationsService.getPage(page, title);
         return SysResponse.buildSuccessResponse(regulations);
     }

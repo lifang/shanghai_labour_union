@@ -66,6 +66,26 @@ public class Merchant implements Serializable {
     private String username;//暂时不用
     private String password;//暂时不用
     private String site;//暂时不用
+    /**
+     * 联系电话
+     */
+    private String tel;//代替 lxfs
+    private String logoPath;//logo图片地址
+    
+    /**  
+     * 获取 logoPath  
+     * @return logoPath
+     */
+    public String getLogoPath() {
+        return logoPath;
+    }
+    /**  
+     * 设置 logoPath  
+     * @param logoPath
+     */
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
     /**  
      * 获取 id  
      * @return id id  
@@ -309,5 +329,18 @@ public class Merchant implements Serializable {
     public Merchant() {
         super();
     }
-    
+    /**  
+     * 获取 联系电话  
+     * @return tel
+     */
+    public String getTel() {
+        return tel;
+    }
+    /**  
+     * 设置 联系电话  
+     * @param tel
+     */
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
 }

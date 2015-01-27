@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.comdosoft.union.dao.tcardcx.TcardcxMapper">
+<mapper namespace="com.comdosoft.union.dao.news.TcardcxMapper">
 
 	<resultMap id="xzType" type="com.comdosoft.union.bean.app.XzType">
 			<result property="id" column="id"/>

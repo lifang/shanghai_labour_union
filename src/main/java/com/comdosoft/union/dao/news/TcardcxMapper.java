@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao.tcardcx;
+package com.comdosoft.union.dao.news;
 
 import java.util.List;
 

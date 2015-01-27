@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao.notification;
+package com.comdosoft.union.dao.news;
 
 import java.util.List;
 import java.util.Map;

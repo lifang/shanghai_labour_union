@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.User;
 import com.comdosoft.union.common.SysResponse;
-import com.comdosoft.union.dao.UserMapper;
+import com.comdosoft.union.dao.news.UserMapper;
 
 @SuppressWarnings("deprecation")
 @Service

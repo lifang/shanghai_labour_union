@@ -45,6 +45,23 @@ public class SysResponse {
      * token
      */
     private String token;
+    private Integer total;//查询的总页数
+    
+    /**  
+     * 获取 total  
+     * @return total
+     */
+    public Integer getTotal() {
+        return total;
+    }
+
+    /**  
+     * 设置 total  
+     * @param total
+     */
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
     /**
      * 返回消息体

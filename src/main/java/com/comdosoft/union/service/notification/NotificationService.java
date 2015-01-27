@@ -14,8 +14,8 @@ import com.comdosoft.union.bean.APIRequestParameter;
 import com.comdosoft.union.bean.app.AppNotification;
 import com.comdosoft.union.bean.app.AppPicture;
 import com.comdosoft.union.common.SysConstant;
-import com.comdosoft.union.dao.CommonMapper;
-import com.comdosoft.union.dao.notification.NotificationMapper;
+import com.comdosoft.union.dao.news.CommonMapper;
+import com.comdosoft.union.dao.news.NotificationMapper;
 
 /**
  * 通知业务层实现类<br>

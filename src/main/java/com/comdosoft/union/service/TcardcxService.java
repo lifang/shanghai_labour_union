@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.Tcardcx;
 import com.comdosoft.union.bean.app.XzType;
-import com.comdosoft.union.dao.tcardcx.TcardcxMapper;
+import com.comdosoft.union.dao.news.TcardcxMapper;
 
 @Service
 public class TcardcxService {

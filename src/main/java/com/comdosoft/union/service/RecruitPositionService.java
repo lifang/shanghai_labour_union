@@ -2,16 +2,17 @@ package com.comdosoft.union.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.RecruitPosition;
-import com.comdosoft.union.dao.RecruitPositionMapper;
+import com.comdosoft.union.dao.zpdw.RecruitPositionMapper;
 
 @Service
 public class RecruitPositionService {
-    @Autowired
+    @Resource
     private RecruitPositionMapper recruitPositionMapper;
     
     

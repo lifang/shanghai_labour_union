@@ -9,7 +9,7 @@ import com.comdosoft.union.bean.Page;
 import com.comdosoft.union.bean.PageRequest;
 import com.comdosoft.union.bean.app.Regulations;
 import com.comdosoft.union.common.SysConstant;
-import com.comdosoft.union.dao.regulations.RegulationsMapper;
+import com.comdosoft.union.dao.news.RegulationsMapper;
 
 @Service
 public class RegulationsService {

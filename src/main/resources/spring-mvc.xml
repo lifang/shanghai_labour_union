@@ -19,7 +19,7 @@
 		</property>
 	</bean>
 
-	<!-- 数据源 -->
+	<!-- 数据源1 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
 		<property name="url" value="${jdbc.url}"></property>
@@ -45,11 +45,12 @@
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath*:com.comdosoft.union.dao./**/*Mapper.xml" />
+		<property name="mapperLocations" value="classpath*:com.comdosoft.union.dao.news./*Mapper.xml" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.comdosoft.union.dao./**" />
+		<property name="basePackage" value="com.comdosoft.union.dao.news" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 
 	<!-- 声明事务管理器 -->
@@ -62,7 +63,95 @@
 
 	<!-- 扫描所有包，主要是获取注解的所有类 -->
 	<context:component-scan base-package="com.comdosoft.union" />
+	
+ 	<!-- 数据源2 -->
+ 	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
+		<property name="url" value="${jdbc2.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 初始化连接数 -->
+		<property name="initialSize" value="5"></property>
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="30"></property>
+		<!-- 最小空闲连数 -->
+		<property name="minIdle" value="2"></property>
+		<!-- 获取连接等待的超时时间，单位是毫秒 -->
+		<property name="maxWait" value="60000"></property>
+		<!-- 自动回收超时连接 -->
+		<property name="removeAbandoned" value="true"></property>
+		<!-- 记录泄露连接的日志 -->
+		<property name="logAbandoned" value="true"></property>
+		<!-- 间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<!-- 一个连接在池中最小的生存时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000"></property>
+	</bean>
 
+	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource2" />
+		<property name="mapperLocations" value="classpath*:com.comdosoft.union.dao.merchant./*Mapper.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.comdosoft.union.dao.merchant" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory2"/>
+	</bean>
+
+	<!-- 声明事务管理器 -->
+	<bean id="transactionManager2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource2" />
+	</bean>
+
+	<!-- 启用annotation注解方式的事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager2" />
+ 
+ 
+ 	<!-- 数据源3 -->
+ 	<bean id="dataSource3" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
+		<property name="url" value="${jdbc3.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 初始化连接数 -->
+		<property name="initialSize" value="5"></property>
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="30"></property>
+		<!-- 最小空闲连数 -->
+		<property name="minIdle" value="2"></property>
+		<!-- 获取连接等待的超时时间，单位是毫秒 -->
+		<property name="maxWait" value="60000"></property>
+		<!-- 自动回收超时连接 -->
+		<property name="removeAbandoned" value="true"></property>
+		<!-- 记录泄露连接的日志 -->
+		<property name="logAbandoned" value="true"></property>
+		<!-- 间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<!-- 一个连接在池中最小的生存时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000"></property>
+	</bean>
+
+	<bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource3" />
+		<property name="mapperLocations" value="classpath*:com.comdosoft.union.dao.zpdw./*Mapper.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.comdosoft.union.dao.zpdw" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory3"/>
+	</bean>
+
+	<!-- 声明事务管理器 -->
+	<bean id="transactionManager3" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource3" />
+	</bean>
+
+	<!-- 启用annotation注解方式的事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager3" />
+ 
+  
+  
+  
 	<!-- 启用springmvc的注解 -->
 	<mvc:annotation-driven >
 	    <!-- @ResponseBody 返回中文乱码 jwb -->

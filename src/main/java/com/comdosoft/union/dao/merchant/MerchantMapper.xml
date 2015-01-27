@@ -12,18 +12,24 @@
 		<result property="dwjs" column="dwjs" />
 		<result property="jlfilename" column="jlfilename" />
 		<result property="jlfile" column="jlfile" />
-		<result property="yhhd" column="yhhd" />
-		<result property="yhhd1" column="yhhd1" />
+		<result property="yhhd" column="about_detail" />
+		<result property="yhhd1" column="about" />
 		<result property="lxfs" column="lxfs" />
 		<result property="syfs" column="syfs" />
 		<result property="symd" column="symd" />
 		<result property="yhm" column="yhm" />
+		<result property="tel" column="tel" />
+		<result property="logoPath" column="logo_path"/>
+		<!-- <result property="logo" column="logo"  javaType="byte[]" jdbcType="BLOB" /> -->
 		<association property="sshy" javaType="com.comdosoft.union.bean.app.MerchantType" resultMap="merTypeResult" />
 	</resultMap>
 
 	<select id="countByVo" resultType="int">
 		SELECT count(*) as count
 		  FROM merchants  
+		  <where>
+		  	<if test="sshy!=null">sshy=sshy</if>
+		  </where>
 	</select>
 	
 	<select id="findAllMerchants" resultMap="getMerchant" >

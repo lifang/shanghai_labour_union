@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao;
+package com.comdosoft.union.dao.news;
 
 import com.comdosoft.union.bean.app.User;
 

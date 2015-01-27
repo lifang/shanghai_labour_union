@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao;
+package com.comdosoft.union.dao.news;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import com.comdosoft.union.bean.app.Downloads;
  *
  */
 public interface DownloadsMapper {
+    int countByVo();
     List<Downloads> findAll();
 
 }

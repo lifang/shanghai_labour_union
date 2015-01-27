@@ -41,6 +41,8 @@ public class DownloadController {
         SysResponse sysResponse = null;
         if(list.size()>0){
              sysResponse = SysResponse.buildSuccessResponse(list);
+             int total = downloadService.getTotal();
+             sysResponse.setTotal(total);
         }else{
             logger.debug("相关下载没有找到数据列表");
              sysResponse = SysResponse.buildFailResponse("没有找到相关数据");

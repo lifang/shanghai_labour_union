@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.comdosoft.union.bean.app.AppPicture;
-import com.comdosoft.union.dao.CommonMapper;
+import com.comdosoft.union.dao.news.CommonMapper;
 
 /**
  * 文章

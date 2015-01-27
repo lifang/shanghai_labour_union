@@ -9,7 +9,7 @@ import com.comdosoft.union.bean.Page;
 import com.comdosoft.union.bean.PageRequest;
 import com.comdosoft.union.bean.app.ServiceCenter;
 import com.comdosoft.union.common.SysConstant;
-import com.comdosoft.union.dao.ServiceCenterMapper;
+import com.comdosoft.union.dao.news.ServiceCenterMapper;
 
 /**
  * 服务中心

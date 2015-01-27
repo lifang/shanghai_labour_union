@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.ProtectRight;
-import com.comdosoft.union.dao.ProtectRightMapper;
+import com.comdosoft.union.dao.news.ProtectRightMapper;
 
 @Service
 public class ProtectRightService {

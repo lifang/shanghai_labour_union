@@ -1,4 +1,4 @@
-package com.comdosoft.union.dao;
+package com.comdosoft.union.dao.merchant;
 
 import java.util.List;
 

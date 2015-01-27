@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
+import com.comdosoft.union.bean.app.MerchantType;
 import com.comdosoft.union.common.BaiduMapUtil;
 import com.comdosoft.union.common.SysResponse;
 import com.comdosoft.union.service.AreaService;
@@ -61,6 +62,8 @@ public class MerchantController {
         Integer merType_id = null;
         if(null !=typeId){
             merType_id = Integer.parseInt(typeId);
+        }else{
+            merType_id = 1;
         }
         List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merType_id);
         sysResponse = putData(sysResponse, merchants,typeId);
@@ -180,13 +183,22 @@ public class MerchantController {
                 map.put("name", mer.getDwmc());
                 map.put("addr", mer.getSymd());
                 if(null !=typeId){
-                    map.put("tel", mer.getLxfs());
+                    map.put("tel", mer.getTel());
                     map.put("about", mer.getYhhd1());//简介
                     map.put("about_detail", mer.getYhhd());//简介详情
                 }
-              //  map.put("logo", mer.getLogo().toString());//logo
+                map.put("logo", mer.getLogoPath());//logo
                 alList.add(map);
             }
+            int i = 0;
+            if(null !=typeId){
+                Merchant mm = new Merchant();
+                MerchantType mt = new MerchantType();
+                mt.setId(Integer.parseInt(typeId));
+                mm.setSshy(mt);
+                i = merchantService.countByVo(mm);
+            }
+            sysResponse.setTotal(i);
             sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);

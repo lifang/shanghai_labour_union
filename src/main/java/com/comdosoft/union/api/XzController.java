@@ -69,6 +69,8 @@ public class XzController {
         				list.add(map);
         			}
         		}
+        		int total = tcardcxService.countByVo(tcardcx);
+        		sysResponse.setTotal(total);
                 sysResponse.setCode(SysResponse.SUCCESS);
                 sysResponse.setMessage("请求成功");
                 sysResponse.setResult(list);

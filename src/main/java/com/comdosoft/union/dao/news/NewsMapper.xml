@@ -19,43 +19,44 @@
 		<result property="sh3user" column="sh3user" />
 		<result property="imgPath" column="imgPath" />
 		<result property="sh3time" column="sh3time" javaType="java.sql.Date" jdbcType="DATE"/>
-		<collection property="newPicsList" column="newsid" javaType="com.comdosoft.union.bean.app.NewsPics">
-			<result property="id" column="pid"/>
-			<result property="pic" column="pic"/>
-			<result property="newsId" column="newsid"/>
-		</collection>
+		
 	</resultMap>
 
 	<select id="countByVo" resultType="int">
 		SELECT count(*) as count
-		  FROM news2  
+		    FROM news2 m 
+		    where  m.sh3=1 
+			<if test="lm3 != null"> AND m.lm3 =#{lm3} </if>
+			 <if test="title !=null">
+		    AND m.title like "%"#{title}"%" 
+		    </if>
 	</select>
 	
 	<select id="findTopNews" resultMap="news" >
-		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
-		   FROM news2 m left join news_pics p on m.id = p.newsid
+		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
+		   FROM news2 m 
 		    where  m.sh3=1 
 			order by m.time desc
 		   
 	</select>
 	
 	<select id="findById" resultMap="news" parameterType="java.lang.Integer">
-		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
-		   FROM news2 m left join news_pics p on m.id = p.newsid
+		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
+		   FROM news2 m 
 		where  m.sh3=1 and m.id=#{id}
 		order by m.time desc
 	</select>
 	
 	<!-- 根据id查询法规详情    -->
 	<select id="findLawsById" resultMap="news" parameterType="java.lang.Integer">
-		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
-		   FROM news2 m left join news_pics p on m.id = p.newsid
+		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
+		   FROM news2 m 
 		where  m.sh3=1 AND m.lm3 =57  and m.id=#{id}
 	</select>
 	
 	<select id="findAll" resultMap="news" >
-		SELECT m.id,m.title,m.content,m.time,m.sh3,m.lm3 ,p.id as pid,p.pic as pic,p.newsid  
-		   FROM news2 m left join news_pics p on m.id = p.newsid
+		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
+		   FROM news2 m 
 		    where  m.sh3=1 
 			<if test="lm3 != null"> AND m.lm3 =#{lm3} </if>
 			 <if test="title !=null">

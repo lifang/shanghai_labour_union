@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.Downloads;
-import com.comdosoft.union.dao.DownloadsMapper;
+import com.comdosoft.union.dao.news.DownloadsMapper;
 
 @Service
 public class DownloadService {
@@ -20,6 +20,10 @@ public class DownloadService {
      */
     public List<Downloads> findAll() {
         return downloadsMapper.findAll();
+    }
+
+    public int getTotal() {
+        return downloadsMapper.countByVo();
     }
 
 }

@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.News;
@@ -55,11 +54,18 @@ public class NewsController {
             }
         }
         List<News> newsList = newsService.findTopNews(Integer.parseInt(offset),4);
-        sysResponse = putData(sysResponse, newsList,1);
+        sysResponse = putData(sysResponse, newsList,1,news);
         return sysResponse;
     }
 
-    private SysResponse putData(SysResponse sysResponse, List<News> newsList, int i) {
+    /**
+     * 
+     * @param sysResponse
+     * @param newsList
+     * @param i 1是滑动图片新闻  
+     * @return
+     */
+    private SysResponse putData(SysResponse sysResponse, List<News> newsList, int i,News news) {
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(newsList.size()>0){
@@ -74,6 +80,8 @@ public class NewsController {
                     map.put("imgPath", news2.getImgPath());
                 alList.add(map);
             }
+            int total = newsService.countByVo(news);
+            sysResponse.setTotal(total);
             sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
@@ -104,7 +112,7 @@ public class NewsController {
             }
         }
         List<News> newsList = newsService.findAll(Integer.parseInt(offset),10,news);
-        sysResponse = putData(sysResponse, newsList,0);
+        sysResponse = putData(sysResponse, newsList,0,news);
         return sysResponse;
     }
     
@@ -145,7 +153,7 @@ public class NewsController {
      * @return
      */
     @RequestMapping(value = "findLaws", method = RequestMethod.POST)
-    public SysResponse findLaws(@RequestParam(value="title", required=false) String title,String offset) {
+    public SysResponse findLaws(News news,String offset) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
@@ -160,16 +168,18 @@ public class NewsController {
                 return sysResponse;
             }
         }
-        List<News> newsList = newsService.search(Integer.parseInt(offset),limit,title);
+        List<News> newsList = newsService.search(Integer.parseInt(offset),limit,news.getTitle());
         if(newsList.size()>0){
         	HashMap<String,String> map = null;
         	ArrayList<Object> list = new ArrayList<Object>();
-        	for(News news: newsList){
+        	for(News n: newsList){
         		map = new HashMap<String,String>();
-        		map.put("id", news.getId().toString());
-        		map.put("title", news.getTitle());
+        		map.put("id", n.getId().toString());
+        		map.put("title", n.getTitle());
         		list.add(map);
         	}
+        	int total = newsService.countByVo(news);
+        	sysResponse.setTotal(total);
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
             sysResponse.setResult(list);
