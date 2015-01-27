@@ -25,10 +25,10 @@
 	</resultMap>
 
 	<select id="countByVo" resultType="int">
-		SELECT count(*) as count
-		  FROM merchants  
+		SELECT count(m.id) as count 
+		   FROM merchants m left join mer_fl f on f.id=m.sshy 
 		  <where>
-		  	<if test="sshy!=null">sshy=sshy</if>
+		  	<if test="id!=null">f.id=#{id}</if>
 		  </where>
 	</select>
 	

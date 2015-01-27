@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
+import com.comdosoft.union.bean.app.MerchantType;
 import com.comdosoft.union.dao.merchant.BranchMapper;
 import com.comdosoft.union.dao.merchant.MerchantMapper;
 /**
@@ -37,8 +38,8 @@ public class MerchantService {
         return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),merType_id);
     }
     
-    public int countByVo(Merchant merchant){
-        return merchantMapper.countByVo(merchant);
+    public int countByVo(MerchantType merchantType){
+        return merchantMapper.countByVo(merchantType);
     }
     
     public Merchant findById(Integer id){

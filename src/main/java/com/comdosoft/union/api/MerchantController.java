@@ -191,12 +191,12 @@ public class MerchantController {
                 alList.add(map);
             }
             int i = 0;
+            MerchantType mt = new MerchantType();
             if(null !=typeId){
-                Merchant mm = new Merchant();
-                MerchantType mt = new MerchantType();
                 mt.setId(Integer.parseInt(typeId));
-                mm.setSshy(mt);
-                i = merchantService.countByVo(mm);
+                i = merchantService.countByVo(mt);
+            }else{
+                i = merchantService.countByVo(mt);
             }
             sysResponse.setTotal(i);
             sysResponse.setResult(alList);
