@@ -75,3 +75,40 @@ CREATE TABLE `branch` (
   `mer_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table merchants add tel varchar(20),add logo_path varchar(255),add about varchar(255),add about_detail varchar(255);
+
+DROP TABLE IF EXISTS `downloads`;
+CREATE TABLE `downloads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `logo_file_path` varchar(100) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `app_size` float DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `android_download_path` varchar(200) DEFAULT NULL,
+  `ios_app_id` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `labour_union_code` varchar(50) DEFAULT NULL,
+  `phone_code` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+-----------------------------------------
+--------------互助保障----------------------
+CREATE TABLE `xz_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
