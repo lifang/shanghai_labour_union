@@ -7,7 +7,7 @@
 		<result property="password" column="password" />
 		<result property="phone" column="phone" />
 		<result property="email" column="email" />
-		<result property="labourUnionCode" column="labourUnionCode" />
+		<result property="labourUnionCode" column="labour_union_code" />
 		<result property="phoneCode" column="phone_code" />
 	</resultMap>
 	
@@ -37,14 +37,14 @@
 	
 	<update id="update" parameterType="com.comdosoft.union.bean.app.User">
         update users 
-		 <trim prefix="SET" suffixOverrides=",">   
-			<if test="username !=null"> username=#{username},</if>
+        <set>
+        	<if test="username !=null"> username=#{username},</if>
 	        <if test="password !=null"> password=#{password},</if>
 	        <if test="phone !=null"> phone=#{phone},</if>
 	        <if test="email !=null"> email=#{email},</if>
-	        <if test="labourUnionCode !=null"> labourUnionCode=#{labourUnionCode},</if>
+	        <if test="labourUnionCode !=null"> labour_union_code=#{labourUnionCode},</if>
 	        <if test="phoneCode !=null"> phone_code=#{phoneCode}</if>
-		</trim>
+        </set>
          where id=#{id}
     </update>
     

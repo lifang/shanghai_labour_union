@@ -30,7 +30,10 @@ public class RecruitPositionService {
     public RecruitPosition findById(Integer id) {
         return recruitPositionMapper.findById(id);
     }
-
+    
+    public int countByVo(RecruitPosition recruitPosition){
+        return recruitPositionMapper.countByVo(recruitPosition);
+    }
 
 	/**
 	 * 根据职位Id，查询该职位所在单位的其他职位

@@ -14,4 +14,6 @@ public interface RecruitPositionMapper {
 	List<RecruitPosition> searchJob(RowBounds rowBounds,	RecruitPosition recruitPosition);
 
 	List<RecruitPosition> findOtherJobById(int id);
+
+    int countByVo(RecruitPosition recruitPosition);
 }

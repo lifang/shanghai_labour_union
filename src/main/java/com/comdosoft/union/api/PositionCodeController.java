@@ -63,13 +63,13 @@ public class PositionCodeController {
     public SysResponse findAllAddr(String id){
         SysResponse sysResponse = new SysResponse();
         List<Area> areaList = null;
-        if(null ==id){
+       // if(null ==id){
             areaList = areaService.findAll(null);
-        }else{
-            Area area = new Area();
-            area.setId(Integer.parseInt(id));
-            areaList = areaService.findAll(area);
-        }
+       // }else{
+      //      Area area = new Area();
+      //      area.setId(Integer.parseInt(id));
+      //      areaList = areaService.findAll(area);
+      //  }
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(areaList.size()>0){
@@ -133,6 +133,8 @@ public class PositionCodeController {
             	map.put("unit_name", rp.getDwid()==null ? "":rp.getDwid().getDwmc());
             	list.add(map);
             }
+            int total = recruitPositionService.countByVo(recruitPosition);
+            sysResponse.setTotal(total);
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
             sysResponse.setResult(list);
