@@ -63,13 +63,9 @@ public class UserController {
     public SysResponse changePhone(User user,String verify_code){
         SysResponse sysResponse = null;
         if(null != verify_code){
-            if(null != user.getPhoneCode() && user.getPhoneCode().equals(verify_code)){
-                sysResponse = userService.updatePhone(user);
-            }else{
-                sysResponse = SysResponse.buildFailResponse("验证码错误");
-            }
+            sysResponse = userService.updatePhone(user,verify_code);
         }else{
-            sysResponse = SysResponse.buildFailResponse("验证码错误");
+            sysResponse = SysResponse.buildFailResponse("验证码不能为空");
         }
         return sysResponse;
     }
@@ -140,7 +136,39 @@ public class UserController {
     
   
     /**
-     * 找回密码（更新密码）
+     * 找回密码 
+     * @param user
+     * @param newpwd    新的密码
+     * @param phoneCode  手机接收到的验证码
+     * @param inputCode  输入的验证码
+     * @return
+     */
+    @RequestMapping(value = "findPwd" , method = RequestMethod.POST)
+    public SysResponse findPwd(User user,String inputCode){
+        SysResponse sysResponse = null;
+        String newpwd = user.getPassword();
+        if(null == newpwd){
+            sysResponse = SysResponse.buildFailResponse("请设置新密码");
+        }else{
+            user = userService.findByPhone(user.getPhone());
+            if(null !=user){
+                String phoneCode = user.getPhoneCode();
+                if(null != inputCode && ! phoneCode.equals(inputCode)){
+                    sysResponse = SysResponse.buildFailResponse("验证码不正确");
+                    return sysResponse;
+                }
+                user.setPassword(newpwd);
+                userService.update(user);
+                sysResponse = SysResponse.buildSuccessResponse(user);
+            }else{
+                sysResponse = SysResponse.buildFailResponse("该手机还未注册");
+            }
+        }
+        return sysResponse;
+    }
+    
+    /**
+     * 更新密码
      * @param user
      * @param newpwd    新的密码
      * @param phoneCode  手机接收到的验证码

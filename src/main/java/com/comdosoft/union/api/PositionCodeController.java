@@ -18,6 +18,7 @@ import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.RecruitIndustry;
 import com.comdosoft.union.bean.app.RecruitPosition;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.common.SysUtils;
 import com.comdosoft.union.service.AreaService;
 import com.comdosoft.union.service.RecruitIndustryService;
 import com.comdosoft.union.service.RecruitPositionService;
@@ -48,6 +49,7 @@ public class PositionCodeController {
     public SysResponse findAllRI(){
         SysResponse sysResponse = new SysResponse();
         List<RecruitIndustry> RIList = recruitIndustryService.findAll();
+        sysResponse.setTotal(RIList.size());
         sysResponse.setCode(SysResponse.SUCCESS);
         sysResponse.setMessage("请求成功");
         sysResponse.setResult(RIList);
@@ -63,13 +65,19 @@ public class PositionCodeController {
     public SysResponse findAllAddr(String id){
         SysResponse sysResponse = new SysResponse();
         List<Area> areaList = null;
-       // if(null ==id){
+        if(null ==id || id==""){
             areaList = areaService.findAll(null);
-       // }else{
-      //      Area area = new Area();
-      //      area.setId(Integer.parseInt(id));
-      //      areaList = areaService.findAll(area);
-      //  }
+        }else{
+            Area area = new Area();
+            if(SysUtils.isNum(id)){
+                area.setId(Integer.parseInt(id));
+                areaList = areaService.findAll(area);
+            }else{
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("id参数错误");
+                return sysResponse;
+            }
+        }
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(areaList.size()>0){
@@ -79,6 +87,7 @@ public class PositionCodeController {
                 map.put("id", area.getId().toString());
                 alList.add(map);
             }
+            sysResponse.setTotal(alList.size());
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
             sysResponse.setResult(alList);
@@ -213,6 +222,7 @@ public class PositionCodeController {
     				map.put("job_name", rp.getZwmc());
     				list.add(map);
     			} 
+    			sysResponse.setTotal(recruitPosition.size());
     			sysResponse.setCode(SysResponse.SUCCESS);
             	sysResponse.setMessage("请求成功");
             	sysResponse.setResult(list);

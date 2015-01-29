@@ -37,6 +37,22 @@ public class User implements Serializable {
      * 手机发送的验证码
      */
     private String phoneCode;
+    private String nickName;//昵称
+    
+    /**  
+     * 获取 nickName  
+     * @return nickName
+     */
+    public String getNickName() {
+        return nickName;
+    }
+    /**  
+     * 设置 nickName  
+     * @param nickName
+     */
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
     /**  
      * 获取 id  
      * @return id

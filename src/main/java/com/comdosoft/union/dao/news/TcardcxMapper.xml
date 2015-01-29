@@ -41,7 +41,7 @@
 		SELECT * 		FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
 			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
-		where  t.csfzh=#{csfzh} or tx.csfzh=#{csfzh}
+		where  t.csfzh like "%"#{csfzh}"%" or tx.csfzh like "%"#{csfzh}"%"
 	</select>
 	<select id="searchAll" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m

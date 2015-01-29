@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -226,6 +227,13 @@ public class SysUtils {
         int g = fc + random.nextInt(bc - fc);
         int b = fc + random.nextInt(bc - fc);
         return new Color(r, g, b);
+    }
+    
+    public static Boolean isNum(String str){
+        if(null == str || str.equals("")) return false;
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Boolean isNum = pattern.matcher(str).matches();
+        return isNum;
     }
 
 }

@@ -82,6 +82,10 @@ public class MerchantController {
     public SysResponse findOtherMerchants(Merchant merchant,String offset,
                                           String per_lon,String per_lat) {
         SysResponse sysResponse = new SysResponse();
+        if(null == per_lon || null == per_lat){
+            sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
+            return sysResponse;
+        }
         if(null == offset){
             offset = "0";
         }else{
@@ -95,9 +99,6 @@ public class MerchantController {
             }
         }
         List<Area> areaList = areaService.findAll(null);
-        if(null == per_lon || null == per_lat){
-            sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
-        }
         Double pn = Double.valueOf(per_lon);
         Double pt = Double.valueOf(per_lat);
         Double temp = 0.0;
@@ -131,6 +132,7 @@ public class MerchantController {
                 map.put("addr", mer.getAddr());
                 alList.add(map);
             }
+            sysResponse.setTotal(branchList.size());
             sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
@@ -196,6 +198,7 @@ public class MerchantController {
                 mt.setId(Integer.parseInt(typeId));
                 i = merchantService.countByVo(mt);
             }else{
+                mt.setId(1);
                 i = merchantService.countByVo(mt);
             }
             sysResponse.setTotal(i);

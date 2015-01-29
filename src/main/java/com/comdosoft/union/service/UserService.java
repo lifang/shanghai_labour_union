@@ -247,13 +247,19 @@ public class UserService {
     /**
      * 根据id 更新手机号
      * @param user
+     * @param verify_code 
      * @return
      */
-    public SysResponse updatePhone(User user) {
+    public SysResponse updatePhone(User user, String verify_code) {
         User u = userMapper.findById(user.getId());
-        u.setPhone(user.getPhone());
-        userMapper.update(u);
-        SysResponse sysResponse = SysResponse.buildSuccessResponse(u);
+        SysResponse sysResponse = null;
+        if(u.getPhoneCode().equals(verify_code)){
+            u.setPhone(user.getPhone());
+            userMapper.update(u);
+            sysResponse = SysResponse.buildSuccessResponse(u);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("验证码错误");
+        }
         return sysResponse;
     }
 }

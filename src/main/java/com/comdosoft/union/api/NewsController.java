@@ -178,6 +178,7 @@ public class NewsController {
         		map.put("title", n.getTitle());
         		list.add(map);
         	}
+        	news.setLm3("57");
         	int total = newsService.countByVo(news);
         	sysResponse.setTotal(total);
             sysResponse.setCode(SysResponse.SUCCESS);
