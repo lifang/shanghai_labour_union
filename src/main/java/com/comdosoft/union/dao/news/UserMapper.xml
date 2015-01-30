@@ -30,6 +30,12 @@
 		   where id =#{id}
 	</select>
 	
+	<select id="findByUP" resultMap="user" >
+		SELECT *
+		   FROM users
+		    where phone =#{phone} and  username =#{username}
+	</select>
+	
 	<select id="findByEmail" resultMap="user" >
 		SELECT *
 		   FROM users

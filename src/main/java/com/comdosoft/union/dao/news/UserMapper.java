@@ -18,4 +18,12 @@ public interface UserMapper {
     public void updateCode(User u);
 
     public User findByEmail(String email);
+
+    /**
+     * 根据帐号和手机号重设密码
+     * @param username
+     * @param phone
+     * @return
+     */
+    public User findByUP(String username, String phone);
 }

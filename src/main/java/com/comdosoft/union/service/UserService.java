@@ -65,7 +65,7 @@ public class UserService {
             String code = user.getLabourUnionCode() == null ? "" : user.getLabourUnionCode();
 //            String password = user.getPassword() == null ? "" : user.getPassword();
             String id = user.getId()==null ?"":user.getId().toString();
-            if("" == id){
+            if("".equals(id)){
                 logger.debug("更新用户时丢失id,更新失败");
                 sysResponse = SysResponse.buildExceptionResponse("更新失败");
                 return sysResponse;
@@ -87,9 +87,11 @@ public class UserService {
                 if("" != code){//设置工会号  暂时这么叫
                     user.setLabourUnionCode(code);
                 }
+                userMapper.update(user);
+                sysResponse = SysResponse.buildSuccessResponse(user);
+            }else{
+                sysResponse = SysResponse.buildFailResponse("此用户不存在");   
             }
-            userMapper.update(user);
-            sysResponse = SysResponse.buildSuccessResponse(user);
         }catch(Exception e){
             logger.debug("更新用户出错:"+e);
             sysResponse = SysResponse.buildExceptionResponse("用户更新失败");
@@ -130,7 +132,7 @@ public class UserService {
 
 
     /**
-     * 找回密码
+     * 找回密码    根据用户名和手机号匹配 重设密码
      * @param user
      * @param inputCode
      * @return
@@ -138,11 +140,13 @@ public class UserService {
     public SysResponse findPwd(User user, String inputCode) {
         SysResponse sysResponse = null;
         String newpwd = user.getPassword();
+        String username = user.getUsername();
+        String phone = user.getPhone();
         if(null == newpwd){
             sysResponse = SysResponse.buildFailResponse("请设置新密码");
             return sysResponse;
         }else{
-            user = userMapper.findByPhone(user.getPhone());
+            user = userMapper.findByUP(username,phone);
             if(null !=user){
                 String phoneCode = user.getPhoneCode();
                 if(null != inputCode && ! phoneCode.equals(inputCode)){
@@ -240,12 +244,11 @@ public class UserService {
                 user.setPhone(phone);
                 user.setPhoneCode(code);
                 userMapper.insertCode(user);
-                sysResponse =SysResponse.buildSuccessResponse(code);
             }else{
                 u.setPhoneCode(code);
                 userMapper.updateCode(u);
-                sysResponse =SysResponse.buildFailResponse("手机号已存在,可以按手机号找回密码");
             }
+            sysResponse =SysResponse.buildSuccessResponse(code);
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("验证码发送失败"+e);
@@ -266,12 +269,11 @@ public class UserService {
         String username = user.getUsername();
         String password = user.getPassword();
         String phone = user.getPhone();
-
         if (null != verify_code) {
-            if (null != user.getPhone() || !"".equals(phone)) {
+            if (null != phone || !"".equals(phone)) {
                 User u = userMapper.findByPhone(phone);
                 if (null != u) {
-                    if (null != u.getUsername()) {
+                    if (null != u.getUsername() || !u.getUsername().equals("")) {
                         sysResponse = SysResponse.buildFailResponse("该手机已注册");
                         return sysResponse;
                     } else {
@@ -291,8 +293,11 @@ public class UserService {
                                     return sysResponse;
                                 }
                                 try {
-                                    userMapper.update(user);
-                                    sysResponse = SysResponse.buildSuccessResponse(user);
+                                    u.setUsername(username);
+                                    u.setPassword(password);
+                                    userMapper.update(u);
+                                    sysResponse = SysResponse.buildSuccessResponse(u);
+                                    sysResponse.setMessage("注册成功");
                                 } catch (Exception e) {
                                     logger.debug("注册失败" + e);
                                     sysResponse = SysResponse.buildExceptionResponse("注册失败");

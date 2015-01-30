@@ -29,8 +29,8 @@ public class UserController {
     private UserService userService;
     
     /**
-     * 更换手机发送验证码
-     * @return
+     * 根据手机号 发送验证码
+     * @return 验证码
      */
     @RequestMapping(value = "getPhoneCode" , method = RequestMethod.POST)
     public SysResponse getPhoneCode(String phone){
@@ -73,7 +73,6 @@ public class UserController {
         return sysResponse;
     }
     
-  
     /**
      * 找回密码 
      * @param user
