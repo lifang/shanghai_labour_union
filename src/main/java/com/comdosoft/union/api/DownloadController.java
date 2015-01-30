@@ -49,5 +49,12 @@ public class DownloadController {
         }
         return sysResponse;
     }
+    
+    @RequestMapping(value = "test", method = RequestMethod.GET)
+    public SysResponse test(){
+        logger.debug("get请求测试 .....");
+        SysResponse sysResponse = SysResponse.buildSuccessResponse("测试get请求成功。。。");
+        return sysResponse;
+    }
 
 }

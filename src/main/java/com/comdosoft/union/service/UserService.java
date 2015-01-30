@@ -1,43 +1,22 @@
 package com.comdosoft.union.service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Random;
-
 import javax.annotation.Resource;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.User;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.common.SysUtils;
 import com.comdosoft.union.dao.news.UserMapper;
 
-@SuppressWarnings("deprecation")
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Resource
     private UserMapper userMapper;
 
-    /**
-     * 根据手机号发送验证码
-     * @param phone
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    public String getCode(String phone) throws UnsupportedEncodingException {
-        String code = sendMsg(phone);
-        return code;
-    }
-    
 
     /**
      * 注册
@@ -82,30 +61,32 @@ public class UserService {
         try{
             //根据id更新
             String email = user.getEmail() == null ? "" : user.getEmail();
+            String nickName = user.getNickName() == null ? "" : user.getNickName();
             String code = user.getLabourUnionCode() == null ? "" : user.getLabourUnionCode();
-            String username = user.getUsername() == null ? "" : user.getUsername();
-            String phone = user.getPhone() == null ? "" : user.getPhone();
-            String password = user.getPassword() == null ? "" : user.getPassword();
+//            String password = user.getPassword() == null ? "" : user.getPassword();
             String id = user.getId()==null ?"":user.getId().toString();
-            user = userMapper.findById(Integer.parseInt(id));
-            if("" != email){
-                user.setEmail(email);
-            }
-            if("" != code){
-                user.setLabourUnionCode(code);
-            }
-            if("" != username){
-                user.setUsername(username);
-            }
-            if("" != phone){
-                user.setPhone(phone);
-            }
-            if("" != password){
-                user.setPassword(password);
-            }
             if("" == id){
                 logger.debug("更新用户时丢失id,更新失败");
-                SysResponse.buildExceptionResponse("更新失败");
+                sysResponse = SysResponse.buildExceptionResponse("更新失败");
+                return sysResponse;
+            }
+            user = userMapper.findById(Integer.parseInt(id));
+            if(user != null){
+                String u_email = user.getEmail();
+                if("" != email && !email.equals(u_email)){
+                    User uu = userMapper.findByEmail(email);
+                    if(uu !=null){
+                        sysResponse = SysResponse.buildExceptionResponse("该邮箱已经存在");
+                        return sysResponse;
+                    }
+                    user.setEmail(email);
+                }
+                if(""!=nickName){ //设置匿名
+                    user.setNickName(nickName);
+                }
+                if("" != code){//设置工会号  暂时这么叫
+                    user.setLabourUnionCode(code);
+                }
             }
             userMapper.update(user);
             sysResponse = SysResponse.buildSuccessResponse(user);
@@ -131,103 +112,6 @@ public class UserService {
         }
         return sysResponse;
     }
-    /**
-     * 根据手机号返回验证码
-     * @param phone
-     * @return
-     */
-    public String sendMsg(String phone){
-        String mtUrl="http://esms2.etonenet.com/sms/mt";
-      //操作命令、SP编号、SP密码，必填参数
-        String command = "MT_REQUEST";
-        String spid = "5088";
-        String sppassword = "shzgh123";
-        //sp服务代码，可选参数，默认为 00
-        String spsc = "00";
-        //源号码，可选参数
-        String sa = "10";
-        //目标号码，必填参数
-        String da = "86"+phone;
-        //下行内容以及编码格式，必填参数
-        int dc = 15;
-        
-        char[] randomChar = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        Random random = new Random();
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < 6; i++) {
-            stringBuffer.append(randomChar[Math.abs(random.nextInt()) % randomChar.length]);
-        }
-        String mobilecode = stringBuffer.toString();
-        String sm = encodeHexStr(dc, "您的工会验证代码为 "+mobilecode);//下行内容进行Hex编码，此处dc设为15，即使用GBK编码格式
-
-        //组成url字符串
-        String smsUrl = mtUrl + "?command=" + command + "&spid=" + spid + "&spsc=" + spsc +"&sppassword=" + sppassword +  "&sa=" + sa + "&da=" + da  + "&dc=" + dc+ "&sm=" + sm;
-        logger.debug("smsUrl:"+smsUrl);
-        //发送http请求，并接收http响应
-        String resStr = doGetRequest(smsUrl.toString());
-        logger.debug("smsUrl返回字符串："+resStr);
-        return mobilecode;
-    }
-    
-    /**
-     * 将普通字符串转换成Hex编码字符串
-     * 
-     * @param dataCoding 编码格式，15表示GBK编码，8表示UnicodeBigUnmarked编码，0表示ISO8859-1编码
-     * @param realStr 普通字符串
-     * @return Hex编码字符串
-     * @throws UnsupportedEncodingException 
-     */
-    public static String encodeHexStr(int dataCoding, String realStr) {
-        String hexStr = null;
-        if (realStr != null) {
-            try {
-                if (dataCoding == 15) {
-                    hexStr = new String(Hex.encodeHex(realStr.getBytes("GBK")));
-                } else if ((dataCoding & 0x0C) == 0x08) {
-                    hexStr = new String(Hex.encodeHex(realStr.getBytes("UnicodeBigUnmarked")));
-                } else {
-                    hexStr = new String(Hex.encodeHex(realStr.getBytes("ISO8859-1")));
-                }
-            } catch (UnsupportedEncodingException e) {
-                System.out.println(e.toString());
-            }
-        }
-        return hexStr;
-    }
-    
-    /**
-     * 发送http GET请求，并返回http响应字符串
-     * 
-     * @param urlstr 完整的请求url字符串
-     * @return
-     */
-    @SuppressWarnings({ "rawtypes", "resource" })
-    public static String doGetRequest(String urlstr) {
-        HttpClient client = new DefaultHttpClient();
-        client.getParams().setIntParameter("http.socket.timeout", 10000);
-        client.getParams().setIntParameter("http.connection.timeout", 5000);
-        
-        HttpEntity entity = null;
-        String entityContent = null;
-        try {
-            HttpGet httpGet = new HttpGet(urlstr.toString());
-
-            HttpResponse httpResponse = client.execute(httpGet);
-            entityContent = EntityUtils.toString(httpResponse.getEntity());
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (entity != null) {
-                try {
-                    ((org.apache.http.HttpEntity) entity).consumeContent();
-                } catch (Exception e) {
-                }
-            }
-        }
-        return entityContent;
-    }
-
 
     public User findByPhone(String phone) {
         User u = userMapper.findByPhone(phone);
@@ -244,21 +128,186 @@ public class UserService {
         userMapper.updateCode(u);
     }
 
+
     /**
-     * 根据id 更新手机号
+     * 找回密码
      * @param user
-     * @param verify_code 
+     * @param inputCode
      * @return
      */
-    public SysResponse updatePhone(User user, String verify_code) {
-        User u = userMapper.findById(user.getId());
+    public SysResponse findPwd(User user, String inputCode) {
         SysResponse sysResponse = null;
+        String newpwd = user.getPassword();
+        if(null == newpwd){
+            sysResponse = SysResponse.buildFailResponse("请设置新密码");
+            return sysResponse;
+        }else{
+            user = userMapper.findByPhone(user.getPhone());
+            if(null !=user){
+                String phoneCode = user.getPhoneCode();
+                if(null != inputCode && ! phoneCode.equals(inputCode)){
+                    sysResponse = SysResponse.buildFailResponse("验证码不正确");
+                    return sysResponse;
+                }
+                user.setPassword(newpwd);
+                userMapper.update(user);
+                sysResponse = SysResponse.buildSuccessResponse(user);
+            }else{
+                sysResponse = SysResponse.buildFailResponse("该手机还未注册");
+            }
+        }
+        return sysResponse;
+    }
+
+    /**
+     * 修改密码
+     * @param user
+     * @param newpwd 新密码
+     * @return
+     */
+    public SysResponse changePwd(User user,String newpwd) {
+        SysResponse sysResponse = null;
+        user = userMapper.findById(user.getId());
+        if(user !=null){
+            String oldpwd = user.getPassword();
+            if(null !=newpwd && user.getPassword().equals(oldpwd)){
+                user.setPassword(newpwd);
+                userMapper.update(user);
+                sysResponse = SysResponse.buildSuccessResponse(user);
+            }else{
+                sysResponse = SysResponse.buildFailResponse("密码不正确");
+            }
+        }
+        return sysResponse;
+    }
+
+    /**
+     * 更换手机发送验证码
+     * @param phone
+     * @return
+     */
+    public SysResponse sendCode(String phone) {
+        SysResponse sysResponse = null;
+        try {
+            User u = userMapper.findByPhone(phone);
+            if(null != u){
+                String code = SysUtils.sendPhoneCode(phone);
+                u.setPhoneCode(code);
+                userMapper.updateCode(u);
+                sysResponse =SysResponse.buildSuccessResponse(code);
+            }else{
+                sysResponse =SysResponse.buildFailResponse("此手机还未注册帐号");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.debug("验证码发送失败"+e);
+            sysResponse= SysResponse.buildExceptionResponse("发送失败,请重新发送");
+        }
+        return sysResponse;
+    }
+
+    /**
+     * 更换手机
+     * @param user
+     * @param verify_code
+     * @return
+     */
+    public SysResponse changePhone(User user, String verify_code) {
+        SysResponse sysResponse = null;
+        User u = userMapper.findById(user.getId());
         if(u.getPhoneCode().equals(verify_code)){
             u.setPhone(user.getPhone());
             userMapper.update(u);
             sysResponse = SysResponse.buildSuccessResponse(u);
         }else{
             sysResponse = SysResponse.buildFailResponse("验证码错误");
+        }
+        return sysResponse;
+    }
+
+    /**
+     * 注册发送验证码
+     * @param phone
+     * @param code
+     * @return
+     */
+    public SysResponse registfcode(String phone,String code) {
+        SysResponse sysResponse = null;
+        try {
+            User u = userMapper.findByPhone(phone);
+            if(null == u){
+                User user = new User();
+                user.setPhone(phone);
+                user.setPhoneCode(code);
+                userMapper.insertCode(user);
+                sysResponse =SysResponse.buildSuccessResponse(code);
+            }else{
+                u.setPhoneCode(code);
+                userMapper.updateCode(u);
+                sysResponse =SysResponse.buildFailResponse("手机号已存在,可以按手机号找回密码");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.debug("验证码发送失败"+e);
+            sysResponse= SysResponse.buildExceptionResponse("发送失败,请重新发送");
+        }
+        return sysResponse;
+    }
+
+    /**
+     * 保存注册
+     * 
+     * @param user
+     * @param verify_code
+     * @return
+     */
+    public SysResponse saveRegist(User user, String verify_code) {
+        SysResponse sysResponse = null;
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String phone = user.getPhone();
+
+        if (null != verify_code) {
+            if (null != user.getPhone() || !"".equals(phone)) {
+                User u = userMapper.findByPhone(phone);
+                if (null != u) {
+                    if (null != u.getUsername()) {
+                        sysResponse = SysResponse.buildFailResponse("该手机已注册");
+                        return sysResponse;
+                    } else {
+                        String c = u.getPhoneCode();
+                        if (c.equals(verify_code)) {
+                            if (null == username || username.equals("")) {
+                                sysResponse = SysResponse.buildFailResponse("请填写用户名");
+                                return sysResponse;
+                            }
+                            User uu = new User();
+                            uu = userMapper.findByName(username);
+                            if (null != uu) {
+                                sysResponse = SysResponse.buildFailResponse("用户名已存在");
+                            } else {
+                                if (null == password || password.equals("")) {
+                                    sysResponse = SysResponse.buildFailResponse("请填写密码");
+                                    return sysResponse;
+                                }
+                                try {
+                                    userMapper.update(user);
+                                    sysResponse = SysResponse.buildSuccessResponse(user);
+                                } catch (Exception e) {
+                                    logger.debug("注册失败" + e);
+                                    sysResponse = SysResponse.buildExceptionResponse("注册失败");
+                                }
+                            }
+                        } else {
+                            sysResponse = SysResponse.buildFailResponse("验证码错误");
+                        }
+                    }
+                }
+            } else {
+                sysResponse = SysResponse.buildFailResponse("手机号不能为空");
+            }
+        } else {
+            sysResponse = SysResponse.buildFailResponse("验证码不能为空");
         }
         return sysResponse;
     }

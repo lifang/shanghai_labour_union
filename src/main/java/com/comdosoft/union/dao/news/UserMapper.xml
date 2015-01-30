@@ -30,6 +30,12 @@
 		   where id =#{id}
 	</select>
 	
+	<select id="findByEmail" resultMap="user" >
+		SELECT *
+		   FROM users
+		   where email =#{email}
+	</select>
+	
 	<select id="login" resultMap="user" >
 		SELECT *
 		   FROM users

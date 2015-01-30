@@ -1,7 +1,5 @@
 package com.comdosoft.union.api;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.User;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.common.SysUtils;
 import com.comdosoft.union.service.UserService;
 /**
  * 
@@ -35,38 +34,18 @@ public class UserController {
      */
     @RequestMapping(value = "getPhoneCode" , method = RequestMethod.POST)
     public SysResponse getPhoneCode(String phone){
-        SysResponse sysResponse = null;
-        try {
-            User u = userService.findByPhone(phone);
-            if(null != u){
-                String code = userService.getCode(phone);
-                u.setPhoneCode(code);
-                userService.updateCode(u);
-                sysResponse =SysResponse.buildSuccessResponse(code);
-            }else{
-                sysResponse =SysResponse.buildFailResponse("此手机还未注册帐号");
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            logger.debug("验证码发送失败"+e);
-            sysResponse= SysResponse.buildExceptionResponse("发送失败,请重新发送");
-        }
-        
+        SysResponse sysResponse = userService.sendCode(phone);
         return sysResponse;
     }
     
     /**
      * 更换手机保存
+     * 根据用户id  新的手机号  用户验证码
      * @return
      */
     @RequestMapping(value = "changePhone" , method = RequestMethod.POST)
     public SysResponse changePhone(User user,String verify_code){
-        SysResponse sysResponse = null;
-        if(null != verify_code){
-            sysResponse = userService.updatePhone(user,verify_code);
-        }else{
-            sysResponse = SysResponse.buildFailResponse("验证码不能为空");
-        }
+        SysResponse sysResponse = userService.changePhone(user,verify_code);
         return sysResponse;
     }
     
@@ -76,28 +55,9 @@ public class UserController {
      */
     @RequestMapping(value = "registfcode" , method = RequestMethod.POST)
     public SysResponse registfcode(String phone){
-        logger.debug(phone+ " 注册获取验证码");
-        SysResponse sysResponse = null;
-        try {
-            String code = userService.getCode(phone);
-            User u = userService.findByPhone(phone);
-            if(null == u){
-                User user = new User();
-                user.setPhone(phone);
-                user.setPhoneCode(code);
-                userService.insertCode(user);
-            }else{
-                u.setPhoneCode(code);
-                userService.updateCode(u);
-                // sysResponse =SysResponse.buildFailResponse("手机号已存在");
-            }
-            sysResponse =SysResponse.buildSuccessResponse(code);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            logger.debug("验证码发送失败"+e);
-            sysResponse= SysResponse.buildExceptionResponse("发送失败,请重新发送");
-        }
-        
+        String code = SysUtils.sendPhoneCode(phone);
+        logger.debug(phone+ " 注册获取验证码===>>"+code);
+        SysResponse sysResponse =  userService.registfcode(phone,code);
         return sysResponse;
     }
     
@@ -109,28 +69,7 @@ public class UserController {
      */
     @RequestMapping(value = "regist" , method = RequestMethod.POST)
     public SysResponse regist(User user,String verify_code){
-        SysResponse sysResponse = null;
-        if(null != verify_code){
-            
-            if(null != user.getPhone()){
-                User u = userService.findByPhone(user.getPhone());
-                if(null != u.getUsername()){
-                    sysResponse = SysResponse.buildFailResponse("该手机已注册");
-                    return sysResponse;
-                }else{
-                    String c = u.getPhoneCode();
-                    if(c.equals(verify_code)){
-                        sysResponse = userService.regist(user);
-                    }else{
-                        sysResponse = SysResponse.buildFailResponse("验证码错误");
-                    }
-                }
-            }else{
-                sysResponse = SysResponse.buildFailResponse("手机号不能为空");
-            }
-        }else{
-            sysResponse = SysResponse.buildFailResponse("验证码不能为空");
-        }
+        SysResponse sysResponse = userService.saveRegist(user,verify_code);
         return sysResponse;
     }
     
@@ -139,79 +78,27 @@ public class UserController {
      * 找回密码 
      * @param user
      * @param newpwd    新的密码
-     * @param phoneCode  手机接收到的验证码
      * @param inputCode  输入的验证码
      * @return
      */
     @RequestMapping(value = "findPwd" , method = RequestMethod.POST)
     public SysResponse findPwd(User user,String inputCode){
-        SysResponse sysResponse = null;
-        String newpwd = user.getPassword();
-        if(null == newpwd){
-            sysResponse = SysResponse.buildFailResponse("请设置新密码");
-        }else{
-            user = userService.findByPhone(user.getPhone());
-            if(null !=user){
-                String phoneCode = user.getPhoneCode();
-                if(null != inputCode && ! phoneCode.equals(inputCode)){
-                    sysResponse = SysResponse.buildFailResponse("验证码不正确");
-                    return sysResponse;
-                }
-                user.setPassword(newpwd);
-                userService.update(user);
-                sysResponse = SysResponse.buildSuccessResponse(user);
-            }else{
-                sysResponse = SysResponse.buildFailResponse("该手机还未注册");
-            }
-        }
+        SysResponse sysResponse =  userService.findPwd(user,inputCode);
         return sysResponse;
     }
     
     /**
-     * 更新密码
-     * @param user
-     * @param newpwd    新的密码
-     * @param phoneCode  手机接收到的验证码
-     * @param inputCode  输入的验证码
-     * @return
-     */
-    @RequestMapping(value = "changePwd" , method = RequestMethod.POST)
-    public SysResponse changePwd(User user,String newpwd,String phoneCode,String inputCode){
-        SysResponse sysResponse = null;
-        if(null != inputCode && ! phoneCode.equals(inputCode)){
-            sysResponse = SysResponse.buildFailResponse("验证码不正确");
-        }
-        String oldpwd = user.getPassword();
-        user = userService.findEntityById(user.getId());
-        if(null !=newpwd && user.getPassword().equals(oldpwd)){
-            user.setPassword(newpwd);
-            userService.update(user);
-        }else{
-            sysResponse = SysResponse.buildFailResponse("密码不正确");
-        }
-        return sysResponse;
-    }
-    
-    /**
-     * 修改密码
+     * 修改密码  
      * @param user
      * @param newpwd    新的密码
      * @return
      */
     @RequestMapping(value = "changePassword" , method = RequestMethod.POST)
-    public SysResponse changepassword(User user,String newpwd){
-        SysResponse sysResponse = null;
-        String oldpwd = user.getPassword();
-        user = userService.findEntityById(user.getId());
-        if(null !=newpwd && user.getPassword().equals(oldpwd)){
-            user.setPassword(newpwd);
-            userService.update(user);
-            sysResponse = SysResponse.buildSuccessResponse(user);
-        }else{
-            sysResponse = SysResponse.buildFailResponse("密码不正确");
-        }
+    public SysResponse changePwd(User user,String newpwd){
+        SysResponse sysResponse  = userService.changePwd(user,newpwd);
         return sysResponse;
     }
+    
     /**
      * 根据传入id 及其要更新的参数   更新注册用户
      * @param user

@@ -16,4 +16,6 @@ public interface UserMapper {
     public int insertCode(User user);
 
     public void updateCode(User u);
+
+    public User findByEmail(String email);
 }

@@ -35,8 +35,14 @@ public class ProtectRightController {
 		if(!StringUtils.hasLength(protectRight.getContent())) {
 		    return SysResponse.buildExceptionResponse("内容不能为空");
 		}
-		protectRightService.registProtectRight(protectRight);
-		return SysResponse.buildSuccessResponse(null);
+		SysResponse sysResponse = null;
+		try{
+		    protectRightService.registProtectRight(protectRight);
+		    sysResponse = SysResponse.buildSuccessResponse("登记成功");
+		}catch(Exception e){
+		    sysResponse = SysResponse.buildFailResponse("登记失败,请重新再试");
+		}
+		return sysResponse;
 	}
 
 }

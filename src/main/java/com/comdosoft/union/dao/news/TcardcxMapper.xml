@@ -37,6 +37,7 @@
 		where  t.id=#{id}
 	</select>
 	
+	<!-- 根据身份证号搜索 -->
 	<select id="search" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id

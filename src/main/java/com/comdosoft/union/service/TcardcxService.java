@@ -39,7 +39,7 @@ public class TcardcxService {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
-        if(null != name){
+        if(null != name || !"".equals(name)){
             return tcardcxMapper.search(new RowBounds(offset, limit),name);
         }
         return tcardcxMapper.searchAll(new RowBounds(offset, limit));

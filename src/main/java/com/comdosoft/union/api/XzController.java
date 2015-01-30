@@ -133,6 +133,7 @@ public class XzController {
         if(xzTypeList.size()>0){
             sysResponse.setCode(SysResponse.SUCCESS);
             sysResponse.setMessage("请求成功");
+            sysResponse.setTotal(xzTypeList.size());
             sysResponse.setResult(xzTypeList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
