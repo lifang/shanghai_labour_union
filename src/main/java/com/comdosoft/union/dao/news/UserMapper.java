@@ -25,5 +25,5 @@ public interface UserMapper {
      * @param phone
      * @return
      */
-    public User findByUP(String username, String phone);
+    public User findByUP(User user);
 }

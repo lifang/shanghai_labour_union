@@ -1,6 +1,8 @@
 package com.comdosoft.union.api;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comdosoft.union.bean.app.User;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.common.SysToken;
 import com.comdosoft.union.common.SysUtils;
 import com.comdosoft.union.service.UserService;
 /**
@@ -44,8 +47,13 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "changePhone" , method = RequestMethod.POST)
-    public SysResponse changePhone(User user,String verify_code){
-        SysResponse sysResponse = userService.changePhone(user,verify_code);
+    public SysResponse changePhone(User user,String verify_code,String token,HttpSession session){
+        SysResponse sysResponse = null;
+        if(SysToken.isTokenValid(token, user.getId(), session)){
+            sysResponse = userService.changePhone(user,verify_code);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("连接超时,请重新登录");
+        }
         return sysResponse;
     }
     
@@ -68,8 +76,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "regist" , method = RequestMethod.POST)
-    public SysResponse regist(User user,String verify_code){
-        SysResponse sysResponse = userService.saveRegist(user,verify_code);
+    public SysResponse regist(User user,String verify_code,HttpSession session){
+        SysResponse sysResponse = userService.saveRegist(user,verify_code,session);
         return sysResponse;
     }
     
@@ -93,8 +101,13 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "changePassword" , method = RequestMethod.POST)
-    public SysResponse changePwd(User user,String newpwd){
-        SysResponse sysResponse  = userService.changePwd(user,newpwd);
+    public SysResponse changePwd(User user,String newpwd,String token,HttpSession session){
+        SysResponse sysResponse = null;
+        if(SysToken.isTokenValid(token, user.getId(), session)){
+            sysResponse = userService.changePwd(user,newpwd);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("连接超时,请重新登录");
+        }
         return sysResponse;
     }
     
@@ -104,8 +117,13 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "update" , method = RequestMethod.POST)
-    public SysResponse updateUser(User user){
-        SysResponse sysResponse = userService.update(user);
+    public SysResponse updateUser(User user,String token,HttpSession session){
+        SysResponse sysResponse = null;
+        if(SysToken.isTokenValid(token, user.getId(), session)){
+            sysResponse = userService.update(user);
+        }else{
+            sysResponse = SysResponse.buildFailResponse("连接超时,请重新登录");
+        }
         return sysResponse;
     }
     /**
@@ -114,9 +132,20 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "findById" , method = RequestMethod.POST)
-    public SysResponse findById(User user){
-        user = userService.findEntityById(user.getId());
-        SysResponse sysResponse = SysResponse.buildSuccessResponse(user);
+    public SysResponse findById(User user,String token,HttpSession session){
+        SysResponse sysResponse = null;
+        if(SysToken.isTokenValid(token, user.getId(), session)){
+            user = userService.findEntityById(user.getId());
+            if(null != user){
+                user.setPassword(null);
+                user.setPhoneCode(null);
+                sysResponse = SysResponse.buildSuccessResponse(user);
+            }else{
+                sysResponse = SysResponse.buildFailResponse("没有找到该用户");
+            }
+        }else{
+            sysResponse = SysResponse.buildFailResponse("连接超时,请重新登录");
+        }
         return sysResponse;
     }
     /**
@@ -125,8 +154,23 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "login" , method = RequestMethod.POST)
-    public SysResponse login(User user){
-        SysResponse sysResponse = userService.login(user);
+    public SysResponse login(User user,HttpServletRequest request){
+        SysResponse sysResponse = userService.login(user,request);
+        return sysResponse;
+    }
+    
+    @RequestMapping(value = "loginOut" , method = RequestMethod.POST)
+    public SysResponse loginOut(String token, HttpSession session){
+        SysResponse sysResponse = new SysResponse();
+        try {
+            SysToken.removeToken(token, session);
+            sysResponse.setMessage("退成成功");
+            sysResponse.setCode(0);
+        } catch (Exception e) {
+            logger.error("用户退出失败", e);
+            sysResponse.setCode(SysResponse.EXCEPTION);
+            sysResponse.setMessage("用户退出失败:系统异常");
+        }
         return sysResponse;
     }
 }

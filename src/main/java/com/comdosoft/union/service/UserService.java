@@ -1,6 +1,8 @@
 package com.comdosoft.union.service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.comdosoft.union.bean.app.User;
 import com.comdosoft.union.common.SysResponse;
+import com.comdosoft.union.common.SysToken;
 import com.comdosoft.union.common.SysUtils;
 import com.comdosoft.union.dao.news.UserMapper;
 
@@ -88,6 +91,8 @@ public class UserService {
                     user.setLabourUnionCode(code);
                 }
                 userMapper.update(user);
+                user.setPassword(null);
+                user.setPhoneCode(null);
                 sysResponse = SysResponse.buildSuccessResponse(user);
             }else{
                 sysResponse = SysResponse.buildFailResponse("此用户不存在");   
@@ -104,11 +109,17 @@ public class UserService {
         return user;
     }
 
-    public SysResponse login(User user) {
+    public SysResponse login(User user, HttpServletRequest request) {
         User u = userMapper.login(user);
         SysResponse sysResponse =null;
         if(null !=u){
+            u.setPassword(null);
+            u.setPhoneCode(null);
             sysResponse = SysResponse.buildSuccessResponse(u);
+            int id = u.getId();
+            HttpSession session = request.getSession();
+            String token = SysToken.getNewToken(session, id);
+            sysResponse.setToken(token);
         }else{
             sysResponse = SysResponse.buildFailResponse("用户名或密码错误");
         }
@@ -140,22 +151,20 @@ public class UserService {
     public SysResponse findPwd(User user, String inputCode) {
         SysResponse sysResponse = null;
         String newpwd = user.getPassword();
-        String username = user.getUsername();
-        String phone = user.getPhone();
         if(null == newpwd){
             sysResponse = SysResponse.buildFailResponse("请设置新密码");
             return sysResponse;
         }else{
-            user = userMapper.findByUP(username,phone);
-            if(null !=user){
-                String phoneCode = user.getPhoneCode();
+           User find_user = userMapper.findByUP(user);
+            if(null !=find_user){
+                String phoneCode = find_user.getPhoneCode();
                 if(null != inputCode && ! phoneCode.equals(inputCode)){
                     sysResponse = SysResponse.buildFailResponse("验证码不正确");
                     return sysResponse;
                 }
-                user.setPassword(newpwd);
-                userMapper.update(user);
-                sysResponse = SysResponse.buildSuccessResponse(user);
+                find_user.setPassword(newpwd);
+                userMapper.update(find_user);
+                sysResponse = SysResponse.buildSuccessResponse(find_user);
             }else{
                 sysResponse = SysResponse.buildFailResponse("该手机还未注册");
             }
@@ -262,9 +271,10 @@ public class UserService {
      * 
      * @param user
      * @param verify_code
+     * @param session 
      * @return
      */
-    public SysResponse saveRegist(User user, String verify_code) {
+    public SysResponse saveRegist(User user, String verify_code, HttpSession session) {
         SysResponse sysResponse = null;
         String username = user.getUsername();
         String password = user.getPassword();
@@ -273,10 +283,8 @@ public class UserService {
             if (null != phone || !"".equals(phone)) {
                 User u = userMapper.findByPhone(phone);
                 if (null != u) {
-                    if (null != u.getUsername() || !u.getUsername().equals("")) {
-                        sysResponse = SysResponse.buildFailResponse("该手机已注册");
-                        return sysResponse;
-                    } else {
+                    String u_username = u.getUsername();
+                    if (u_username == null || u_username.equals("")) {
                         String c = u.getPhoneCode();
                         if (c.equals(verify_code)) {
                             if (null == username || username.equals("")) {
@@ -296,8 +304,12 @@ public class UserService {
                                     u.setUsername(username);
                                     u.setPassword(password);
                                     userMapper.update(u);
+                                    u.setPassword(null);
+                                    u.setPhoneCode(null);
                                     sysResponse = SysResponse.buildSuccessResponse(u);
                                     sysResponse.setMessage("注册成功");
+                                    String token = SysToken.getNewToken(session, u.getId());
+                                    sysResponse.setToken(token);
                                 } catch (Exception e) {
                                     logger.debug("注册失败" + e);
                                     sysResponse = SysResponse.buildExceptionResponse("注册失败");
@@ -306,6 +318,9 @@ public class UserService {
                         } else {
                             sysResponse = SysResponse.buildFailResponse("验证码错误");
                         }
+                    } else {
+                        sysResponse = SysResponse.buildFailResponse("该手机已注册");
+                        return sysResponse;
                     }
                 }
             } else {

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 /**
@@ -15,7 +17,7 @@ import org.springframework.util.StringUtils;
  *
  */
 public class SysToken {
-
+    private static final Logger logger = LoggerFactory.getLogger(SysToken.class);
     private static final String TOKEN_LIST_NAME = "tokenList";
 
     /**
@@ -68,6 +70,7 @@ public class SysToken {
      * @param session
      */
     public static void removeToken(String token, HttpSession session) {
+        logger.debug("token===>>"+token);
         List<String> tokenList = getTokenList(session);
         if (tokenList.contains(token)) {
             tokenList.remove(token);
@@ -126,6 +129,7 @@ public class SysToken {
      */
     private static boolean isTokenExpired(String token_in, int id_in) {
         int id_old = Integer.parseInt(token_in.substring(token_in.indexOf(SEGMENTATION_MARK) + 1));
+        logger.debug("token ==>>id_old==>>"+id_old+"   id_in>>>"+id_in);
         // String tokenGenerateTime_old = token_in.substring(0, token_in.indexOf(SEGMENTATION_MARK));
         // String token_new = generateToken(id_in);
         // String tokenGenerateTime_new = token_new.substring(0, token_in.indexOf(SEGMENTATION_MARK));
