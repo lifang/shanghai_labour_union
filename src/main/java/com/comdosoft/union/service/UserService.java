@@ -50,6 +50,8 @@ public class UserService {
                 uu.setUsername(user.getUsername());
                 uu.setPassword(user.getPassword());
                 userMapper.update(uu);
+                uu.setPassword(null);
+                uu.setPhoneCode(null);
                 sysResponse = SysResponse.buildSuccessResponse(uu);
             }catch(Exception e){
                 logger.debug("注册失败"+e);
@@ -164,6 +166,8 @@ public class UserService {
                 }
                 find_user.setPassword(newpwd);
                 userMapper.update(find_user);
+                find_user.setPassword(null);
+                find_user.setPhoneCode(null);
                 sysResponse = SysResponse.buildSuccessResponse(find_user);
             }else{
                 sysResponse = SysResponse.buildFailResponse("该手机还未注册");
@@ -186,6 +190,8 @@ public class UserService {
             if(null !=newpwd && user.getPassword().equals(oldpwd)){
                 user.setPassword(newpwd);
                 userMapper.update(user);
+                user.setPassword(null);
+                user.setPhoneCode(null);
                 sysResponse = SysResponse.buildSuccessResponse(user);
             }else{
                 sysResponse = SysResponse.buildFailResponse("密码不正确");
@@ -231,6 +237,8 @@ public class UserService {
         if(u.getPhoneCode().equals(verify_code)){
             u.setPhone(user.getPhone());
             userMapper.update(u);
+            u.setPassword(null);
+            u.setPhoneCode(null);
             sysResponse = SysResponse.buildSuccessResponse(u);
         }else{
             sysResponse = SysResponse.buildFailResponse("验证码错误");
