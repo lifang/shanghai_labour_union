@@ -112,3 +112,7 @@ CREATE TABLE `xz_type` (
   `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+alter table zpdw add union_aboue varchar(20);
+alter table zpdw add tel varchar(20);
+alter table zpzw add job_detail varchar(20);

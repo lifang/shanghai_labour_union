@@ -8,15 +8,15 @@
 	<resultMap type="com.comdosoft.union.bean.app.RecruitUnit" id="recruitUnit">
 		<id property="id" column="pid" />
 		<result property="dwmc" column="dwmc"/>
-		<result property="dwjs" column="dwjs"/>
-		<result property="lxfs" column="lxfs"/>
+		<result property="dwjs" column="union_about"/>
+		<result property="lxfs" column="tel"/>
 		<result property="locate" column="locate"/>
 		<association property="sshy" javaType="com.comdosoft.union.bean.app.RecruitIndustry" resultMap="recruitIndustry" />
 	</resultMap>
 	<resultMap id="recruitPosition" type="com.comdosoft.union.bean.app.RecruitPosition">
 		<id property="id" column="id"/>
 		<result property="zwmc" column="zwmc" />
-		<result property="zwms" column="zwms" />
+		<result property="zwms" column="job_detail" />
 		<result property="sh" column="sh" />
 		<result property="rs" column="rs" />
 		<association property="dwid" javaType="com.comdosoft.union.bean.app.RecruitUnit" resultMap="recruitUnit" />
@@ -28,7 +28,7 @@
 		   left join zphy r on r.id = p.sshy
 		   <where>
 		   	<if test="q !=null">
-		   		z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%"
+		   		z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.locate like "%"#{q}"%"
 		   	</if>
 		   	<if test="job_type !=null">
 		   		and  r.hymc like #{job_type}"%"
@@ -44,7 +44,7 @@
 	</select>
 
 	<select id="findNewJob" resultMap="recruitPosition" >
-		SELECT z.id, z.zwms ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.dwjs,p.lxfs,p.sshy,p.locate,r.id as rid,r.hymc
+		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
 		   FROM zpzw z left join zpdw p on z.dwid=p.id 
 		   left join zphy r on r.id = p.sshy
 		   order by id desc
@@ -52,7 +52,7 @@
 	</select>
 	
 	<select id="findById" resultMap="recruitPosition" >
-		SELECT z.id, z.zwms ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.dwjs,p.lxfs,p.sshy,p.locate,r.id as rid,r.hymc
+		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
 		   FROM zpzw z left join zpdw p on z.dwid=p.id 
 		   left join zphy r on r.id = p.sshy
 		   <where>
@@ -61,7 +61,7 @@
 	</select>
 	
 	<select id="searchJob" resultMap="recruitPosition" >
-		SELECT z.id, z.zwms ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.dwjs,p.lxfs,p.sshy,p.locate,r.id as rid,r.hymc
+		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
 		   FROM zpzw z left join zpdw p on p.id =z.dwid 
 		   left join zphy r on r.id = p.sshy
 		   <where>
