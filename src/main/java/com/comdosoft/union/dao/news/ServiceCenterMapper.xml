@@ -8,7 +8,7 @@
 
 	<select id="pageByBs" resultType="com.comdosoft.union.bean.app.ServiceCenter">
 		SELECT
-		  id,name,addr,tel
+		  id,name,addr,tel,worktime
 		FROM
 		  map
 		WHERE bs=#{param1}
@@ -18,7 +18,7 @@
 	
 	<select id="find" resultType="com.comdosoft.union.bean.app.ServiceCenter">
 		SELECT
-		  id,name,addr,tel
+		  id,name,addr,tel,worktime
 		FROM
 		  map
 		WHERE id=#{id}

@@ -11,8 +11,23 @@ public class ServiceCenter {
 	private String name;
 	private String addr;
 	private String tel;
+	private String worktime;
 	
-	public Integer getId() {
+	/**  
+     * 获取 worktime  
+     * @return worktime
+     */
+    public String getWorktime() {
+        return worktime;
+    }
+    /**  
+     * 设置 worktime  
+     * @param worktime
+     */
+    public void setWorktime(String worktime) {
+        this.worktime = worktime;
+    }
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
