@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comdosoft.union.dao.news.CityMapper">
+	<resultMap id="city" type="com.comdosoft.union.bean.City">
+		<id property="id" column="id"/>
+		<result property="area_id" column="AREA_ID" />
+		<result property="area_sub_id" column="AREA_SUB_ID" />
+		<result property="area_name" column="AREA_NAME" />
+	</resultMap>
+	
+	<select id="findAll" resultMap="city" >
+		SELECT *
+		   FROM city
+	</select>
+	<select id="findAllParent" resultMap="city" >
+		SELECT *
+		   FROM city 
+		where IFNULL(AREA_SUB_ID ,0)=0
+	</select>
+	
+	 <select id="findAllChildren" resultMap="city" >
+		SELECT *
+		   FROM city
+		where area_sub_id =#{area_id}
+	</select>
+ 
+</mapper>

@@ -157,8 +157,8 @@ public class MerchantController {
                     map.put("id", merchant.getId().toString());
                     map.put("name", merchant.getDwmc());
                     map.put("addr", merchant.getSymd());
-                    map.put("tel", merchant.getLxfs());
-                    map.put("about", merchant.getDwjs());//单位介绍
+                    map.put("tel", merchant.getTel());
+                    map.put("about", merchant.getYhhd1());//单位介绍
                 sysResponse.setResult(map);
             }else{
                 sysResponse.setCode(SysResponse.FAILURE);
