@@ -158,7 +158,7 @@ public class MerchantController {
                     map.put("name", merchant.getDwmc());
                     map.put("addr", merchant.getSymd());
                     map.put("tel", merchant.getTel());
-                    map.put("about", merchant.getYhhd1());//单位介绍
+                    map.put("about", merchant.getAbout());//单位介绍
                 sysResponse.setResult(map);
             }else{
                 sysResponse.setCode(SysResponse.FAILURE);
@@ -186,8 +186,8 @@ public class MerchantController {
                 map.put("addr", mer.getSymd());
                 if(null !=typeId){
                     map.put("tel", mer.getTel());
-                    map.put("about", mer.getYhhd1());//简介
-                    map.put("about_detail", mer.getYhhd());//简介详情
+                    map.put("about", mer.getAbout());//简介
+                    map.put("about_detail", mer.getAbout_detail());//简介详情
                 }
                 map.put("logo", mer.getLogoPath());//logo
                 alList.add(map);

@@ -71,7 +71,37 @@ public class Merchant implements Serializable {
      */
     private String tel;//代替 lxfs
     private String logoPath;//logo图片地址
+    private String about;
+    private String about_detail;
     
+    /**  
+     * 获取 about  
+     * @return about
+     */
+    public String getAbout() {
+        return about;
+    }
+    /**  
+     * 设置 about  
+     * @param about
+     */
+    public void setAbout(String about) {
+        this.about = about;
+    }
+    /**  
+     * 获取 about_detail  
+     * @return about_detail
+     */
+    public String getAbout_detail() {
+        return about_detail;
+    }
+    /**  
+     * 设置 about_detail  
+     * @param about_detail
+     */
+    public void setAbout_detail(String about_detail) {
+        this.about_detail = about_detail;
+    }
     /**  
      * 获取 logoPath  
      * @return logoPath

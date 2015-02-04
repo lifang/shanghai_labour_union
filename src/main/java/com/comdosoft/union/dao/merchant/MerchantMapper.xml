@@ -20,6 +20,8 @@
 		<result property="yhm" column="yhm" />
 		<result property="tel" column="tel" />
 		<result property="logoPath" column="logo_path"/>
+		<result property="about" column="about"/>
+		<result property="about" column="about_detail"/>
 		<!-- <result property="logo" column="logo"  javaType="byte[]" jdbcType="BLOB" /> -->
 		<association property="sshy" javaType="com.comdosoft.union.bean.app.MerchantType" resultMap="merTypeResult" />
 	</resultMap>
