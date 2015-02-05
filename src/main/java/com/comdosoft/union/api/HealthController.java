@@ -93,19 +93,21 @@ public class HealthController {
     @RequestMapping(value = "findHospital", method = RequestMethod.POST)
     public SysResponse findHospital(@RequestParam(value = "phone", required = false) String phone,
                                     @RequestParam(value = "offset", required = false) String offset, 
+                                    @RequestParam(value = "pageSize", required = false) String pageSize, 
                                     @RequestParam(value = "keyword", required = false) String keyword, 
                                     HttpServletRequest request) throws ClassNotFoundException, Exception, Exception{
         SysResponse sysResponse = new SysResponse();
-//        try{
-            Map<String, Object> map1 = getAll("20001",phone, offset, keyword); 
+        
+        try{
+            Map<String, Object> map1 = getAll("20001",phone, offset, keyword,pageSize); 
             sysResponse = getHospital(map1);
             return sysResponse;
-//        }catch(Exception e){
-//            logger.debug("findHospital 出错==》"+e);
-//            sysResponse.setCode(-1);;
-//            sysResponse.setMessage("缺少必要参数");
-//            return sysResponse;
-//        }
+        }catch(Exception e){
+            logger.debug("findHospital 出错==》"+e);
+            sysResponse.setCode(-1);;
+            sysResponse.setMessage("缺少必要参数");
+            return sysResponse;
+        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -166,11 +168,12 @@ public class HealthController {
     @RequestMapping(value = "findSection", method = RequestMethod.POST)
     public SysResponse findSection(@RequestParam(value = "phone", required = false) String phone,
                                     @RequestParam(value = "offset", required = false) String offset, 
+                                    @RequestParam(value = "pageSize", required = false) String pageSize, 
                                     @RequestParam(value = "keyword", required = false) String keyword, 
                                     HttpServletRequest request) throws Exception{
         SysResponse sysResponse = new SysResponse();
         try{
-            Map<String, Object> map1 = getAll("20002",phone, offset, keyword); 
+            Map<String, Object> map1 = getAll("20002",phone, offset, keyword,pageSize); 
             sysResponse = getSection(map1);
             return sysResponse;
         }catch(Exception e){
@@ -240,13 +243,14 @@ public class HealthController {
     @RequestMapping(value = "findSectionByHospitalId", method = RequestMethod.POST)
     public SysResponse findSectionByHospitalId(@RequestParam(value = "phone", required = false) String phone,
                                    @RequestParam(value = "offset", required = false) String offset, 
+                                   @RequestParam(value = "pageSize", required = false) String pageSize, 
                                    @RequestParam(value = "hospitalid", required = false) String hospitalid, 
                                    @RequestParam(value = "cpid", required = false) String cpid, 
                                    HttpServletRequest request) throws Exception{
         SysResponse sysResponse = new SysResponse();
         Map<String, Object> map1 = null; 
         try{
-            map1 = getSection("20003",phone, offset, hospitalid,cpid); 
+            map1 = getSection("20003",phone, offset, hospitalid,cpid,pageSize); 
             sysResponse = getSection(map1);
         }catch(Exception e){
             logger.debug("出错==》"+e);
@@ -269,12 +273,13 @@ public class HealthController {
     @RequestMapping(value = "findDoctor", method = RequestMethod.POST)
     public SysResponse findSearchDoctor(@RequestParam(value = "phone", required = false) String phone,
                                                @RequestParam(value = "offset", required = false) String offset, 
+                                               @RequestParam(value = "pageSize", required = false) String pageSize, 
                                                @RequestParam(value = "keyword", required = false) String keyword, 
                                                HttpServletRequest request) throws Exception{
         SysResponse sysResponse = new SysResponse();
         Map<String, Object> map1 = null; 
         try{
-            map1 = getAll("20004",phone, offset, keyword); 
+            map1 = getAll("20004",phone, offset, keyword,pageSize); 
             sysResponse = getSearchDoctor(map1);
         }catch(Exception e){
             logger.debug("出错==》"+e);
@@ -385,6 +390,7 @@ public class HealthController {
     @RequestMapping(value = "findDoctorByDeptId", method = RequestMethod.POST)
     public SysResponse findDoctorByDeptId(@RequestParam(value = "phone", required = false) String phone,
                                    @RequestParam(value = "offset", required = false) String offset, 
+                                   @RequestParam(value = "pageSize", required = false) String pageSize, 
                                    @RequestParam(value = "hospitalid", required = false) String hospitalid, 
                                    @RequestParam(value = "deptid", required = false) String deptid, 
                                    @RequestParam(value = "cpid", required = false) String cpid, 
@@ -392,7 +398,7 @@ public class HealthController {
         SysResponse sysResponse = new SysResponse();
         Map<String, Object> map1 = null; 
         try{
-            map1 = getDoctor("20005",phone, offset, hospitalid,cpid,deptid); 
+            map1 = getDoctor("20005",phone, offset, hospitalid,cpid,deptid,pageSize); 
             sysResponse = getDoctor(map1);
             return sysResponse;
         }catch(Exception e){
@@ -414,10 +420,11 @@ public class HealthController {
      * @return
      * @throws Exception 
      */
-   private Map<String, Object> getDoctor(String fun, String phone, String offset, String hospitalid, String cpid, String deptid) throws Exception {
+   private Map<String, Object> getDoctor(String fun, String phone, String offset, String hospitalid, String cpid, String deptid,String pageSize) throws Exception {
        if (null == phone)  phone = "0";
        if (null == offset) offset = "0";
-       String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&deptid="+deptid+"&currentpage="+offset+"&pagesize=10";
+       if (null == pageSize) pageSize = "2";
+       String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&deptid="+deptid+"&currentpage="+offset+"&pagesize="+pageSize;
        String sign = MD5Utils.MD5(sid);
        String src = sid+"&sign="+sign;
        String encode = MD5Utils.AES(src, S_KEY);
@@ -438,10 +445,11 @@ public class HealthController {
     * @return
     * @throws Exception
     */
-    private Map<String, Object> getSection(String fun, String phone, String offset, String hospitalid, String cpid) throws Exception {
+    private Map<String, Object> getSection(String fun, String phone, String offset, String hospitalid, String cpid,String pageSize) throws Exception {
         if (null == phone)  phone = "0";
         if (null == offset) offset = "0";
-        String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&currentpage="+offset+"&pagesize=10";
+        if (null == pageSize) pageSize = "2";
+        String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&currentpage="+offset+"&pagesize="+pageSize;
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
         String encode = MD5Utils.AES(src, S_KEY);
@@ -452,11 +460,12 @@ public class HealthController {
         return map1;
     }
 
-    private Map<String, Object> getAll(String fun,String phone, String offset, String keyword) throws Exception, IOException, ClassNotFoundException {
+    private Map<String, Object> getAll(String fun,String phone, String offset, String keyword,String pageSize) throws Exception, IOException, ClassNotFoundException {
         if (null == phone)  phone = "0";
         if (null == offset) offset = "0";
+        if (null == pageSize) pageSize = "2";
         if(null == keyword) keyword="";
-        String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&keyword="+keyword+"&currentpage="+offset+"&pagesize=10";
+        String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&keyword="+keyword+"&currentpage="+offset+"&pagesize="+pageSize;
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
         String encode = MD5Utils.AES(src, S_KEY);
