@@ -33,9 +33,10 @@ public class MerchantService {
             offset = 1;  
         offset = (offset-1)*10;
         if(null == merType_id){
-            return merchantMapper.findAllMerchants(new RowBounds(offset, limit)); 
+            return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),1);
+        }else{
+            return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),merType_id);
         }
-        return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),merType_id);
     }
     
     public int countByVo(MerchantType merchantType){

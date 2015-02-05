@@ -45,7 +45,7 @@ public class MerchantController {
      * @return
      */
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
-    public SysResponse findAllMerchants(Merchant merchant,String offset,String typeId) {
+    public SysResponse findAllMerchants(String offset,String typeId) {
         SysResponse sysResponse = new SysResponse();
         if(null == offset){
             offset = "0";
@@ -65,6 +65,7 @@ public class MerchantController {
         }else{
             merType_id = 1;
         }
+        
         List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merType_id);
         sysResponse = putData(sysResponse, merchants,typeId);
         return sysResponse;
@@ -184,11 +185,9 @@ public class MerchantController {
                 map.put("id", mer.getId().toString());
                 map.put("name", mer.getDwmc());
                 map.put("addr", mer.getSymd());
-                if(null !=typeId){
-                    map.put("tel", mer.getTel());
-                    map.put("about", mer.getAbout());//简介
-                    map.put("about_detail", mer.getAbout_detail());//简介详情
-                }
+                map.put("tel", mer.getTel());
+                map.put("about", mer.getAbout());//简介
+                map.put("about_detail", mer.getAbout_detail());//简介详情
                 map.put("logo", mer.getLogoPath());//logo
                 alList.add(map);
             }

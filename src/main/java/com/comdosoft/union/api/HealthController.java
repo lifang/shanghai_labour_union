@@ -86,24 +86,26 @@ public class HealthController {
      * @param keyword
      * @param request
      * @return
+     * @throws Exception 
+     * @throws ClassNotFoundException 
      * @throws Exception
      */
     @RequestMapping(value = "findHospital", method = RequestMethod.POST)
     public SysResponse findHospital(@RequestParam(value = "phone", required = false) String phone,
                                     @RequestParam(value = "offset", required = false) String offset, 
                                     @RequestParam(value = "keyword", required = false) String keyword, 
-                                    HttpServletRequest request){
+                                    HttpServletRequest request) throws ClassNotFoundException, Exception, Exception{
         SysResponse sysResponse = new SysResponse();
-        try{
+//        try{
             Map<String, Object> map1 = getAll("20001",phone, offset, keyword); 
             sysResponse = getHospital(map1);
             return sysResponse;
-        }catch(Exception e){
-            logger.debug("findHospital 出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
-        }
+//        }catch(Exception e){
+//            logger.debug("findHospital 出错==》"+e);
+//            sysResponse.setCode(-1);;
+//            sysResponse.setMessage("缺少必要参数");
+//            return sysResponse;
+//        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -124,13 +126,16 @@ public class HealthController {
                   for (Object oo : map2.entrySet()) { 
                     Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
                     if(en.getKey().equals("hospitalid")){
-                        map_obj.put("hospitalid", en.getValue());
+                        String id = (String) en.getValue();
+                        map_obj.put("hospitalid", id);
                     }
                     if(en.getKey().equals("hospitalleve")){
-                        map_obj.put("hospitalleve", en.getValue());
+                        String lev = (String) en.getValue();
+                        map_obj.put("hospitalleve", lev);
                     }
                     if(en.getKey().equals("hospitalname")){
-                        map_obj.put("hospitalname", en.getValue());
+                        String name = (String) en.getValue();
+                        map_obj.put("hospitalname", name);
                     }
                     if(en.getKey().equals("cpid")){
                         map_obj.put("cpid", en.getValue());
@@ -194,16 +199,19 @@ public class HealthController {
                   for (Object oo : map2.entrySet()) { 
                     Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
                     if(en.getKey().equals("deptname")){
-                        map_obj.put("deptname", en.getValue());
+                        String deptname =  (String) en.getValue();
+                        map_obj.put("deptname", deptname);
                     }
                     if(en.getKey().equals("deptnum")){
-                        map_obj.put("deptnum", en.getValue());
+                        String deptnum = (String) en.getValue();
+                        map_obj.put("deptnum", deptnum);
                     }
                     if(en.getKey().equals("cpid")){
                         map_obj.put("cpid", en.getValue());
                     }
                     if(en.getKey().equals("deptid")){
-                        map_obj.put("deptid", en.getValue());
+                        String deptid = (String) en.getValue();
+                        map_obj.put("deptid", deptid);
                     }
                   }
                   list_obj.add(map_obj);
@@ -295,7 +303,7 @@ public class HealthController {
                   for (Object oo : map2.entrySet()) { 
                     Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
                     if(en.getKey().equals("docname")){
-                        map_obj.put("docname", en.getValue());
+                        map_obj.put("docname", (String)en.getValue());
                     }
                   }
                   list_obj.add(map_obj);
@@ -472,4 +480,5 @@ public class HealthController {
         sysResponse.setCode(0);
         return sysResponse;
     }
+    
 }
