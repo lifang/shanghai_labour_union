@@ -95,8 +95,7 @@ public class HealthController {
     public SysResponse findHospital(@RequestParam(value = "phone", required = false) String phone,
                                     @RequestParam(value = "offset", required = false) String offset, 
                                     @RequestParam(value = "pageSize", required = false) String pageSize, 
-                                    @RequestParam(value = "keyword", required = false) String keyword, 
-                                    HttpServletRequest request) {
+                                    @RequestParam(value = "keyword", required = false) String keyword) {
         SysResponse sysResponse = new SysResponse();
         try{
             Map<String, Object> map1 = getAll("20001",phone, offset, keyword,pageSize); 

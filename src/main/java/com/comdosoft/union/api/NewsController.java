@@ -179,6 +179,7 @@ public class NewsController {
             }
         }
         logger.debug("法规查询==》"+title);
+        news.setTitle(title);
         List<News> newsList = newsService.search(Integer.parseInt(offset),limit,title);
         if(newsList.size()>0){
         	HashMap<String,String> map = null;
