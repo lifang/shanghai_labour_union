@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -168,7 +170,16 @@ public class NewsController {
                 return sysResponse;
             }
         }
-        List<News> newsList = newsService.search(Integer.parseInt(offset),limit,news.getTitle());
+        String title = news.getTitle();
+        if(null != title){
+            try {
+                title = URLDecoder.decode(title, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.debug("法规查询==》"+title);
+        List<News> newsList = newsService.search(Integer.parseInt(offset),limit,title);
         if(newsList.size()>0){
         	HashMap<String,String> map = null;
         	ArrayList<Object> list = new ArrayList<Object>();

@@ -41,6 +41,9 @@
 		   		or p.locate like #{job_locate2}"%" 
 		   		</if>
 		   </where>
+		   
+		   
+		   
 	</select>
 
 	<select id="findNewJob" resultMap="recruitPosition" >
@@ -69,7 +72,7 @@
 		   		 r.hymc like #{job_type}"%"
 		   	</if>
 		   	<if test="q !=null">
-		   	and	(z.zwms like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%")
+		   	and	(z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%")
 		   	</if>
 		   	<if test="job_locate1 !=null">
 		   		and p.locate like #{job_locate1}"%" 

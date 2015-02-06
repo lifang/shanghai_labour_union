@@ -98,9 +98,9 @@ public class HealthController {
                                     @RequestParam(value = "keyword", required = false) String keyword, 
                                     HttpServletRequest request) {
         SysResponse sysResponse = new SysResponse();
-        
         try{
             Map<String, Object> map1 = getAll("20001",phone, offset, keyword,pageSize); 
+            logger.debug("医院查找 map==>>"+map1);
             sysResponse = getHospital(map1);
             return sysResponse;
         }catch(Exception e){
@@ -127,16 +127,13 @@ public class HealthController {
                   for (Object oo : map2.entrySet()) { 
                     Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
                     if(en.getKey().equals("hospitalid")){
-                        String id = (String) en.getValue();
-                        map_obj.put("hospitalid", id);
+                        map_obj.put("hospitalid", en.getValue());
                     }
                     if(en.getKey().equals("hospitalleve")){
-                        String lev = (String) en.getValue();
-                        map_obj.put("hospitalleve", lev);
+                        map_obj.put("hospitalleve", en.getValue());
                     }
                     if(en.getKey().equals("hospitalname")){
-                        String name = (String) en.getValue();
-                        map_obj.put("hospitalname", name);
+                        map_obj.put("hospitalname", en.getValue());
                     }
                     if(en.getKey().equals("cpid")){
                         map_obj.put("cpid", en.getValue());
@@ -199,19 +196,16 @@ public class HealthController {
                   for (Object oo : map2.entrySet()) { 
                     Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
                     if(en.getKey().equals("deptname")){
-                        String deptname =  (String) en.getValue();
-                        map_obj.put("deptname", deptname);
+                        map_obj.put("deptname", en.getValue());
                     }
                     if(en.getKey().equals("deptnum")){
-                        String deptnum = (String) en.getValue();
-                        map_obj.put("deptnum", deptnum);
+                        map_obj.put("deptnum", en.getValue());
                     }
                     if(en.getKey().equals("cpid")){
                         map_obj.put("cpid", en.getValue());
                     }
                     if(en.getKey().equals("deptid")){
-                        String deptid = (String) en.getValue();
-                        map_obj.put("deptid", deptid);
+                        map_obj.put("deptid", en.getValue());
                     }
                   }
                   list_obj.add(map_obj);
@@ -452,11 +446,13 @@ public class HealthController {
     }
 
     private Map<String, Object> getAll(String fun,String phone, String offset, String keyword,String pageSize) throws Exception, IOException, ClassNotFoundException {
+        logger.debug("before==keyword>>"+keyword);
         if (null == phone)  phone = "0";
         if (null == offset) offset = "0";
         if (null == pageSize) pageSize = "12";
         if(null == keyword) keyword="";
         keyword = URLDecoder.decode(keyword, "utf-8");
+        logger.debug("after==keyword>>"+keyword);
         String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&keyword="+keyword+"&currentpage="+offset+"&pagesize="+pageSize;
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
