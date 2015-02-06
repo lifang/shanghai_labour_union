@@ -1,5 +1,6 @@
 package com.comdosoft.union.api;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -117,6 +118,7 @@ public class PositionCodeController {
     * @return
     */
     public SysResponse getJobs(String offset,String limit,RecruitPosition recruitPosition,int type) {
+        logger.debug("getJobs==>>>"+recruitPosition);
         SysResponse sysResponse = new SysResponse();
         if(null == offset || null == limit){
             offset = "0";
@@ -132,6 +134,11 @@ public class PositionCodeController {
             }
         }
         try {
+            String q = recruitPosition.getQ();//搜索条件
+            if(null != q){
+                q = URLDecoder.decode(q, "utf-8");
+                recruitPosition.setQ(q);
+            }
             List<RecruitPosition> recruitPositionList = recruitPositionService.findNewJob(Integer.parseInt(offset),Integer.parseInt(limit),recruitPosition,type);
             ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
             HashMap<String,String>  map = null;
@@ -164,7 +171,7 @@ public class PositionCodeController {
      * @return
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(String offset,RecruitPosition recruitPosition,String q) {
+    public SysResponse search(String offset,RecruitPosition recruitPosition) {
         return getJobs(offset,"10",recruitPosition,1);
     }
 

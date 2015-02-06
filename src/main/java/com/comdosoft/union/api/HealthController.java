@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class HealthController {
                                     @RequestParam(value = "offset", required = false) String offset, 
                                     @RequestParam(value = "pageSize", required = false) String pageSize, 
                                     @RequestParam(value = "keyword", required = false) String keyword, 
-                                    HttpServletRequest request) throws ClassNotFoundException, Exception, Exception{
+                                    HttpServletRequest request) {
         SysResponse sysResponse = new SysResponse();
         
         try{
@@ -104,9 +105,7 @@ public class HealthController {
             return sysResponse;
         }catch(Exception e){
             logger.debug("findHospital 出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
+            return SysResponse.buildFailResponse("请求失败");
         }
     }
 
@@ -178,9 +177,7 @@ public class HealthController {
             return sysResponse;
         }catch(Exception e){
             logger.debug("findSection 出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
+            return SysResponse.buildFailResponse("请求失败");
         }
     }
     
@@ -254,9 +251,7 @@ public class HealthController {
             sysResponse = getSection(map1);
         }catch(Exception e){
             logger.debug("出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
+            return SysResponse.buildFailResponse("请求失败");
         }
         return sysResponse;
     }
@@ -283,9 +278,7 @@ public class HealthController {
             sysResponse = getSearchDoctor(map1);
         }catch(Exception e){
             logger.debug("出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
+            return SysResponse.buildFailResponse("请求失败");
         }
         return sysResponse;
     }
@@ -403,9 +396,7 @@ public class HealthController {
             return sysResponse;
         }catch(Exception e){
             logger.debug("出错==》"+e);
-            sysResponse.setCode(-1);;
-            sysResponse.setMessage("缺少必要参数");
-            return sysResponse;
+            return SysResponse.buildFailResponse("请求失败");
         }
     }
 
@@ -423,7 +414,7 @@ public class HealthController {
    private Map<String, Object> getDoctor(String fun, String phone, String offset, String hospitalid, String cpid, String deptid,String pageSize) throws Exception {
        if (null == phone)  phone = "0";
        if (null == offset) offset = "0";
-       if (null == pageSize) pageSize = "2";
+       if (null == pageSize) pageSize = "12";
        String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&deptid="+deptid+"&currentpage="+offset+"&pagesize="+pageSize;
        String sign = MD5Utils.MD5(sid);
        String src = sid+"&sign="+sign;
@@ -448,7 +439,7 @@ public class HealthController {
     private Map<String, Object> getSection(String fun, String phone, String offset, String hospitalid, String cpid,String pageSize) throws Exception {
         if (null == phone)  phone = "0";
         if (null == offset) offset = "0";
-        if (null == pageSize) pageSize = "2";
+        if (null == pageSize) pageSize = "12";
         String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&hospitalid="+hospitalid+"&cpid="+cpid+"&currentpage="+offset+"&pagesize="+pageSize;
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
@@ -463,8 +454,9 @@ public class HealthController {
     private Map<String, Object> getAll(String fun,String phone, String offset, String keyword,String pageSize) throws Exception, IOException, ClassNotFoundException {
         if (null == phone)  phone = "0";
         if (null == offset) offset = "0";
-        if (null == pageSize) pageSize = "2";
+        if (null == pageSize) pageSize = "12";
         if(null == keyword) keyword="";
+        keyword = URLDecoder.decode(keyword, "utf-8");
         String sid = "sid=42&functionid="+fun+"&guid="+phone+"&areaid=310000&keyword="+keyword+"&currentpage="+offset+"&pagesize="+pageSize;
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
@@ -486,7 +478,7 @@ public class HealthController {
         SysResponse sysResponse = new SysResponse();
         List<Object> citys = cityService.findAll();
         sysResponse.setResult(citys);
-        sysResponse.setCode(0);
+        sysResponse.setCode(SysResponse.SUCCESS);
         return sysResponse;
     }
     

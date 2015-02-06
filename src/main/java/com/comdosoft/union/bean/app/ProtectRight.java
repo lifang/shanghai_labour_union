@@ -61,4 +61,12 @@ public class ProtectRight {
 	public void setUserip(String userip) {
 		this.userip = userip;
 	}
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ProtectRight [username=" + username + ", title=" + title + ", address=" + address + ", email=" + email + ", mobile=" + mobile + ", content=" + content + ", addtime=" + addtime + ", userip=" + userip + "]";
+    }
+	
 }

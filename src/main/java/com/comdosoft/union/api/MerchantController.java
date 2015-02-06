@@ -47,27 +47,30 @@ public class MerchantController {
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public SysResponse findAllMerchants(String offset,String typeId) {
         SysResponse sysResponse = new SysResponse();
-        if(null == offset){
-            offset = "0";
-        }else{
-            Pattern pattern = Pattern.compile("[0-9]*");
-            Boolean isNum = pattern.matcher(offset).matches();
-            if(!isNum){
-                sysResponse.setCode(SysResponse.FAILURE);
-                sysResponse.setMessage("请求失败");
-                logger.debug("请求页数错误,页数为："+offset);
-                return sysResponse;
+        try{
+            if(null == offset){
+                offset = "0";
+            }else{
+                Pattern pattern = Pattern.compile("[0-9]*");
+                Boolean isNum = pattern.matcher(offset).matches();
+                if(!isNum){
+                    sysResponse.setCode(SysResponse.FAILURE);
+                    sysResponse.setMessage("请求失败");
+                    logger.debug("请求页数错误,页数为："+offset);
+                    return sysResponse;
+                }
             }
+            Integer merType_id = null;
+            if(null !=typeId){
+                merType_id = Integer.parseInt(typeId);
+            }else{
+                merType_id = 1;
+            }
+            List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merType_id);
+            sysResponse = putData(sysResponse, merchants,typeId);
+        }catch(Exception e){
+            return SysResponse.buildFailResponse("请求出错");
         }
-        Integer merType_id = null;
-        if(null !=typeId){
-            merType_id = Integer.parseInt(typeId);
-        }else{
-            merType_id = 1;
-        }
-        
-        List<Merchant> merchants = merchantService.findAllMerchants(Integer.parseInt(offset),10,merType_id);
-        sysResponse = putData(sysResponse, merchants,typeId);
         return sysResponse;
     }
     

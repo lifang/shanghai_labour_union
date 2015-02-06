@@ -1,5 +1,7 @@
 package com.comdosoft.union.service;
 
+import java.net.URLDecoder;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -87,6 +89,7 @@ public class UserService {
                     user.setEmail(email);
                 }
                 if(""!=nickName){ //设置匿名
+                    nickName = URLDecoder.decode(nickName, "utf-8");
                     user.setNickName(nickName);
                 }
                 if("" != code){//设置工会号  暂时这么叫

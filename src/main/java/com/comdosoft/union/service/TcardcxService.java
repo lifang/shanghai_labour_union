@@ -1,5 +1,7 @@
 package com.comdosoft.union.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -40,6 +42,11 @@ public class TcardcxService {
             offset = 1;  
         offset = (offset-1)*limit;
         if(null != name || !"".equals(name)){
+            try {
+                name = URLDecoder.decode(name, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             return tcardcxMapper.search(new RowBounds(offset, limit),name);
         }
         return tcardcxMapper.searchAll(new RowBounds(offset, limit));

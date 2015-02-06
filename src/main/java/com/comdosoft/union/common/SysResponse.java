@@ -14,7 +14,7 @@ public class SysResponse {
     /**
      * 成功
      */
-    public static final Integer SUCCESS = 0;
+    public static final Integer SUCCESS = 1;
 
     /**
      * 业务处理失败

@@ -158,4 +158,5 @@ public class RecruitPosition implements Serializable {
         super();
     }
 
+    
 }

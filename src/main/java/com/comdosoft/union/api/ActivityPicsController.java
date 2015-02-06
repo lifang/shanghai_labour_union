@@ -34,17 +34,20 @@ public class ActivityPicsController {
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public SysResponse findAll() {
         SysResponse sysResponse = new SysResponse();
-        List<ActivityPics> activityList = activityService.findAll(0,4);
-        if(activityList.size()>0){
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setResult(activityList);
-        }else{
-            sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
-            logger.debug("没有查询到数据");
+        try{
+            List<ActivityPics> activityList = activityService.findAll(0,4);
+            if(activityList.size()>0){
+                sysResponse.setCode(SysResponse.SUCCESS);
+                sysResponse.setMessage("请求成功");
+                sysResponse.setResult(activityList);
+            }else{
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("数据不存在,列表为空");
+                logger.debug("没有查询到数据");
+            }
+        }catch(Exception e){
+            return SysResponse.buildFailResponse("请求失败");
         }
-        
         return sysResponse;
     }
 
@@ -57,11 +60,9 @@ public class ActivityPicsController {
             sysResponse.setMessage("请求成功");
             sysResponse.setResult(activityPics);
         } catch (Exception e) {
-            sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("请求失败");
             logger.debug("根据id查活动,请求失败,id="+id+" "+e);
+            return SysResponse.buildFailResponse("请求失败");
         }
-        
         return sysResponse;
     }
 }

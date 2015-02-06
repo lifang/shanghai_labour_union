@@ -118,6 +118,7 @@ public class UserController {
      */
     @RequestMapping(value = "update" , method = RequestMethod.POST)
     public SysResponse updateUser(User user,String token,HttpSession session){
+        logger.debug("更新注册用户==>>"+user);
         SysResponse sysResponse = null;
         if(SysToken.isTokenValid(token, user.getId(), session)){
             sysResponse = userService.update(user);
@@ -165,7 +166,7 @@ public class UserController {
         try {
             SysToken.removeToken(token, session);
             sysResponse.setMessage("退成成功");
-            sysResponse.setCode(0);
+            sysResponse.setCode(SysResponse.SUCCESS);
         } catch (Exception e) {
             logger.error("用户退出失败", e);
             sysResponse.setCode(SysResponse.EXCEPTION);

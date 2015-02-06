@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,7 @@ import com.comdosoft.union.service.ProtectRightService;
 @RestController
 @RequestMapping("api/protect")
 public class ProtectRightController {
-	
+	private static final Logger logger = LoggerFactory.getLogger(ProtectRightController.class);
 	@Autowired
 	private ProtectRightService protectRightService;
 	
@@ -23,6 +25,7 @@ public class ProtectRightController {
 	 */
 	@RequestMapping(value="regist",method=RequestMethod.POST)
 	public SysResponse registProtectRight(ProtectRight protectRight){
+	    logger.debug("ProtectRight==>>"+protectRight);
 		if(!StringUtils.hasLength(protectRight.getUsername())) {
 			return SysResponse.buildExceptionResponse("姓名不能为空");
 		}

@@ -1,5 +1,7 @@
 package com.comdosoft.union.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,13 @@ public class RegulationsService {
 	 * @return
 	 */
 	public Page<Regulations> getPage(int page,String title){
+	    if(null != title){
+	        try {
+                title = URLDecoder.decode(title, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+	    }
 		long count = regulationsMapper.countByTitle(title);
 		PageRequest request = new PageRequest(page, pageSize);
 		List<Regulations> result = regulationsMapper.pageByTitle(title, request);
