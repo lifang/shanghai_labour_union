@@ -37,8 +37,23 @@ public class RecruitPosition implements Serializable {
     private String job_type;//行业类型id
     private String job_locate1;//主区域
     private String job_locate2;//次选区域
-  
-	public String getJob_locate1() {
+    private String isTwo;//判断是否选择到2个地区
+    
+	/**  
+     * 获取 isTwo  
+     * @return isTwo
+     */
+    public String getIsTwo() {
+        return isTwo;
+    }
+    /**  
+     * 设置 isTwo  
+     * @param isTwo
+     */
+    public void setIsTwo(String isTwo) {
+        this.isTwo = isTwo;
+    }
+    public String getJob_locate1() {
 		return job_locate1;
 	}
 	public void setJob_locate1(String job_locate1) {
@@ -156,6 +171,13 @@ public class RecruitPosition implements Serializable {
     }
     public RecruitPosition() {
         super();
+    }
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "RecruitPosition [id=" + id + ", dwid=" + dwid + ", zwmc=" + zwmc + ", zwms=" + zwms + ", rs=" + rs + ", sh=" + sh + ", q=" + q + ", job_type=" + job_type + ", job_locate1=" + job_locate1 + ", job_locate2=" + job_locate2 + "]";
     }
 
     

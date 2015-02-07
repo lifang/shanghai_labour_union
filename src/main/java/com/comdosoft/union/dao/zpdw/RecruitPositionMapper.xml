@@ -2,93 +2,100 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comdosoft.union.dao.zpdw.RecruitPositionMapper">
 	<resultMap type="com.comdosoft.union.bean.app.RecruitIndustry" id="recruitIndustry">
-		<id property="id" column="rid"/>
+		<id property="id" column="rid" />
 		<result property="hymc" column="hymc" />
 	</resultMap>
 	<resultMap type="com.comdosoft.union.bean.app.RecruitUnit" id="recruitUnit">
 		<id property="id" column="pid" />
-		<result property="dwmc" column="dwmc"/>
-		<result property="dwjs" column="union_about"/>
-		<result property="lxfs" column="tel"/>
-		<result property="locate" column="locate"/>
+		<result property="dwmc" column="dwmc" />
+		<result property="dwjs" column="union_about" />
+		<result property="lxfs" column="tel" />
+		<result property="locate" column="locate" />
 		<association property="sshy" javaType="com.comdosoft.union.bean.app.RecruitIndustry" resultMap="recruitIndustry" />
 	</resultMap>
 	<resultMap id="recruitPosition" type="com.comdosoft.union.bean.app.RecruitPosition">
-		<id property="id" column="id"/>
+		<id property="id" column="id" />
 		<result property="zwmc" column="zwmc" />
 		<result property="zwms" column="job_detail" />
 		<result property="sh" column="sh" />
 		<result property="rs" column="rs" />
 		<association property="dwid" javaType="com.comdosoft.union.bean.app.RecruitUnit" resultMap="recruitUnit" />
 	</resultMap>
-	
+
 	<select id="countByVo" resultType="int">
-		SELECT count(z.id) as count 
-		     FROM zpzw z left join zpdw p on p.id =z.dwid 
-		   left join zphy r on r.id = p.sshy
-		   <where>
-		   	<if test="q !=null">
-		   		z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.locate like "%"#{q}"%"
-		   	</if>
-		   	<if test="job_type !=null">
-		   		and  r.hymc like #{job_type}"%"
-		   	</if>
-		   	<if test="job_locate1 !=null">
-		   		and p.locate like #{job_locate1}"%" 
-		   		
-		   	</if>
-		   	<if test="job_locate2 !=null">
-		   		or p.locate like #{job_locate2}"%" 
-		   		</if>
-		   </where>
-		   
-		   
-		   
+		SELECT count(z.id) as count
+		FROM zpzw z left join zpdw p on p.id =z.dwid
+		left join zphy r on r.id = p.sshy
+		<where>
+			<if test="q !=null">
+				(z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.locate like "%"#{q}"%")
+			</if>
+			<if test="job_type !=null">
+				and r.hymc like "%"#{job_type}"%"
+			</if>
+			<if test="isTwo ==1">
+				and (p.locate like "%"#{job_locate1}"%"  or p.locate like "%"#{job_locate2}"%" )
+			</if>
+			<if test="isTwo !=1">
+				<if test="job_locate1 !=null">
+					and p.locate like "%"#{job_locate1}"%"
+				</if>
+				<if test="job_locate2 !=null">
+					and p.locate like "%"#{job_locate2}"%"
+				</if>
+			</if>
+
+		</where>
+
 	</select>
 
-	<select id="findNewJob" resultMap="recruitPosition" >
+	<select id="findNewJob" resultMap="recruitPosition">
 		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
-		   FROM zpzw z left join zpdw p on z.dwid=p.id 
-		   left join zphy r on r.id = p.sshy
-		   order by id desc
-		   
+		FROM zpzw z left join zpdw p on z.dwid=p.id
+		left join zphy r on r.id = p.sshy
+		order by id desc
+
 	</select>
-	
-	<select id="findById" resultMap="recruitPosition" >
+
+	<select id="findById" resultMap="recruitPosition">
 		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
-		   FROM zpzw z left join zpdw p on z.dwid=p.id 
-		   left join zphy r on r.id = p.sshy
-		   <where>
-		   		z.id = #{id}
-		   </where>
+		FROM zpzw z left join zpdw p on z.dwid=p.id
+		left join zphy r on r.id = p.sshy
+		<where>
+			z.id = #{id}
+		</where>
 	</select>
-	
-	<select id="searchJob" resultMap="recruitPosition" >
+
+	<select id="searchJob" resultMap="recruitPosition">
 		SELECT z.id, z.job_detail ,z.zwmc, z.dwid ,z.rs,p.id as pid,p.dwmc,p.union_about,p.tel,p.sshy,p.locate,r.id as rid,r.hymc
-		   FROM zpzw z left join zpdw p on p.id =z.dwid 
-		   left join zphy r on r.id = p.sshy
-		   <where>
-		   	<if test="job_type !=null">
-		   		 r.hymc like #{job_type}"%"
-		   	</if>
-		   	<if test="q !=null">
-		   	and	(z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%")
-		   	</if>
-		   	<if test="job_locate1 !=null">
-		   		and p.locate like #{job_locate1}"%" 
-		   		
-		   	</if>
-		   	<if test="job_locate2 !=null">
-		   		or p.locate like #{job_locate2}"%" 
-		   		</if>
-		   </where>
-		   order by 	  r.hymc , p.locate 
+		FROM zpzw z left join zpdw p on p.id =z.dwid
+		left join zphy r on r.id = p.sshy
+		<where>
+			<if test="job_type !=null">
+				r.hymc like "%"#{job_type}"%"
+			</if>
+			<if test="q !=null">
+				and (z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%")
+			</if>
+			<if test="isTwo ==1">
+				and (p.locate like "%"#{job_locate1}"%"  or p.locate like "%"#{job_locate2}"%" )
+			</if>
+			<if test="isTwo !=1">
+				<if test="job_locate1 !=null">
+					and p.locate like "%"#{job_locate1}"%"
+				</if>
+				<if test="job_locate2 !=null">
+					and p.locate like "%"#{job_locate2}"%"
+				</if>
+			</if>
+		</where>
+		order by r.hymc , p.locate
 	</select>
-	
-	<select id="findOtherJobById" resultMap="recruitPosition" >
-			SELECT  	zp.id,zp.zwmc
-			FROM  ( SELECT 	* 	FROM 	zpzw 	WHERE 	id = #{id} 	) as zz,zpzw as zp
-			where zz.dwid = zp.dwid and zp.id != #{id}
+
+	<select id="findOtherJobById" resultMap="recruitPosition">
+		SELECT zp.id,zp.zwmc
+		FROM ( SELECT * FROM zpzw WHERE id = #{id} ) as zz,zpzw as zp
+		where zz.dwid = zp.dwid and zp.id != #{id}
 	</select>
-	
+
 </mapper>

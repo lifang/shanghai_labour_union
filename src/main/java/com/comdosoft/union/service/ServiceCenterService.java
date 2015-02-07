@@ -48,7 +48,7 @@ public class ServiceCenterService {
 
 	private Page<ServiceCenter> findCenterPage(int page,byte bs) {
 		PageRequest request = new PageRequest(page, pageSize);
-		long count = serviceCenterMapper.countByBs(ServiceCenterMapper.WORKS);
+		long count = serviceCenterMapper.countByBs(bs);
 		List<ServiceCenter> centers = serviceCenterMapper.pageByBs(bs, request);
 		return new Page<ServiceCenter>(request, centers, count);
 	}

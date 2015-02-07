@@ -21,6 +21,9 @@ public class RecruitPositionService {
             offset = 1;  
         offset = (offset-1)*limit;
         if(type==1){//搜索
+            if(null != recruitPosition.getJob_locate1() && null != recruitPosition.getJob_locate2()){
+                recruitPosition.setIsTwo("1");
+            }
         	return recruitPositionMapper.searchJob(new RowBounds(offset, limit),recruitPosition);
         }
         	return recruitPositionMapper.findNewJob(new RowBounds(offset, limit),recruitPosition);
