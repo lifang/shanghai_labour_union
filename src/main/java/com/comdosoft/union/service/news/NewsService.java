@@ -26,7 +26,7 @@ public class NewsService {
     public List<News> findAll(int offset,int limit,News news) {
         if(offset<=0)
             offset = 1;
-        offset = (offset-1)*(limit+4)+4; 
+        offset = (offset-1)*(limit)+4; 
         return newsMapper.findAll(new RowBounds(offset, limit),news);
     }
     
@@ -55,10 +55,10 @@ public class NewsService {
      * @return
      */
     public List<News> findTopNews(int offset, Integer limit) {
-        if(offset<=0)  
-            offset = 1;  
-        offset = (offset-1)*(limit+10); 
-        return newsMapper.findTopNews(new RowBounds(offset, limit));
+//        if(offset<=0)  
+//            offset = 1;  
+//        offset = (offset-1)*(limit+4); 
+        return newsMapper.findTopNews(new RowBounds(0, 4));
     }
 
 	/**根据id查询法规详情
