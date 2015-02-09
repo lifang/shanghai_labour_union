@@ -19,6 +19,7 @@ public interface TcardcxMapper {
     XzType findById(Integer id);
     List<XzType> searchAll(RowBounds rowBounds);
     int countBySearch(String csfzh);
-    List<XzType> search(RowBounds rowBounds, String csfzh);
+    List<XzType> searchzz(RowBounds rowBounds, String csfzh);
+    List<XzType> searchlz(RowBounds rowBounds, String csfzh);
 //	List<Tcardcx> searchRetire(RowBounds rowBounds, String name);
 }

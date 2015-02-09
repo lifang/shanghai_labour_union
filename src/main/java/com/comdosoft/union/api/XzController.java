@@ -72,10 +72,14 @@ public class XzController {
                     list.add(map);
             }
             int total = 0;
-            if (null != type && type.equals("0")) { // 退休
-                total = tcardcxService.countByLZ(tcardcx);
+            if (null != type ) { // 退休
+                if( type.equals("0")){
+                    total = tcardcxService.countByLZ(tcardcx);
+                }else{
+                    total = tcardcxService.countByZZ(tcardcx);
+                }
             } else {
-                total = tcardcxService.countByZZ(tcardcx);
+                total = tcardcxService.countByAll(tcardcx);
             }
             sysResponse.setTotal(total);
             sysResponse.setCode(SysResponse.SUCCESS);
@@ -125,7 +129,7 @@ public class XzController {
      * @return
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
-    public SysResponse search(@RequestParam(value = "name", required = false) String name, String offset) {
+    public SysResponse search(@RequestParam(value = "name", required = false) String name, String offset,String type) {
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if (null == offset) {
@@ -140,17 +144,22 @@ public class XzController {
                 return sysResponse;
             }
         }
-        List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name);
-        if (xzTypeList.size() > 0) {
-            sysResponse.setCode(SysResponse.SUCCESS);
-            sysResponse.setMessage("请求成功");
-            sysResponse.setTotal(xzTypeList.size());
-            sysResponse.setResult(xzTypeList);
-        } else {
+        try{
+            List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name,type);
+            if (xzTypeList.size() > 0) {
+                sysResponse.setCode(SysResponse.SUCCESS);
+                sysResponse.setMessage("请求成功");
+                sysResponse.setTotal(xzTypeList.size());
+                sysResponse.setResult(xzTypeList);
+            } else {
+                sysResponse.setCode(SysResponse.FAILURE);
+                sysResponse.setMessage("数据不存在,列表为空");
+            }
+            return sysResponse;
+        }catch(Exception e){
             sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
+            sysResponse.setMessage("请求失败");
+            return sysResponse;
         }
-
-        return sysResponse;
     }
 }

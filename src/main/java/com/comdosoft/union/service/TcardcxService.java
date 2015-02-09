@@ -23,10 +23,16 @@ public class TcardcxService {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
-        if(null != type && type.equals("0")){ //退休
-        	return tcardcxMapper.findRetireAll(new RowBounds(offset, limit),tcardcx);
-        }//在职
-        return tcardcxMapper.findStaffAll(new RowBounds(offset, limit));
+        
+        if(null != type){ 
+            if( type.equals("0")){ //退休
+                return tcardcxMapper.findRetireAll(new RowBounds(offset, limit),tcardcx);
+            }else{//在职
+                return tcardcxMapper.findStaffAll(new RowBounds(offset, limit));
+            }
+        }else{
+            return tcardcxMapper.searchAll(new RowBounds(offset, limit));//默认展示列
+        }
     }
     
     public int countByZZ(Tcardcx tcardcx){
@@ -41,7 +47,7 @@ public class TcardcxService {
         return tcardcxMapper.findById(id);
     }
 
-    public List<XzType> search(int offset, Integer limit, String name) {
+    public List<XzType> search(int offset, Integer limit, String name,String type) {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
@@ -51,8 +57,17 @@ public class TcardcxService {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            return tcardcxMapper.search(new RowBounds(offset, limit),name);
         }
-        return tcardcxMapper.searchAll(new RowBounds(offset, limit));
+        if(type.equals("0")){
+            return tcardcxMapper.searchlz(new RowBounds(offset, limit),name);
+        }else{
+            return tcardcxMapper.searchzz(new RowBounds(offset, limit),name);
+        }
+    }
+
+    public int countByAll(Tcardcx tcardcx) {
+        int i = tcardcxMapper.countByLZ(tcardcx);
+        int j = tcardcxMapper.countByZZ(tcardcx);
+        return i+j;
     }
 }

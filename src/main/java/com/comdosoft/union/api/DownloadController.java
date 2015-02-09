@@ -58,7 +58,7 @@ public class DownloadController {
         return sysResponse;
     }
     
-    @RequestMapping(value = "ioslist", method = RequestMethod.POST)
+    @RequestMapping(value = "ioslist", method = RequestMethod.GET)
     public ModelAndView  ioslist(Model model){
         ModelAndView mv = new ModelAndView();  
         List<Downloads> list = downloadService.findAll();

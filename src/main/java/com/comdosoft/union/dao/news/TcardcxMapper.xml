@@ -19,19 +19,20 @@
 
 	<select id="countByZZ" resultType="int">
 		SELECT
-			count(c.id)
+			count(x.id)
 		FROM
 			xz_type x
 		LEFT JOIN tcardcx c ON c.xzId = x.id
-
+		where IFNULL(c.xzId,0) !=0 
 	</select>
-	
+		
 	<select id="countByLZ" resultType="int">
 		SELECT
-			count(c.id)
+			count(x.id)
 		FROM
 			xz_type x
 		LEFT JOIN tcardcxtx c ON c.xzId = x.id
+		where IFNULL(c.xzId,0) !=0 
 	</select>
 	
 	<select id="countBySearch" resultType="int">
@@ -41,13 +42,13 @@
 		where  t.csfzh like "%"#{csfzh}"%" or tx.csfzh like "%"#{csfzh}"%"
 	</select>
 	<!-- 在职 -->
-	<select id="findStaffAll" resultMap="tcardcx" >
+	<select id="findStaffAll" resultMap="xzType" >
 		SELECT *
 		   FROM xz_type t left join tcardcx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0
 	</select>
 	<!-- 退休 -->
-	<select id="findRetireAll" resultMap="tcardcx" >
+	<select id="findRetireAll" resultMap="xzType" >
 		SELECT *
 		   FROM xz_type t left join tcardcxtx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0
@@ -60,11 +61,15 @@
 	</select>
 	
 	<!-- 根据身份证号搜索 -->
-	<select id="search" resultMap="xzType" parameterType="java.lang.String">
+	<select id="searchlz" resultMap="xzType" parameterType="java.lang.String">
+		SELECT * 		FROM 		xz_type m
+			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
+		where   tx.csfzh = #{csfzh}
+	</select>
+	<select id="searchzz" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
-			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
-		where  t.csfzh like "%"#{csfzh}"%" or tx.csfzh like "%"#{csfzh}"%"
+		where  t.csfzh = #{csfzh}  
 	</select>
 	<select id="searchAll" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m

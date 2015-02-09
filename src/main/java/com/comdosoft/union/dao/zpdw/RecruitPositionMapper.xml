@@ -28,24 +28,23 @@
 		FROM zpzw z left join zpdw p on p.id =z.dwid
 		left join zphy r on r.id = p.sshy
 		<where>
-			<if test="q !=null">
-				(z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.locate like "%"#{q}"%")
-			</if>
 			<if test="job_type !=null">
-				and r.hymc like "%"#{job_type}"%"
+				r.hymc like '%${job_type}%'
+			</if>
+			<if test="q !=null">
+				and (z.zwmc like '%${q}%'   or p.dwmc like '%${q}%' or p.lxfs like '%${q}%')
 			</if>
 			<if test="isTwo ==1">
-				and (p.locate like "%"#{job_locate1}"%"  or p.locate like "%"#{job_locate2}"%" )
+				and (p.locate like '%${job_locate1}%'   or p.locate like '%${job_locate2}%' )
 			</if>
 			<if test="isTwo !=1">
 				<if test="job_locate1 !=null">
-					and p.locate like "%"#{job_locate1}"%"
+					and p.locate like '%${job_locate1}%'
 				</if>
 				<if test="job_locate2 !=null">
-					and p.locate like "%"#{job_locate2}"%"
+					and p.locate like '%${job_locate2}%'
 				</if>
 			</if>
-
 		</where>
 
 	</select>
@@ -73,20 +72,20 @@
 		left join zphy r on r.id = p.sshy
 		<where>
 			<if test="job_type !=null">
-				r.hymc like "%"#{job_type}"%"
+				r.hymc like '%${job_type}%'
 			</if>
 			<if test="q !=null">
-				and (z.zwmc like "%"#{q}"%" or p.dwmc like "%"#{q}"%" or p.lxfs like "%"#{q}"%")
+				and (z.zwmc like '%${q}%'   or p.dwmc like '%${q}%' or p.lxfs like '%${q}%')
 			</if>
 			<if test="isTwo ==1">
-				and (p.locate like "%"#{job_locate1}"%"  or p.locate like "%"#{job_locate2}"%" )
+				and (p.locate like '%${job_locate1}%'   or p.locate like '%${job_locate2}%' )
 			</if>
 			<if test="isTwo !=1">
 				<if test="job_locate1 !=null">
-					and p.locate like "%"#{job_locate1}"%"
+					and p.locate like '%${job_locate1}%'
 				</if>
 				<if test="job_locate2 !=null">
-					and p.locate like "%"#{job_locate2}"%"
+					and p.locate like '%${job_locate2}%'
 				</if>
 			</if>
 		</where>
