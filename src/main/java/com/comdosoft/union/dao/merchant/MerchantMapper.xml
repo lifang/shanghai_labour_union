@@ -16,7 +16,7 @@
 		<result property="yhhd1" column="about" />
 		<result property="lxfs" column="lxfs" />
 		<result property="syfs" column="syfs" />
-		<result property="symd" column="symd" />
+		<result property="symd" column="address" /><!-- 商户地址 -->
 		<result property="yhm" column="yhm" />
 		<result property="tel" column="tel" />
 		<result property="logoPath" column="logo_path"/>

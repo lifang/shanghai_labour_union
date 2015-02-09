@@ -19,7 +19,7 @@ public class TcardcxService {
     @Resource
     private TcardcxMapper tcardcxMapper;
     
-    public List<Tcardcx> findAll(int offset,int limit,Tcardcx tcardcx, String type) {
+    public List<XzType> findAll(int offset,int limit,Tcardcx tcardcx, String type) {
         if(offset<=0)  
             offset = 1;  
         offset = (offset-1)*limit;
@@ -29,8 +29,12 @@ public class TcardcxService {
         return tcardcxMapper.findStaffAll(new RowBounds(offset, limit));
     }
     
-    public int countByVo(Tcardcx tcardcx){
-        return tcardcxMapper.countByVo(tcardcx);
+    public int countByZZ(Tcardcx tcardcx){
+        return tcardcxMapper.countByZZ(tcardcx);
+    }
+    
+    public int countByLZ(Tcardcx tcardcx){
+        return tcardcxMapper.countByLZ(tcardcx);
     }
     
     public XzType findById(Integer id){

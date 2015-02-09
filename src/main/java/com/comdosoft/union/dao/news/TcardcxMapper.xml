@@ -17,18 +17,40 @@
 		</collection>
 	</resultMap>
 
-	<select id="countByVo" resultType="int">
-		SELECT count(*) as count
-		  FROM tcardcx  
+	<select id="countByZZ" resultType="int">
+		SELECT
+			count(c.id)
+		FROM
+			xz_type x
+		LEFT JOIN tcardcx c ON c.xzId = x.id
+
 	</select>
 	
+	<select id="countByLZ" resultType="int">
+		SELECT
+			count(c.id)
+		FROM
+			xz_type x
+		LEFT JOIN tcardcxtx c ON c.xzId = x.id
+	</select>
+	
+	<select id="countBySearch" resultType="int">
+		SELECT count(m.id) 		FROM 		xz_type m
+		   LEFT JOIN tcardcx t ON t.xzId = m.id
+			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
+		where  t.csfzh like "%"#{csfzh}"%" or tx.csfzh like "%"#{csfzh}"%"
+	</select>
+	<!-- 在职 -->
 	<select id="findStaffAll" resultMap="tcardcx" >
 		SELECT *
-		   FROM tcardcx m left join xz_type t on m.xzId=t.id
+		   FROM xz_type t left join tcardcx m  on m.xzId=t.id
+		   where IFNULL(m.xzId,0) !=0
 	</select>
+	<!-- 退休 -->
 	<select id="findRetireAll" resultMap="tcardcx" >
 		SELECT *
-		   FROM tcardcxtx m left join xz_type t on m.xzId=t.id
+		   FROM xz_type t left join tcardcxtx m  on m.xzId=t.id
+		   where IFNULL(m.xzId,0) !=0
 	</select>
 	
 	<select id="findById" resultMap="xzType" parameterType="java.lang.Integer">
