@@ -139,6 +139,21 @@ public class PositionCodeController {
                 q = URLDecoder.decode(q, "utf-8");
                 recruitPosition.setQ(q);
             }
+            String job_type = recruitPosition.getJob_type();
+            if(null != job_type){
+                job_type = URLDecoder.decode(job_type, "utf-8");
+                recruitPosition.setJob_type(job_type);
+            }
+            String locate1 = recruitPosition.getJob_locate1();
+            String locate2 = recruitPosition.getJob_locate2();
+            if(null != locate1){
+                locate1 = URLDecoder.decode(locate1, "utf-8");
+                recruitPosition.setJob_locate1(locate1);
+            }
+            if(null != locate2){
+                locate2 = URLDecoder.decode(locate2, "utf-8");
+                recruitPosition.setJob_locate2(locate2);
+            }
             List<RecruitPosition> recruitPositionList = recruitPositionService.findNewJob(Integer.parseInt(offset),Integer.parseInt(limit),recruitPosition,type);
             ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
             HashMap<String,String>  map = null;
@@ -192,7 +207,7 @@ public class PositionCodeController {
             	map.put("id", recruitPosition.getId().toString());
             	map.put("job_name", recruitPosition.getZwmc());
             	map.put("rs", recruitPosition.getRs()==null ? "":recruitPosition.getRs().toString());
-            	map.put("job_about", recruitPosition.getZwms());//职位描述
+            	map.put("job_about", recruitPosition.getJob_detail());//职位描述
             	map.put("unit_name", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());
             	map.put("locate", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getLocate());
             	map.put("lxfs", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());

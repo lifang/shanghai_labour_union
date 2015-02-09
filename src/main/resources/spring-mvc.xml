@@ -20,7 +20,7 @@
 	</bean>
 
 	<!-- 数据源1 -->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
 		<property name="url" value="${jdbc.url}"></property>
 		<property name="username" value="${jdbc.username}"></property>
@@ -65,7 +65,7 @@
 	<context:component-scan base-package="com.comdosoft.union" />
 	
  	<!-- 数据源2 -->
- 	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+ 	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
 		<property name="url" value="${jdbc2.url}"></property>
 		<property name="username" value="${jdbc.username}"></property>
@@ -108,7 +108,7 @@
  
  
  	<!-- 数据源3 -->
- 	<bean id="dataSource3" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+ 	<bean id="dataSource3" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
 		<property name="url" value="${jdbc3.url}"></property>
 		<property name="username" value="${jdbc.username}"></property>

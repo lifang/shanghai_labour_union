@@ -25,6 +25,22 @@ public class RecruitPosition implements Serializable {
      * 职位描述
      */
     private String zwms;
+    private String job_detail;
+    
+    /**  
+     * 获取 job_detail  
+     * @return job_detail
+     */
+    public String getJob_detail() {
+        return job_detail;
+    }
+    /**  
+     * 设置 job_detail  
+     * @param job_detail
+     */
+    public void setJob_detail(String job_detail) {
+        this.job_detail = job_detail;
+    }
     /**
      * 人数
      */

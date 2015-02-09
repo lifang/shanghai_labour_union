@@ -16,7 +16,8 @@
 	<resultMap id="recruitPosition" type="com.comdosoft.union.bean.app.RecruitPosition">
 		<id property="id" column="id" />
 		<result property="zwmc" column="zwmc" />
-		<result property="zwms" column="job_detail" />
+		<result property="zwms" column="zwms" />
+		<result property="job_detail" column="job_detail" />
 		<result property="sh" column="sh" />
 		<result property="rs" column="rs" />
 		<association property="dwid" javaType="com.comdosoft.union.bean.app.RecruitUnit" resultMap="recruitUnit" />
