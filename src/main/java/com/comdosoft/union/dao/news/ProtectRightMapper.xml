@@ -3,7 +3,7 @@
 <mapper namespace="com.comdosoft.union.dao.news.ProtectRightMapper">
 
 	<insert id="insertProtectRight" parameterType="com.comdosoft.union.bean.app.ProtectRight">
-		INSERT INTO ly (username, title, address, email, mobile, content, addtime)
-    	VALUES (#{username}, #{title}, #{address}, #{email}, #{mobile}, #{content}, #{addtime})
+		INSERT INTO ly (username, title, address, email, mobile, content, addtime,lm)
+    	VALUES (#{username}, #{title}, #{address}, #{email}, #{mobile}, #{content}, #{addtime},#{code})
 	</insert>
 </mapper>

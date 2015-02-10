@@ -24,9 +24,11 @@ public class NewsService {
     private NewsMapper newsMapper;
     
     public List<News> findAll(int offset,int limit,News news) {
-        if(offset<=0)
-            offset = 1;
-        offset = (offset-1)*(limit)+4; 
+        if(offset>0){
+            offset = (offset-1)*(limit)+4; 
+        }else{
+            offset = 0;  
+        }  
         return newsMapper.findAll(new RowBounds(offset, limit),news);
     }
     
@@ -39,9 +41,11 @@ public class NewsService {
     }
 
     public List<News> search(int offset, Integer limit, String title) {
-        if(offset<=0)  
-            offset = 1;  
-        offset = (offset-1)*limit;
+        if(offset>0){
+            offset = (offset-1)*limit;
+        }else{
+            offset = 0;  
+        }  
         News news = new News();
         news.setTitle(title);
         news.setLm3("57");

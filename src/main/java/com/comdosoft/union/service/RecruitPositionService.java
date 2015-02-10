@@ -17,9 +17,11 @@ public class RecruitPositionService {
     
     
     public List<RecruitPosition> findNewJob(int offset,int limit,RecruitPosition recruitPosition, int type) {
-        if(offset<=0)  
-            offset = 1;  
-        offset = (offset-1)*limit;
+        if(offset>0){
+            offset = (offset-1)*limit;
+        }else{
+            offset = 0;  
+        }  
         if(type==1){//搜索
             if(null != recruitPosition.getJob_locate1() && null != recruitPosition.getJob_locate2()){
                 recruitPosition.setIsTwo("1");

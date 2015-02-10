@@ -12,8 +12,24 @@ public class ProtectRight {
 	private String content;
 	private Date addtime; 
 	private String userip;
+	private Integer code;
 	
-	public String getUsername() {
+   
+    /**  
+     * 获取 code  
+     * @return code
+     */
+    public Integer getCode() {
+        return code;
+    }
+    /**  
+     * 设置 code  
+     * @param code
+     */
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+    public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
@@ -66,7 +82,8 @@ public class ProtectRight {
      */
     @Override
     public String toString() {
-        return "ProtectRight [username=" + username + ", title=" + title + ", address=" + address + ", email=" + email + ", mobile=" + mobile + ", content=" + content + ", addtime=" + addtime + ", userip=" + userip + "]";
+        return "ProtectRight [username=" + username + ", title=" + title + ", address=" + address + ", email=" + email + ", mobile=" + mobile + ", content=" + content + ", addtime=" + addtime + ", userip=" + userip + ", code=" + code + "]";
     }
+   
 	
 }

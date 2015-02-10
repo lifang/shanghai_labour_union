@@ -162,7 +162,7 @@ public class MerchantController {
                     map.put("name", merchant.getDwmc());
                     map.put("addr", merchant.getSymd());
                     map.put("tel", merchant.getTel());
-                    map.put("about", merchant.getAbout());//单位介绍
+                    map.put("about", merchant.getAbout_detail());//单位介绍
                 sysResponse.setResult(map);
             }else{
                 sysResponse.setCode(SysResponse.FAILURE);

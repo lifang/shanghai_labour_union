@@ -29,9 +29,11 @@ public class MerchantService {
     private BranchMapper BranchMapper;
     
     public List<Merchant> findAllMerchants(int offset,int limit,Integer merType_id) {
-        if(offset<=0)  
-            offset = 1;  
-        offset = (offset-1)*10;
+        if(offset>0){
+            offset = (offset-1)*10;
+        }else{
+            offset = 0;  
+        }  
         if(null == merType_id){
             return merchantMapper.findMerchantsByType(new RowBounds(offset, limit),1);
         }else{

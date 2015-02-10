@@ -210,7 +210,7 @@ public class PositionCodeController {
             	map.put("job_about", recruitPosition.getJob_detail());//职位描述
             	map.put("unit_name", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());
             	map.put("locate", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getLocate());
-            	map.put("lxfs", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwmc());
+            	map.put("lxfs", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getLxfs());
             	map.put("unit_about", recruitPosition.getDwid()==null ? "":recruitPosition.getDwid().getDwjs());
             	//还少一时间
             	sysResponse.setCode(SysResponse.SUCCESS);
