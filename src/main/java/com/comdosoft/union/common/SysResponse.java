@@ -155,6 +155,14 @@ public class SysResponse {
     	response.result = result;
     	return response;
     }
+    
+    public static SysResponse buildSuccessResponse(Object result,String message){
+        SysResponse response = new SysResponse();
+        response.code = SUCCESS;
+        response.message = message;
+        response.result = result;
+        return response;
+    }
 
     public static SysResponse buildFailResponse(String message){
     	SysResponse response = new SysResponse();

@@ -63,10 +63,34 @@ public class UserController {
      */
     @RequestMapping(value = "registfcode" , method = RequestMethod.POST)
     public SysResponse registfcode(String phone){
+        Boolean i = isExist(phone);
+        if(i){
+           return  SysResponse.buildFailResponse("此手机号已经存在"); 
+        }
         String code = SysUtils.sendPhoneCode(phone);
         logger.debug(phone+ " 注册获取验证码===>>"+code);
         SysResponse sysResponse =  userService.registfcode(phone,code);
         return sysResponse;
+    }
+    
+    /**
+     * 此手机是否存在  true 存在    false 不存在
+     * @param phone
+     * @return
+     */
+    private Boolean isExist(String phone) {
+        try {
+            User u = userService.findByPhone(phone);
+            if(null != u){
+                String name = u.getUsername();
+                if(null != name){
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            return null;
+        }
     }
     
     /**

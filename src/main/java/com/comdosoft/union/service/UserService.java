@@ -287,8 +287,8 @@ public class UserService {
      */
     public SysResponse saveRegist(User user, String verify_code, HttpSession session) {
         SysResponse sysResponse = null;
-        String username = user.getUsername();
-        String password = user.getPassword();
+        String username = user.getUsername().trim();
+        String password = user.getPassword().trim();
         String phone = user.getPhone();
         if (null != verify_code) {
             if (null != phone || !"".equals(phone)) {
