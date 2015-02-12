@@ -67,9 +67,9 @@ public class UserService {
         SysResponse sysResponse = null;
         try{
             //根据id更新
-            String email = user.getEmail() == null ? "" : user.getEmail();
-            String nickName = user.getNickName() == null ? "" : user.getNickName();
-            String code = user.getLabourUnionCode() == null ? "" : user.getLabourUnionCode();
+            String email = user.getEmail() == null ? "" : user.getEmail().trim();
+            String nickName = user.getNickName() == null ? "" : user.getNickName().trim();
+            String code = user.getLabourUnionCode() == null ? "" : user.getLabourUnionCode().trim();
 //            String password = user.getPassword() == null ? "" : user.getPassword();
             String id = user.getId()==null ?"":user.getId().toString();
             if("".equals(id)){
@@ -211,7 +211,7 @@ public class UserService {
     public SysResponse sendCode(String phone) {
         SysResponse sysResponse = null;
         try {
-            User u = userMapper.findByPhone(phone);
+            User u = userMapper.findByPhone(phone.trim());
             if(null != u){
                 String code = SysUtils.sendPhoneCode(phone);
                 u.setPhoneCode(code);
@@ -258,7 +258,7 @@ public class UserService {
     public SysResponse registfcode(String phone,String code) {
         SysResponse sysResponse = null;
         try {
-            User u = userMapper.findByPhone(phone);
+            User u = userMapper.findByPhone(phone.trim());
             if(null == u){
                 User user = new User();
                 user.setPhone(phone);

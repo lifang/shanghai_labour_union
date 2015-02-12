@@ -27,9 +27,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<h3>大小${d.appSize } MB</h3>
 					<div class="star">
 						<ul>
-						<c:forEach var="x" begin="1" end="${d.score }" step="1">  
-							<li class="on"></li>
-					   		</c:forEach> 
+						<%-- <c:forEach var="x" begin="1" end="${d.score }" step="1">  
+							<li class="on"></li> --%>
+							<c:if test="${d.score ==0 }">
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+							</c:if>
+							<c:if test="${d.score ==1 }">
+								<li class="on"></li>
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+							</c:if>
+							<c:if test="${d.score ==2 }">
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class=""></li>
+								<li class=""></li>
+								<li class=""></li>
+							</c:if>
+							<c:if test="${d.score ==3 }">
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class=""></li>
+								<li class=""></li>
+							</c:if>
+							<c:if test="${d.score ==4 }">
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class=""></li>
+							</c:if>
+							<c:if test="${d.score >=5 }">
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+								<li class="on"></li>
+							</c:if>
+							
+					   		<%-- </c:forEach>  --%>
 						</ul>
 					</div>
 				</div>
