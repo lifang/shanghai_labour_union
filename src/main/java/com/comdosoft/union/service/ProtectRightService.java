@@ -18,22 +18,24 @@ public class ProtectRightService {
 	
 	public void registProtectRight(ProtectRight protectRight) throws UnsupportedEncodingException{
 		protectRight.setAddtime(new Date());
-		String username = protectRight.getUsername();
+		String username = protectRight.getUsername().trim();
 		if(null != username){
 		    protectRight.setUsername(URLDecoder.decode(username, "utf-8"));
 		}
-		String title = protectRight.getTitle();
+		String title = protectRight.getTitle().trim();
 		if(null != title){
 		    protectRight.setTitle(URLDecoder.decode(title, "utf-8"));
 		}
-		String address = protectRight.getAddress();
+		String address = protectRight.getAddress().trim();
 		if(null != address){
 		    protectRight.setAddress(URLDecoder.decode(address, "utf-8"));
 		}
-		String content = protectRight.getContent();
+		String content = protectRight.getContent().trim();
 		if(null != content){
 		    protectRight.setContent(URLDecoder.decode(content, "utf-8"));
 		}
+		protectRight.setMobile(protectRight.getMobile().trim());
+		protectRight.setEmail(protectRight.getEmail().trim());
 		protectRightMapper.insertProtectRight(protectRight);
 	}
 

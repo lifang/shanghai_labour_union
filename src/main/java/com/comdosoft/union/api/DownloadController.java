@@ -67,4 +67,14 @@ public class DownloadController {
         return mv;  
     }
     
+    @RequestMapping(value = "getVersion", method = RequestMethod.GET)
+    public Object getVersion(Model model) {
+        Object o = null;
+        try {
+            o = downloadService.getVersion();
+        } catch (Exception e) {
+        }
+        return o;
+    }
+
 }

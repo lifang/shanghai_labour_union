@@ -67,10 +67,14 @@ public class UserController {
         if(i){
            return  SysResponse.buildFailResponse("此手机号已经存在"); 
         }
-        String code = SysUtils.sendPhoneCode(phone);
-        logger.debug(phone+ " 注册获取验证码===>>"+code);
-        SysResponse sysResponse =  userService.registfcode(phone,code);
-        return sysResponse;
+        if(SysUtils.isMobileNO(phone)){
+            String code = SysUtils.sendPhoneCode(phone);
+            logger.debug(phone+ "==>>注册获取验证码===>>"+code);
+            SysResponse sysResponse =  userService.registfcode(phone,code);
+            return sysResponse;
+        }else{
+            return  SysResponse.buildFailResponse("请输入正确的手机号"); 
+        }
     }
     
     /**

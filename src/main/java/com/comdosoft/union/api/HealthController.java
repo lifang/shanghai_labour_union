@@ -485,57 +485,17 @@ public class HealthController {
         return sysResponse;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void main(String[] args) throws Exception {
-        String keyword = "长征";
-        String sid = "sid=42&functionid=20001&guid=111&areaid=310000&keyword="+keyword+"&currentpage=0&pagesize=5";
+    @RequestMapping(value="testGet",method=RequestMethod.GET)
+    public SysResponse testGet() throws Exception{
+        SysResponse sysResponse = new SysResponse();
+        String sid = "sid=42&functionid=20001&guid=111&areaid=310000&currentpage=0&pagesize=20";
         String sign = MD5Utils.MD5(sid);
         String src = sid+"&sign="+sign;
         String encode = MD5Utils.AES(src, S_KEY);
-        
         List<String> obj = sendPost(encode);
         String json =  obj.get(1);
         Map<String,Object> map1 = JSON.parseObject(json);
-        System.err.println(map1);
-        
-        SysResponse sysResponse = new SysResponse();
-        List<Object> list_obj = new LinkedList<Object>();
-        Map<String,Object> map_obj = null;
-        String total = null;
-        for (Object o : map1.entrySet()) { 
-            Map.Entry<String,Object> entry = (Map.Entry<String,Object>)o; 
-            if(entry.getKey().equals("items")){ //医院信息对象数组
-                Object obj2 =  entry.getValue();
-                String s = JSONObject.toJSONString(obj2,true);
-                JSONArray jsonArray = JSON.parseArray(s); 
-                for (Object o2 : jsonArray) { 
-                  Map map2 = (Map) o2; 
-                  map_obj = new HashMap<String,Object>();
-                  for (Object oo : map2.entrySet()) { 
-                    Map.Entry<String,Object> en = (Map.Entry<String,Object>)oo; 
-                    if(en.getKey().equals("hospitalid")){
-                        map_obj.put("hospitalid", en.getValue());
-                    }
-                    if(en.getKey().equals("hospitalleve")){
-                        map_obj.put("hospitalleve", en.getValue());
-                    }
-                    if(en.getKey().equals("hospitalname")){
-                        map_obj.put("hospitalname", en.getValue());
-                    }
-                    if(en.getKey().equals("cpid")){
-                        map_obj.put("cpid", en.getValue());
-                    }
-                  }
-                  list_obj.add(map_obj);
-                } 
-            }
-            if(entry.getKey().equals("totalrecord")){
-                String v = (String) entry.getValue();
-                total = v;
-            }
-        }
-        sysResponse.setTotal(Integer.parseInt(total));
-        sysResponse.setResult(list_obj);
-        System.err.println(list_obj);
+        sysResponse = getHospital(map1);
+        return sysResponse;
     }
 }

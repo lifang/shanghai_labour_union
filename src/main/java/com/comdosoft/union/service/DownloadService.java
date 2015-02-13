@@ -26,4 +26,8 @@ public class DownloadService {
         return downloadsMapper.countByVo();
     }
 
+    public Object getVersion() {
+        return  downloadsMapper.getVersion();
+    }
+
 }

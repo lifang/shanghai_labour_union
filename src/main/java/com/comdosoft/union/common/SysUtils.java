@@ -282,7 +282,7 @@ public class SysUtils {
           logger.debug("smsUrl:"+smsUrl);
           //发送http请求，并接收http响应
           String resStr = doGetRequest(smsUrl.toString());
-          logger.debug("smsUrl返回字符串："+resStr);
+          logger.debug("smsUrl return string ==>>："+resStr);
         return mobilecode;
     }
     
@@ -382,9 +382,11 @@ public class SysUtils {
     }
     
     public static void main(String[] args) {
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
-        Matcher m = p.matcher("13390999999");  
-        System.out.println(m.matches()+"---");  
+//        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
+//        Matcher m = p.matcher("13390999999");  
+//        System.out.println(m.matches()+"---");  
+        String code = sendPhoneCode("18602184708");
+        System.err.println("code==>>>"+code);
     }
 
 }

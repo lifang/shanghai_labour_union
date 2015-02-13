@@ -5,9 +5,8 @@ import java.security.MessageDigest;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.catalina.util.Base64;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-@SuppressWarnings("deprecation")
 public class MD5Utils {
     public final static String MD5(String pwd) {
         //用于加密的字符

@@ -25,4 +25,9 @@
 		   
 	</select>
 	
+	<select id="getVersion" resultType="map">
+		SELECT id,android_version 
+		   FROM version
+	</select>
+	
 </mapper>

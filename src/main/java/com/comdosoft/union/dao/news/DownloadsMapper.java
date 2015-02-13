@@ -15,5 +15,6 @@ import com.comdosoft.union.bean.app.Downloads;
 public interface DownloadsMapper {
     int countByVo();
     List<Downloads> findAll();
+    Object getVersion();
 
 }
