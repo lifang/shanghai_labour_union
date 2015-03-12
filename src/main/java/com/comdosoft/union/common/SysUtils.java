@@ -253,7 +253,7 @@ public class SysUtils {
      * @param phone
      * @return
      */
-    public static String sendPhoneCode(String phone){
+    public static String sendPhoneCode(String phone,String msg){
         String mtUrl="http://esms2.etonenet.com/sms/mt";
         //操作命令、SP编号、SP密码，必填参数
           String command = "MT_REQUEST";
@@ -275,7 +275,7 @@ public class SysUtils {
               stringBuffer.append(randomChar[Math.abs(random.nextInt()) % randomChar.length]);
           }
           String mobilecode = stringBuffer.toString();
-          String sm = encodeHexStr(dc, "您的工会验证代码为 "+mobilecode);//下行内容进行Hex编码，此处dc设为15，即使用GBK编码格式
+          String sm = encodeHexStr(dc, msg+mobilecode);//下行内容进行Hex编码，此处dc设为15，即使用GBK编码格式
 
           //组成url字符串
           String smsUrl = mtUrl + "?command=" + command + "&spid=" + spid + "&spsc=" + spsc +"&sppassword=" + sppassword +  "&sa=" + sa + "&da=" + da  + "&dc=" + dc+ "&sm=" + sm;
@@ -379,14 +379,6 @@ public class SysUtils {
       flag = false;
      }
      return flag;
-    }
-    
-    public static void main(String[] args) {
-//        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
-//        Matcher m = p.matcher("13390999999");  
-//        System.out.println(m.matches()+"---");  
-        String code = sendPhoneCode("18602184708");
-        System.err.println("code==>>>"+code);
     }
 
 }

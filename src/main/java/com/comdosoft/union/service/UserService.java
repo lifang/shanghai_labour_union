@@ -208,12 +208,12 @@ public class UserService {
      * @param phone
      * @return
      */
-    public SysResponse sendCode(String phone) {
+    public SysResponse sendCode(String phone,String msg) {
         SysResponse sysResponse = null;
         try {
             User u = userMapper.findByPhone(phone.trim());
             if(null != u){
-                String code = SysUtils.sendPhoneCode(phone);
+                String code = SysUtils.sendPhoneCode(phone,msg);
                 u.setPhoneCode(code);
                 userMapper.updateCode(u);
                 sysResponse =SysResponse.buildSuccessResponse(code);

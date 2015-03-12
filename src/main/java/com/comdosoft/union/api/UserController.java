@@ -32,12 +32,24 @@ public class UserController {
     private UserService userService;
     
     /**
+     * 更换手机
      * 根据手机号 发送验证码
      * @return 验证码
      */
     @RequestMapping(value = "getPhoneCode" , method = RequestMethod.POST)
     public SysResponse getPhoneCode(String phone){
-        SysResponse sysResponse = userService.sendCode(phone);
+        SysResponse sysResponse = userService.sendCode(phone,"【上海市总工会】您正在进行更换手机号码操作，验证码为");
+        return sysResponse;
+    }
+    
+    /**
+     * 找回密码
+     * 根据手机号 发送验证码
+     * @return 验证码
+     */
+    @RequestMapping(value = "getPwdCode" , method = RequestMethod.POST)
+    public SysResponse getPwdCode(String phone){
+        SysResponse sysResponse = userService.sendCode(phone,"【上海市总工会】您正在进行找回密码操作，验证码为");
         return sysResponse;
     }
     
@@ -68,7 +80,7 @@ public class UserController {
            return  SysResponse.buildFailResponse("此手机号已经存在"); 
         }
         if(SysUtils.isMobileNO(phone)){
-            String code = SysUtils.sendPhoneCode(phone);
+            String code = SysUtils.sendPhoneCode(phone,"【上海市总工会】欢迎您的注册，验证码为");
             logger.debug(phone+ "==>>注册获取验证码===>>"+code);
             SysResponse sysResponse =  userService.registfcode(phone,code);
             return sysResponse;
