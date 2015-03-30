@@ -134,7 +134,7 @@ public class NewsController {
                 hashMap = new HashMap<String,String>();
                 hashMap.put("id", news.getId().toString());
                 hashMap.put("title", news.getTitle());
-                hashMap.put("content", news.getContent());
+                hashMap.put("content", news.getContentmp());
                 hashMap.put("time", news.getTime().toString());
             }
             sysResponse.setCode(SysResponse.SUCCESS);

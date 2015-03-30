@@ -80,8 +80,16 @@ public class News implements Serializable{
     private Date sh3time;
     private Integer img;//暂时未使用
     private String imgPath;//图片路径
+    private String contentmp;//2015-3-30新增
     
-    /**  
+    
+    public String getContentmp() {
+		return contentmp;
+	}
+	public void setContentmp(String contentmp) {
+		this.contentmp = contentmp;
+	}
+	/**  
      * 获取 imgPath  
      * @return imgPath
      */
