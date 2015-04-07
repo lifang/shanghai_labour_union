@@ -42,7 +42,7 @@ import com.comdosoft.union.service.CityService;
 @RequestMapping("api/health")
 public class HealthController {
     private static final Logger logger = LoggerFactory.getLogger(HealthController.class);
-    public static final String POST_URL = "http://116.228.55.124:58030/healthinterface/portal.do";
+    public static final String POST_URL = "http://116.228.55.85/healthinterface/portal.do";
     public static final String S_KEY = "do3f6m2DJaAJ0Bqa";
     
     @Resource
@@ -485,17 +485,19 @@ public class HealthController {
         return sysResponse;
     }
     
-    @RequestMapping(value="testGet",method=RequestMethod.GET)
-    public SysResponse testGet() throws Exception{
-        SysResponse sysResponse = new SysResponse();
-        String sid = "sid=42&functionid=20001&guid=111&areaid=310000&currentpage=0&pagesize=20";
-        String sign = MD5Utils.MD5(sid);
-        String src = sid+"&sign="+sign;
-        String encode = MD5Utils.AES(src, S_KEY);
-        List<String> obj = sendPost(encode);
-        String json =  obj.get(1);
-        Map<String,Object> map1 = JSON.parseObject(json);
-        sysResponse = getHospital(map1);
-        return sysResponse;
-    }
+//    @RequestMapping(value="testGet",method=RequestMethod.GET)
+//    public SysResponse testGet() throws Exception{
+//        SysResponse sysResponse = new SysResponse();
+//        String sid = "sid=42&functionid=20001&guid=111&areaid=310000&currentpage=0&pagesize=20";
+//        String sign = MD5Utils.MD5(sid);
+//        String src = sid+"&sign="+sign;
+//        String encode = MD5Utils.AES(src, S_KEY);
+//        List<String> obj = sendPost(encode);
+//        String json =  obj.get(1);
+//        Map<String,Object> map1 = JSON.parseObject(json);
+//        sysResponse = getHospital(map1);
+//        return sysResponse;
+//    }
+//    
+   
 }
