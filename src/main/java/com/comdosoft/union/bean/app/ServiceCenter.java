@@ -1,5 +1,7 @@
 package com.comdosoft.union.bean.app;
 
+import java.util.List;
+
 /**
  * 服务中心
  * @author wu
@@ -12,7 +14,15 @@ public class ServiceCenter {
 	private String addr;
 	private String tel;
 	private String worktime;
+	private List<Tpic> piclist;
 	
+	
+	public List<Tpic> getPiclist() {
+		return piclist;
+	}
+	public void setPiclist(List<Tpic> piclist) {
+		this.piclist = piclist;
+	}
 	/**  
      * 获取 worktime  
      * @return worktime

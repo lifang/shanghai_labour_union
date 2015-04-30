@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comdosoft.union.dao.news.ServiceCenterMapper">
 	
+	<resultMap id="TpicMap" type="com.comdosoft.union.bean.app.Tpic">
+		<id property="id" column="cid"/>
+		<result property="pic" column="pic" />
+		<result property="pid" column="pid" />
+	</resultMap>
+	
+	<resultMap id="serviceCenterMap" type="com.comdosoft.union.bean.app.ServiceCenter">
+		<id property="id" column="id"/>
+		<result property="name" column="name" />
+		<result property="addr" column="addr" />
+		<result property="tel" column="tel" />
+		<result property="worktime" column="worktime" />
+		<collection property="piclist" column="pid"  resultMap="TpicMap"></collection>
+	<!-- 	<association property="piclist" javaType="com.comdosoft.union.bean.app.Tpic" resultMap="TpicMap" /> -->
+	</resultMap>
+	
 	<select id="countByBs" resultType="long">
 		SELECT COUNT(*) FROM map WHERE bs=#{bs}
 	</select>
@@ -16,11 +32,13 @@
 		LIMIT #{param2.offset},#{param2.pageSize}
 	</select>
 	
-	<select id="find" resultType="com.comdosoft.union.bean.app.ServiceCenter">
+	<select id="find"   resultMap="serviceCenterMap">
 		SELECT
-		  id,name,addr,tel,worktime
+		  m.id as id,m.name,m.addr,m.tel,m.worktime,c.pic as pic,c.id as cid
 		FROM
-		  map
-		WHERE id=#{id}
+		  map m
+		  left join tpic c on c.pid = m.id
+		WHERE m.id=#{id}
 	</select>
+	
 </mapper>
