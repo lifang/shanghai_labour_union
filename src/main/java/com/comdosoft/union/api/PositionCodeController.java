@@ -94,7 +94,7 @@ public class PositionCodeController {
             sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
+            sysResponse.setMessage("查询无结果");
         }
         
         return sysResponse;

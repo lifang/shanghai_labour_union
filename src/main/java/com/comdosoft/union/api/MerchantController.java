@@ -159,7 +159,7 @@ public class MerchantController {
                  logger.debug("查询其他商户over>>>>>>>");
         	}else{
         		 sysResponse.setCode(SysResponse.FAILURE);
-                 sysResponse.setMessage("数据不存在,列表为空");
+                 sysResponse.setMessage("查询无结果");
         	}
         }
         return sysResponse;
@@ -187,7 +187,7 @@ public class MerchantController {
                 sysResponse.setResult(map);
             }else{
                 sysResponse.setCode(SysResponse.FAILURE);
-                sysResponse.setMessage("数据不存在,列表为空");
+                sysResponse.setMessage("查询无结果");
             }
         } catch (Exception e) {
             sysResponse.setCode(SysResponse.FAILURE);
@@ -228,7 +228,7 @@ public class MerchantController {
             sysResponse.setResult(alList);
         }else{
             sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
+            sysResponse.setMessage("查询无结果");
         }
         return sysResponse;
     }

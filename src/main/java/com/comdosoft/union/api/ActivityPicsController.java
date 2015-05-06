@@ -42,7 +42,7 @@ public class ActivityPicsController {
                 sysResponse.setResult(activityList);
             }else{
                 sysResponse.setCode(SysResponse.FAILURE);
-                sysResponse.setMessage("数据不存在,列表为空");
+                sysResponse.setMessage("查询无结果");
                 logger.debug("没有查询到数据");
             }
         }catch(Exception e){

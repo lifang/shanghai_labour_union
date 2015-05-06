@@ -87,7 +87,7 @@ public class XzController {
             sysResponse.setResult(list);
         } else {
             sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
+            sysResponse.setMessage("查询无结果");
         }
         return sysResponse;
     }
@@ -154,7 +154,7 @@ public class XzController {
                 sysResponse.setResult(xzTypeList);
             } else {
                 sysResponse.setCode(SysResponse.FAILURE);
-                sysResponse.setMessage("数据不存在,列表为空");
+                sysResponse.setMessage("查询无结果");
             }
             return sysResponse;
         }catch(Exception e){
