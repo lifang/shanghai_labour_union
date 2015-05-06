@@ -67,7 +67,7 @@ public class TcardcxService {
                 e.printStackTrace();
             }
         }
-        logger.debug("转码前====>>>offset==>"+offset+" name===>>"+name);
+        logger.debug("转码后====>>>offset==>"+offset+" name===>>"+name);
         if(type.equals("0")){
             return tcardcxMapper.searchlz(new RowBounds(offset, limit),name);
         }else{

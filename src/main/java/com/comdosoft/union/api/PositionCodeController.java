@@ -134,7 +134,7 @@ public class PositionCodeController {
             }
         }
         try {
-            String q = recruitPosition.getQ();//搜索条件
+            String q = recruitPosition.getQ().trim();//搜索条件
             if(null != q){
                 q = URLDecoder.decode(q, "utf-8");
                 recruitPosition.setQ(q);

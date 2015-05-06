@@ -45,13 +45,15 @@
 	<select id="findStaffAll" resultMap="xzType" >
 		SELECT *
 		   FROM xz_type t left join tcardcx m  on m.xzId=t.id
-		   where IFNULL(m.xzId,0) !=0
+		   where IFNULL(m.xzId,0) !=0 
+		   order by t.id desc
 	</select>
 	<!-- 退休 -->
 	<select id="findRetireAll" resultMap="xzType" >
 		SELECT *
 		   FROM xz_type t left join tcardcxtx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0
+		   order by t.id desc
 	</select>
 	
 	<select id="findById" resultMap="xzType" parameterType="java.lang.Integer">
@@ -65,15 +67,18 @@
 		SELECT * 		FROM 		xz_type m
 			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
 		where   tx.csfzh = #{csfzh}
+		
 	</select>
 	<select id="searchzz" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
 		where  t.csfzh = #{csfzh}  
+		order by m.id desc
 	</select>
 	<select id="searchAll" resultMap="xzType" parameterType="java.lang.String">
 		SELECT * 		FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
 			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
+				order by m.id desc
 	</select>
 </mapper>

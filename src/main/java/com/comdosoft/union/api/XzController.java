@@ -146,7 +146,7 @@ public class XzController {
         }
         logger.debug("转码前====>>>offset==>"+offset+" name===>>"+name);
         try{
-            List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name,type);
+            List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name.trim(),type);
             if (xzTypeList.size() > 0) {
                 sysResponse.setCode(SysResponse.SUCCESS);
                 sysResponse.setMessage("请求成功");
