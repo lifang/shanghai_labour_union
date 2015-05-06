@@ -85,6 +85,7 @@ public class MerchantController {
     @RequestMapping(value = "findOtherMerchants", method = RequestMethod.POST)
     public SysResponse findOtherMerchants(Merchant merchant,String offset,
                                           String per_lon,String per_lat) {
+    	logger.debug("per_lon  >>"+ per_lon +"  per_lat >>"+ per_lat);
         SysResponse sysResponse = new SysResponse();
         if(null == per_lon || null == per_lat){
             sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
@@ -119,11 +120,12 @@ public class MerchantController {
         }
         logger.debug("small==>>"+small+" 地区是:"+locate);
         List<Branch> branchList = merchantService.findByMerId(merchant.getId(),locate);
-        sysResponse = putBranchData(sysResponse, branchList);
+        sysResponse = putBranchData(sysResponse, branchList,merchant);
+        logger.debug(">>>>>>>>>>>over>>>>>"+ sysResponse);
         return sysResponse;
     }
     
-    private SysResponse putBranchData(SysResponse sysResponse, List<Branch> branchList) {
+    private SysResponse putBranchData(SysResponse sysResponse, List<Branch> branchList,Merchant merchant) {
         ArrayList<Object> alList = new ArrayList<Object>();
         LinkedHashMap<String, String> map = null;
         if(branchList.size()>0){
@@ -139,8 +141,26 @@ public class MerchantController {
             sysResponse.setTotal(branchList.size());
             sysResponse.setResult(alList);
         }else{
-            sysResponse.setCode(SysResponse.FAILURE);
-            sysResponse.setMessage("数据不存在,列表为空");
+        	logger.debug(merchant.getId()+"当前位置没有找到相应商家");
+        	List<Branch> branchLists = merchantService.findByMerId(merchant.getId(),null);
+        	logger.debug("查找所有商户"+branchLists.size()+" 个");
+        	if(branchLists.size()>0){
+        		 sysResponse.setCode(SysResponse.SUCCESS);
+                 sysResponse.setMessage("请求成功");
+                 for (Branch mer : branchLists) {
+                     map = new LinkedHashMap<String,String>();
+                     map.put("id", mer.getId().toString());
+                     map.put("name", mer.getName());
+                     map.put("addr", mer.getAddr());
+                     alList.add(map);
+                 }
+                 sysResponse.setTotal(branchLists.size());
+                 sysResponse.setResult(alList);
+                 logger.debug("查询其他商户over>>>>>>>");
+        	}else{
+        		 sysResponse.setCode(SysResponse.FAILURE);
+                 sysResponse.setMessage("数据不存在,列表为空");
+        	}
         }
         return sysResponse;
 }

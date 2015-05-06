@@ -177,4 +177,12 @@ public class SysResponse {
     	response.message = message;
     	return response;
     }
+
+	@Override
+	public String toString() {
+		return "SysResponse [code=" + code + ", message=" + message
+				+ ", token=" + token + ", total=" + total + ", result="
+				+ result + "]";
+	}
+    
 }

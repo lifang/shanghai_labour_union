@@ -64,14 +64,14 @@ alter table merchants add tel varchar(20),add logo_path varchar(255),add about v
 ------- zphy 招聘行业表    ------------------
 ------- zpzw 招聘职位表    ------------------
 
--- 招聘单位   所属区域--
-alter table zpdw add locate varchar(20);
+-- 招聘单位   所属区域 --
+alter table zpdw add locate varchar(20) COMMENT '所属区域';
 -- 单位介绍 --
-alter table zpdw add union_about varchar(20);
+alter table zpdw add union_about varchar(20) COMMENT '单位介绍';
 --联系电话--
-alter table zpdw add tel varchar(20);
+alter table zpdw add tel varchar(20) COMMENT '联系电话';
 --职位详情  描述--
-alter table zpzw add job_detail varchar(20);
+alter table zpzw add job_detail varchar(20) COMMENT '职位详情描述';
 
 
 ------ zgh1 数据库----------------
@@ -137,7 +137,7 @@ CREATE TABLE `users` (
 
 -- 手机验证码  --
 alter table users add phone_code varchar(10);
-
+alter table users add nick_name varchar(255);
 
 -- ----------------------------
 -- 城市表

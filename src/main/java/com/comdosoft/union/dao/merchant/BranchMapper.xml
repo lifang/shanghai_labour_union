@@ -22,8 +22,11 @@
 	<select id="findByMerId" resultMap="branch" >
 		select b.*,m.id as mid 
 		from branch b left join merchants m on  m.id=b.mer_id
-		where m.id=#{param1} and b.locate=#{param2}
-		  order by b.id desc
+		where m.id=#{param1} 
+		<if test="param2 !=null">
+			and b.locate=#{param2}
+		</if>
+			  order by b.id desc
 	</select>
 	
 </mapper>
