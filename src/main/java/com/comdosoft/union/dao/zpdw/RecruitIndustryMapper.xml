@@ -8,7 +8,7 @@
 	</resultMap>
 
 	<select id="findAll" resultMap="recruitIndustry" >
-		SELECT *
+		SELECT hymc,id
 		   FROM zphy
 	</select>
 </mapper>

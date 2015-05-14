@@ -6,6 +6,10 @@
 		<id property="id" column="tid" />
 		<result property="hymc" column="hymc"/>
 	</resultMap>
+	<resultMap id="getcity" type="com.comdosoft.union.bean.app.Area">
+		<id property="id" column="id"/>
+		<result property="name" column="name" />
+		</resultMap>
 	<resultMap id="getMerchant" type="com.comdosoft.union.bean.app.Merchant">
 		<id property="id" column="id"/>
 		<result property="dwmc" column="dwmc" />
@@ -38,6 +42,10 @@
 		SELECT m.*,f.id as tid,f.hymc 
 		   FROM merchants m left join mer_fl f on f.id=m.sshy 
 		  order by m.id desc
+	</select>
+	
+	<select id="findAllCity" resultMap="getcity" >
+		select a.id,a.name from area a
 	</select>
 	
 	<select id="findMerchantsByType" resultMap="getMerchant" >

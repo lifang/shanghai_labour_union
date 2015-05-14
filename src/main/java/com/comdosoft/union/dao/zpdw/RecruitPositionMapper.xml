@@ -94,7 +94,7 @@
 
 	<select id="findOtherJobById" resultMap="recruitPosition">
 		SELECT zp.id,zp.zwmc
-		FROM ( SELECT * FROM zpzw WHERE id = #{id} ) as zz,zpzw as zp
+		FROM ( SELECT id , dwid,zwmc,zwms,rs,xy,sh,job_detail  FROM zpzw WHERE id = #{id} ) as zz,zpzw as zp
 		where zz.dwid = zp.dwid and zp.id != #{id}
 	</select>
 

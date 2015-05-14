@@ -74,6 +74,12 @@ public class MerchantController {
         return sysResponse;
     }
     
+    @RequestMapping(value = "getcity", method = RequestMethod.POST)
+    public SysResponse findAllCity() {
+    		List<Area> cities = merchantService.findAllCity();
+    	return  SysResponse.buildSuccessResponse(cities);
+    }
+    
    /**
     * 根据用户经纬度查询用户所在区域的商家
     * @param merchant  传入当前商户id
@@ -84,43 +90,48 @@ public class MerchantController {
     */
     @RequestMapping(value = "findOtherMerchants", method = RequestMethod.POST)
     public SysResponse findOtherMerchants(Merchant merchant,String offset,
-                                          String per_lon,String per_lat) {
+                                          String per_lon,String per_lat,String cityname) {
     	logger.debug("per_lon  >>"+ per_lon +"  per_lat >>"+ per_lat);
         SysResponse sysResponse = new SysResponse();
-        if(null == per_lon || null == per_lat){
-            sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
-            return sysResponse;
-        }
-        if(null == offset){
-            offset = "0";
+        if(null != cityname && !cityname.equals("")){
+        	  List<Branch> branchList = merchantService.findByMerId(merchant.getId(),cityname);
+              sysResponse = putBranchData(sysResponse, branchList,merchant);
         }else{
-            Pattern pattern = Pattern.compile("[0-9]*");
-            Boolean isNum = pattern.matcher(offset).matches();
-            if(!isNum){
-                sysResponse.setCode(SysResponse.FAILURE);
-                sysResponse.setMessage("请求失败");
-                logger.debug("请求页数错误,页数为："+offset);
-                return sysResponse;
-            }
+        	 if(null == per_lon || null == per_lat){
+                 sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
+                 return sysResponse;
+             }
+             if(null == offset){
+                 offset = "0";
+             }else{
+                 Pattern pattern = Pattern.compile("[0-9]*");
+                 Boolean isNum = pattern.matcher(offset).matches();
+                 if(!isNum){
+                     sysResponse.setCode(SysResponse.FAILURE);
+                     sysResponse.setMessage("请求失败");
+                     logger.debug("请求页数错误,页数为："+offset);
+                     return sysResponse;
+                 }
+             }
+             List<Area> areaList = areaService.findAll(null);
+             Double pn = Double.valueOf(per_lon);
+             Double pt = Double.valueOf(per_lat);
+             Double temp = 0.0;
+             Double small= 200000.0;
+             String locate = "";
+             for(Area area:areaList){
+                 Double lat = area.getLatitude();
+                 Double lon = area.getLongitude();
+                 temp = BaiduMapUtil.GetShortDistance(pn, pt, lon, lat);
+                 if(temp < small){
+                     small = temp;
+                     locate = area.getName();
+                 }
+             }
+             logger.debug("small==>>"+small+" 地区是:"+locate);
+             List<Branch> branchList = merchantService.findByMerId(merchant.getId(),locate);
+             sysResponse = putBranchData(sysResponse, branchList,merchant);
         }
-        List<Area> areaList = areaService.findAll(null);
-        Double pn = Double.valueOf(per_lon);
-        Double pt = Double.valueOf(per_lat);
-        Double temp = 0.0;
-        Double small= 200000.0;
-        String locate = "";
-        for(Area area:areaList){
-            Double lat = area.getLatitude();
-            Double lon = area.getLongitude();
-            temp = BaiduMapUtil.GetShortDistance(pn, pt, lon, lat);
-            if(temp < small){
-                small = temp;
-                locate = area.getName();
-            }
-        }
-        logger.debug("small==>>"+small+" 地区是:"+locate);
-        List<Branch> branchList = merchantService.findByMerId(merchant.getId(),locate);
-        sysResponse = putBranchData(sysResponse, branchList,merchant);
         logger.debug(">>>>>>>>>>>over>>>>>"+ sysResponse);
         return sysResponse;
     }
@@ -136,6 +147,8 @@ public class MerchantController {
                 map.put("id", mer.getId().toString());
                 map.put("name", mer.getName());
                 map.put("addr", mer.getAddr());
+                map.put("isfind", "1");
+                map.put("cityname", mer.getLocate());
                 alList.add(map);
             }
             sysResponse.setTotal(branchList.size());
@@ -152,6 +165,8 @@ public class MerchantController {
                      map.put("id", mer.getId().toString());
                      map.put("name", mer.getName());
                      map.put("addr", mer.getAddr());
+                     map.put("isfind", "0");
+                     map.put("cityname", mer.getLocate());
                      alList.add(map);
                  }
                  sysResponse.setTotal(branchLists.size());

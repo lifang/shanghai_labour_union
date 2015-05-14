@@ -12,7 +12,7 @@
 	</resultMap>
 
 	<select id="findAll" resultMap="area" >
-		SELECT *
+		SELECT name,id,parent_id,latitude,longitude,order_no
 		   FROM area
 		   where 
 		    parent_id= 1

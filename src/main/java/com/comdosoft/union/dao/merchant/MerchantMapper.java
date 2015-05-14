@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 
+import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.MerchantType;
 
@@ -13,4 +14,5 @@ public interface MerchantMapper {
     List<Merchant> findAllMerchants(RowBounds rowBounds);
     List<Merchant> findMerchantsByType(RowBounds rowBounds ,Integer id);
     Merchant findById(Integer id);
+	List<Area> findAllCity();
 }

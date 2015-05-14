@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
+import com.comdosoft.union.bean.app.Area;
 import com.comdosoft.union.bean.app.Branch;
 import com.comdosoft.union.bean.app.Merchant;
 import com.comdosoft.union.bean.app.MerchantType;
@@ -51,4 +52,8 @@ public class MerchantService {
     public List<Branch> findByMerId(Integer mid,String locate){
         return BranchMapper.findByMerId(mid,locate);
     }
+
+	public List<Area> findAllCity() {
+		return merchantMapper.findAllCity();
+	}
 }
