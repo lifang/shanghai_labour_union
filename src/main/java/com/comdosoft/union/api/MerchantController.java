@@ -1,5 +1,7 @@
 package com.comdosoft.union.api;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -94,8 +96,36 @@ public class MerchantController {
     	logger.debug("per_lon  >>"+ per_lon +"  per_lat >>"+ per_lat);
         SysResponse sysResponse = new SysResponse();
         if(null != cityname && !cityname.equals("")){
+        	 try {
+				cityname = URLDecoder.decode(cityname, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
         	  List<Branch> branchList = merchantService.findByMerId(merchant.getId(),cityname);
               sysResponse = putBranchData(sysResponse, branchList,merchant);
+//              ArrayList<Object> alList = new ArrayList<Object>();
+//              LinkedHashMap<String, String> map = null;
+//              if(branchList.size()>0){
+//                  sysResponse.setCode(SysResponse.SUCCESS);
+//                  sysResponse.setMessage("请求成功");
+//                  for (Branch mer : branchList) {
+//                      map = new LinkedHashMap<String,String>();
+//                      map.put("id", mer.getId().toString());
+//                      map.put("name", mer.getName());
+//                      map.put("addr", mer.getAddr());
+//                      map.put("isfind", "1");
+//                      map.put("cityname", mer.getLocate());
+//                      alList.add(map);
+//                  }
+//                  sysResponse.setTotal(branchList.size());
+//                  sysResponse.setResult(alList);
+//              }else{
+//            	  sysResponse.setCode(SysResponse.SUCCESS);
+//                  sysResponse.setMessage("无门店信息");
+//            	  sysResponse.setTotal(branchList.size());
+//                  sysResponse.setResult(alList);
+//                  return sysResponse;
+//              }
         }else{
         	 if(null == per_lon || null == per_lat){
                  sysResponse = SysResponse.buildFailResponse("请传入用户经纬度坐标");
