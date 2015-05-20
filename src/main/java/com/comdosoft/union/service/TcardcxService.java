@@ -71,7 +71,7 @@ public class TcardcxService {
         if(type.equals("0")){
             return tcardcxMapper.searchlz(new RowBounds(offset, limit),name);
         }else{
-            return tcardcxMapper.searchzz(new RowBounds(offset, limit),name);
+            return tcardcxMapper.searchzz(new RowBounds(offset, limit),name);  //在职
         }
     }
 

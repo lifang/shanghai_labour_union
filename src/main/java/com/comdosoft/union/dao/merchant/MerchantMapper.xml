@@ -56,9 +56,20 @@
 	</select>
 	
 	<select id="findById" resultMap="getMerchant" parameterType="java.lang.Integer">
-		SELECT m.*,f.id as tid,f.hymc 
-		  FROM merchants m ,mer_fl f where f.id=m.sshy 
-		and m.id=#{id}
+		SELECT
+			m.id,
+			m.symd,
+			m.dwmc,
+			m.tel,
+			m.logo_path,
+			m.about_detail,
+			f.id AS tid,
+			f.hymc
+		FROM
+			merchants m
+		LEFT JOIN mer_fl f ON   m.sshy =f.id
+		WHERE
+			 m.id=#{id}
 	</select>
 
 </mapper>

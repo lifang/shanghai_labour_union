@@ -18,24 +18,28 @@ public class ProtectRightService {
 	
 	public void registProtectRight(ProtectRight protectRight) throws UnsupportedEncodingException{
 		protectRight.setAddtime(new Date());
-		String username = protectRight.getUsername().trim();
+		String username = protectRight.getUsername();
 		if(null != username){
-		    protectRight.setUsername(URLDecoder.decode(username, "utf-8"));
+		    protectRight.setUsername(URLDecoder.decode(username.trim(), "utf-8"));
 		}
-		String title = protectRight.getTitle().trim();
+		String title = protectRight.getTitle();
 		if(null != title){
-		    protectRight.setTitle(URLDecoder.decode(title, "utf-8"));
+		    protectRight.setTitle(URLDecoder.decode(title.trim(), "utf-8"));
 		}
-		String address = protectRight.getAddress().trim();
+		String address = protectRight.getAddress();
 		if(null != address){
-		    protectRight.setAddress(URLDecoder.decode(address, "utf-8"));
+		    protectRight.setAddress(URLDecoder.decode(address.trim(), "utf-8"));
 		}
-		String content = protectRight.getContent().trim();
+		String content = protectRight.getContent();
 		if(null != content){
-		    protectRight.setContent(URLDecoder.decode(content, "utf-8"));
+		    protectRight.setContent(URLDecoder.decode(content.trim(), "utf-8"));
 		}
-		protectRight.setMobile(protectRight.getMobile().trim());
-		protectRight.setEmail(protectRight.getEmail().trim());
+		if(null !=protectRight.getMobile()){
+			protectRight.setMobile(protectRight.getMobile().trim());
+		}
+		if(null != protectRight.getEmail()){
+			protectRight.setEmail(protectRight.getEmail().trim());
+		}
 		protectRightMapper.insertProtectRight(protectRight);
 	}
 

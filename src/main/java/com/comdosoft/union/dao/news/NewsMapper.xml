@@ -54,7 +54,7 @@
 	<select id="findLawsById" resultMap="news" parameterType="java.lang.Integer">
 		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
 		   FROM news2 m 
-		where  m.sh3=1 AND m.lm3 =57  and m.id=#{id}
+		where      m.id=#{id}  and  m.sh3=1 and m.lm3 =57
 	</select>
 	
 	<select id="findAll" resultMap="news" >

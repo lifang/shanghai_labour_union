@@ -66,7 +66,21 @@ public class Merchant implements Serializable {
     private String username;//暂时不用
     private String password;//暂时不用
     private String site;//暂时不用
+    private String cityname;
+    
     /**
+	 * @return the cityname
+	 */
+	public String getCityname() {
+		return cityname;
+	}
+	/**
+	 * @param cityname the cityname to set
+	 */
+	public void setCityname(String cityname) {
+		this.cityname = cityname;
+	}
+	/**
      * 联系电话
      */
     private String tel;//代替 lxfs

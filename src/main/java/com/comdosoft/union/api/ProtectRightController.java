@@ -32,7 +32,7 @@ public class ProtectRightController {
      */
     @RequestMapping(value = "regist", method = RequestMethod.POST)
     public SysResponse registProtectRight(ProtectRight protectRight) {
-        logger.debug("ProtectRight==>>" + protectRight);
+        logger.debug("维权登记》》》ProtectRight==>>" + protectRight);
         if (!StringUtils.hasLength(protectRight.getUsername())) {
             return SysResponse.buildExceptionResponse("姓名不能为空");
         }
@@ -50,6 +50,7 @@ public class ProtectRightController {
             protectRightService.registProtectRight(protectRight);
             sysResponse = SysResponse.buildSuccessResponse("登记成功");
         } catch (Exception e) {
+        	logger.debug("出错了》》》》》"+ e);
             sysResponse = SysResponse.buildFailResponse("登记失败,请重新再试");
         }
         return sysResponse;

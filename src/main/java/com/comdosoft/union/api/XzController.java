@@ -146,7 +146,7 @@ public class XzController {
         }
         logger.debug("转码前====>>>offset==>"+offset+" name===>>"+name);
         try{
-            List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name.trim(),type);
+            List<XzType> xzTypeList = tcardcxService.search(Integer.parseInt(offset), limit, name.trim(),type==null?"1":type);
             if (xzTypeList.size() > 0) {
                 sysResponse.setCode(SysResponse.SUCCESS);
                 sysResponse.setMessage("请求成功");
@@ -158,6 +158,7 @@ public class XzController {
             }
             return sysResponse;
         }catch(Exception e){
+        	logger.debug("出错了》》》"+e);
             sysResponse.setCode(SysResponse.FAILURE);
             sysResponse.setMessage("请求失败");
             return sysResponse;
