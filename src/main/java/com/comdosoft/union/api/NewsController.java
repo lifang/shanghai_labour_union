@@ -76,10 +76,12 @@ public class NewsController {
             for (News news2 : newsList) {
                 map = new LinkedHashMap<String,String>();
                 map.put("id", news2.getId().toString());
-                map.put("title", news2.getTitle());
-                map.put("time", news2.getTime() == null ? "": news2.getTime().toString());
-                if(i==1)
+                if(i==1){
                     map.put("imgPath", news2.getImgPath());
+                }else if(i ==0){
+                	  map.put("title", news2.getTitle());
+                      map.put("time", news2.getTime() == null ? "": news2.getTime().toString());
+                }
                 alList.add(map);
             }
             int total = newsService.countByVo(news);

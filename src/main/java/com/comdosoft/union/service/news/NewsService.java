@@ -25,7 +25,8 @@ public class NewsService {
     
     public List<News> findAll(int offset,int limit,News news) {
         if(offset>0){
-            offset = (offset-1)*(limit)+4; 
+            offset = (offset-1)*(limit); 
+//            offset = (offset-1)*(limit)+4; 
         }else{
             offset = 0;  
         }  
