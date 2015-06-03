@@ -36,11 +36,12 @@
 	</select>
 	
 	<select id="findTopNews" resultMap="news" >
+	<![CDATA[
 		SELECT m.id,m.title,m.imgPath,m.content,m.time,m.sh3,m.lm3  
 		   FROM news2 m 
-		    where  m.sh3=1 
+		    where  m.imgPath <> ''   and m.sh3=1  
 			order by m.time desc
-		   
+	]]>
 	</select>
 	
 	<select id="findById" resultMap="news" parameterType="java.lang.Integer">
