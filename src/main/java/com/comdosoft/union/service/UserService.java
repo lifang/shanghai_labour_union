@@ -238,6 +238,12 @@ public class UserService {
         SysResponse sysResponse = null;
         User u = userMapper.findById(user.getId());
         if(u.getPhoneCode().equals(verify_code)){
+        	String old_phone = u.getPhone();
+        	String new_phone = user.getPhone();
+        	if(old_phone.equals(new_phone)){
+        		  sysResponse = SysResponse.buildFailResponse("不能与原手机号相同");
+        		  return sysResponse;
+        	}
             u.setPhone(user.getPhone());
             userMapper.update(u);
             u.setPassword(null);
