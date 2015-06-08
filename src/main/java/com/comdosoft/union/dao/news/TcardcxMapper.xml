@@ -50,21 +50,21 @@
 	</select>
 	<!-- 在职 -->
 	<select id="findStaffAll" resultMap="xzType" >
-			SELECT m.id,m.`name`,m.img 	
+			SELECT t.id,t.`name`,t.img 	
 		   FROM xz_type t left join tcardcx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0 
 		   order by t.id desc
 	</select>
 	<!-- 退休 -->
 	<select id="findRetireAll" resultMap="xzType" >
-		SELECT m.id,m.`name`,m.img 	
+		SELECT t.id,t.`name`,t.img 	
 		   FROM xz_type t left join tcardcxtx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0
 		   order by t.id desc
 	</select>
 	
 	<select id="findById" resultMap="xzType" parameterType="java.lang.Integer">
-			SELECT m.id,m.`name`,m.img 	
+			SELECT t.id,t.`name`,t.img 	
 		  FROM  xz_type t 
 		where  t.id=#{id}
 	</select>
