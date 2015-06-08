@@ -22,4 +22,5 @@ public interface TcardcxMapper {
     List<XzType> searchzz(RowBounds rowBounds, String csfzh);
     List<XzType> searchlz(RowBounds rowBounds, String csfzh);
 //	List<Tcardcx> searchRetire(RowBounds rowBounds, String name);
+	int countAll();
 }

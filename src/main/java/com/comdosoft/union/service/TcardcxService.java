@@ -80,4 +80,8 @@ public class TcardcxService {
         int j = tcardcxMapper.countByZZ(tcardcx);
         return i+j;
     }
+
+	public int countByAll() {
+		return tcardcxMapper.countAll();
+	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.druid.util.StringUtils;
 import com.comdosoft.union.bean.app.Tcardcx;
 import com.comdosoft.union.bean.app.XzType;
 import com.comdosoft.union.common.SysResponse;
@@ -79,7 +80,7 @@ public class XzController {
                     total = tcardcxService.countByZZ(tcardcx);
                 }
             } else {
-                total = tcardcxService.countByAll(tcardcx);
+                total = tcardcxService.countByAll();
             }
             sysResponse.setTotal(total);
             sysResponse.setCode(SysResponse.SUCCESS);
@@ -130,6 +131,9 @@ public class XzController {
      */
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public SysResponse search(@RequestParam(value = "name", required = false) String name, String offset,String type) {
+    	if(StringUtils.isEmpty(name)){
+    		return SysResponse.buildFailResponse("请输入身份证号码");
+    	}
         Integer limit = 10;
         SysResponse sysResponse = new SysResponse();
         if (null == offset) {

@@ -17,6 +17,13 @@
 		</collection>
 	</resultMap>
 
+	<select id="countAll" resultType="int">
+		SELECT
+			count(x.id)
+		FROM
+			xz_type x
+	</select>
+	
 	<select id="countByZZ" resultType="int">
 		SELECT
 			count(x.id)
@@ -43,42 +50,42 @@
 	</select>
 	<!-- 在职 -->
 	<select id="findStaffAll" resultMap="xzType" >
-		SELECT *
+			SELECT m.id,m.`name`,m.img 	
 		   FROM xz_type t left join tcardcx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0 
 		   order by t.id desc
 	</select>
 	<!-- 退休 -->
 	<select id="findRetireAll" resultMap="xzType" >
-		SELECT *
+		SELECT m.id,m.`name`,m.img 	
 		   FROM xz_type t left join tcardcxtx m  on m.xzId=t.id
 		   where IFNULL(m.xzId,0) !=0
 		   order by t.id desc
 	</select>
 	
 	<select id="findById" resultMap="xzType" parameterType="java.lang.Integer">
-		SELECT *
+			SELECT m.id,m.`name`,m.img 	
 		  FROM  xz_type t 
 		where  t.id=#{id}
 	</select>
 	
 	<!-- 根据身份证号搜索 -->
 	<select id="searchlz" resultMap="xzType" parameterType="java.lang.String">
-		SELECT * 		FROM 		xz_type m
+			SELECT m.id,m.`name`,m.img 		FROM 		xz_type m
 			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
 		where   tx.csfzh = #{csfzh}
 		
 	</select>
 	<select id="searchzz" resultMap="xzType" parameterType="java.lang.String">
-		SELECT * 		FROM 		xz_type m
+			SELECT m.id,m.`name`,m.img 	FROM 		xz_type m
 		   LEFT JOIN tcardcx t ON t.xzId = m.id
 		where  t.csfzh = #{csfzh}  
 		order by m.id desc
 	</select>
 	<select id="searchAll" resultMap="xzType" parameterType="java.lang.String">
-		SELECT * 		FROM 		xz_type m
-		   LEFT JOIN tcardcx t ON t.xzId = m.id
-			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id
+			SELECT m.id,m.`name`,m.img 		FROM 		xz_type m
+<!-- 		   LEFT JOIN tcardcx t ON t.xzId = m.id
+			LEFT JOIN tcardcxtx tx ON tx.xzId = m.id -->
 				order by m.id desc
 	</select>
 </mapper>
